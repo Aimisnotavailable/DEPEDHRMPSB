@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Enter Token</title>
+  <style>
+    form { max-width:300px; margin:3rem auto; }
+    label, input { display:block; width:100%; margin:.5rem 0; padding:.4rem; }
+    .flash { color:red; }
+  </style>
+</head>
+<body>
+  <form method="post">
+    <h2>Interview Token</h2>
+    {% with messages = get_flashed_messages(category_filter=["error"]) %}
+      {% for msg in messages %}<div class="flash">{{ msg }}</div>{% endfor %}
+    {% endwith %}
+    <label>Token<input name="token" required></label>
+    <button type="submit">Continue</button>
+  </form>
+</body>
+</html>

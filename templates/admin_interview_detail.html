@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Interview {{ interview.id }} Details</title>
+  <style>
+    body { font-family:sans-serif; max-width:900px; margin:2rem auto; }
+    a.btn { padding:.4rem .8rem; background:#007bff; color:#fff; text-decoration:none; border-radius:4px; }
+    table { width:100%; border-collapse:collapse; margin-top:1rem; }
+    th, td { border:1px solid #ccc; padding:.5rem; vertical-align:top; }
+    th { background:#f4f4f4; }
+    ul { margin:0; padding-left:1.2rem; }
+    .no-data { color:#666; font-style:italic; }
+  </style>
+</head>
+<body>
+  <a href="{{ url_for('admin_dashboard') }}" class="btn">← Back to Dashboard</a>
+  <h1>Interview {{ interview.id }} Details</h1>
+  <p><strong>Baselines:</strong> Edu {{ interview.base_edu }}, Exp {{ interview.base_exp }}, Trn {{ interview.base_trn }}</p>
+
+  {% if applicants %}
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th><th>Name</th><th>Address</th><th>Birthday</th><th>Age</th><th>Sex</th>
+          <th>Raw/Trans</th><th>Evaluator Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in applicants %}
+        <tr>
+          <td>{{ a.code }}</td>
+          <td>{{ a.name }}</td>
+          <td>{{ a.address }}</td>
+          <td>{{ a.birthday }}</td>
+          <td>{{ a.age }}</td>
+          <td>{{ a.sex }}</td>
+          <td>
+            Edu: {{ a.raw_edu }} / {{ a.score_edu }}<br>
+            Exp: {{ a.raw_exp }} / {{ a.score_exp }}<br>
+            Trn: {{ a.raw_trn }} / {{ a.score_trn }}
+          </td>
+          <td>
+            {% if val_map[a.code] %}
+              <ul>
+                {% for v in val_map[a.code] %}
+                  <li><strong>{{ v.evaluator_token }}:</strong> {{ v.comment or "(no comment)" }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <span class="no-data">No comments yet</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="no-data">No applicants added yet.</p>
+  {% endif %}
+</body>
+</html>

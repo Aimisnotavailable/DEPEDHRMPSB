@@ -1,44 +1,33 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Profile Selector</title>
+  <meta charset="utf-8">
+  <title>Submit Profile</title>
   <style>
-    form { max-width: 500px; margin: 2rem auto; }
-    label { display: block; margin: 1rem 0 0.5rem; }
-    select { width: 100%; padding: 0.5rem; }
+    form { max-width:500px; margin:2rem auto; }
+    label { display:block; margin:1rem 0 .5rem; }
+    select { width:100%; padding:.5rem; }
   </style>
 </head>
 <body>
   <form method="post">
-    <!-- EDUCATION -->
-    <label for="education">Education</label>
-    <select id="education" name="education" required>
-      <option value="" disabled selected>Select education level…</option>
-      {% for key, label in education_options.items() %}
-        <option value="{{ key }}">{{ label }}</option>
-      {% endfor %}
+    <h2>Step 3: Submit Your Profile</h2>
+    <label>Education</label>
+    <select name="education" required>
+      <option value="" disabled selected>Select…</option>
+      {% for k,v in education_options.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
     </select>
-
-    <!-- EXPERIENCE -->
-    <label for="experience">Experience</label>
-    <select id="experience" name="experience" required>
-      <option value="" disabled selected>Select experience…</option>
-      {% for key, label in experience_options.items() %}
-        <option value="{{ key }}">{{ label }}</option>
-      {% endfor %}
+    <label>Experience</label>
+    <select name="experience" required>
+      <option value="" disabled selected>Select…</option>
+      {% for k,v in experience_options.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
     </select>
-
-    <!-- TRAINING -->
-    <label for="training">Training</label>
-    <select id="training" name="training" required>
-      <option value="" disabled selected>Select training…</option>
-      {% for key, label in training_options.items() %}
-        <option value="{{ key }}">{{ label }}</option>
-      {% endfor %}
+    <label>Training</label>
+    <select name="training" required>
+      <option value="" disabled selected>Select…</option>
+      {% for k,v in training_options.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
     </select>
-
-    <button type="submit" style="margin-top:1.5rem;">Submit</button>
+    <button type="submit" style="margin-top:1.5rem;">Compute Scores</button>
   </form>
 </body>
 </html>

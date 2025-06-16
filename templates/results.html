@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Your Results</title>
+  <style>
+    body { max-width: 400px; margin: 2rem auto; font-family: sans-serif; }
+    p { margin: 1rem 0; }
+  </style>
+</head>
+<body>
+  <h2>Your Transmuted Scores</h2>
+
+  <p>
+    <strong>Education</strong><br>
+    raw score: {{ raw_edu }}<br>
+    transmuted score: {{ score_edu }}<br>
+    actual value: {{ labels.education[raw_edu|string] }}
+  </p>
+
+  <p>
+    <strong>Experience</strong><br>
+    raw score: {{ raw_exp }}<br>
+    transmuted score: {{ score_exp }}<br>
+    actual value: {{ labels.experience[raw_exp|string] }}
+  </p>
+
+  <p>
+    <strong>Training</strong><br>
+    raw score: {{ raw_trn }}<br>
+    transmuted score: {{ score_trn }}<br>
+    actual value: {{ labels.training[raw_trn|string] }}
+  </p>
+
+  <p>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('profile') }}">Compute Again</a>
+  </p>
+</body>
+</html>

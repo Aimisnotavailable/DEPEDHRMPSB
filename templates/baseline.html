@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Set Baseline</title>
+  <style>
+    form { max-width:400px; margin:2rem auto; }
+    label { display:block; margin:0.5rem 0 0.25rem; }
+    select { width:100%; padding:0.5rem; }
+  </style>
+</head>
+<body>
+  <form method="post">
+    <h2>Step 1: Define Your Baselines</h2>
+
+    <label for="education">Baseline Education Level</label>
+    <select id="education" name="education" required>
+      <option value="" disabled selected>Select education…</option>
+      {% for key, label in education_options.items() %}
+        <option value="{{ key }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="experience">Baseline Experience</label>
+    <select id="experience" name="experience" required>
+      <option value="" disabled selected>Select experience…</option>
+      {% for key, label in experience_options.items() %}
+        <option value="{{ key }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="training">Baseline Training</label>
+    <select id="training" name="training" required>
+      <option value="" disabled selected>Select training…</option>
+      {% for key, label in training_options.items() %}
+        <option value="{{ key }}">{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" style="margin-top:1.5rem;">Set Baseline</button>
+  </form>
+</body>
+</html>
