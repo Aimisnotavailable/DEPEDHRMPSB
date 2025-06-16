@@ -11,6 +11,7 @@
     th { background: #f4f4f4; }
     ul { margin: 0; padding-left: 1.2rem; }
     .no-data { color: #666; font-style: italic; }
+    section { margin-bottom: 2rem; }
     form { margin-top: 1rem; }
     label { display: block; margin: .5rem 0 .2rem; }
     input, select, button { width: 100%; padding: .4rem; margin-top: .5rem; }
@@ -21,6 +22,60 @@
   <a href="{{ url_for('admin_dashboard') }}" class="btn">← Back to Dashboard</a>
   <h1>Interview {{ interview.id }} Details</h1>
   <p><strong>Baselines:</strong> Edu {{ interview.base_edu }}, Exp {{ interview.base_exp }}, Trn {{ interview.base_trn }}</p>
+
+  <!-- Topmost Applicant List Tab -->
+  <section>
+    <h2>Applicant List</h2>
+    {% if applicants %}
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Birthday</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Scores Summary</th>
+            <th>Evaluator Comments</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in applicants %}
+          <tr>
+            <td>{{ a.code }}</td>
+            <td>{{ a.name }}</td>
+            <td>{{ a.address }}</td>
+            <td>{{ a.birthday }}</td>
+            <td>{{ a.age }}</td>
+            <td>{{ a.sex }}</td>
+            <td>
+              <strong>Education:</strong> Raw: {{ a.raw_edu }}, Trans: {{ a.score_edu }}, 
+              Actual: {{ ed_labels.get(a.raw_edu|string, "N/A") }}<br>
+              <strong>Experience:</strong> Raw: {{ a.raw_exp }}, Trans: {{ a.score_exp }}, 
+              Actual: {{ ex_labels.get(a.raw_exp|string, "N/A") }}<br>
+              <strong>Training:</strong> Raw: {{ a.raw_trn }}, Trans: {{ a.score_trn }}, 
+              Actual: {{ tr_labels.get(a.raw_trn|string, "N/A") }}
+            </td>
+            <td>
+              {% if val_map[a.code] %}
+                <ul>
+                  {% for v in val_map[a.code] %}
+                    <li><strong>{{ v.evaluator_token }}:</strong> {{ v.comment or "(no comment)" }}</li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <span class="no-data">No comments yet</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="no-data">No applicants added yet.</p>
+    {% endif %}
+  </section>
 
   <!-- Section for Adding an Applicant -->
   <section>
@@ -76,85 +131,35 @@
     </form>
   </section>
 
-  <!-- Applicants Table with Scores Summary -->
-  {% if applicants %}
-    <h2>Applicants</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Code</th>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Birthday</th>
-          <th>Age</th>
-          <th>Sex</th>
-          <th>Scores Summary</th>
-          <th>Evaluator Comments</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for a in applicants %}
-        <tr>
-          <td>{{ a.code }}</td>
-          <td>{{ a.name }}</td>
-          <td>{{ a.address }}</td>
-          <td>{{ a.birthday }}</td>
-          <td>{{ a.age }}</td>
-          <td>{{ a.sex }}</td>
-          <td>
-            <strong>Education:</strong> Raw: {{ a.raw_edu }}, Trans: {{ a.score_edu }}, 
-            Actual: {{ ed_labels.get(a.raw_edu|string, "N/A") }}<br>
-            <strong>Experience:</strong> Raw: {{ a.raw_exp }}, Trans: {{ a.score_exp }}, 
-            Actual: {{ ex_labels.get(a.raw_exp|string, "N/A") }}<br>
-            <strong>Training:</strong> Raw: {{ a.raw_trn }}, Trans: {{ a.score_trn }}, 
-            Actual: {{ tr_labels.get(a.raw_trn|string, "N/A") }}
-          </td>
-          <td>
-            {% if val_map[a.code] %}
-              <ul>
-                {% for v in val_map[a.code] %}
-                  <li><strong>{{ v.evaluator_token }}:</strong> {{ v.comment or "(no comment)" }}</li>
-                {% endfor %}
-              </ul>
-            {% else %}
-              <span class="no-data">No comments yet</span>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p class="no-data">No applicants added yet.</p>
-  {% endif %}
-
   <!-- Evaluator Tokens Table -->
-  <h2>Evaluator Tokens</h2>
-  {% if eval_tokens %}
-    <table>
-      <thead>
-        <tr>
-          <th>Token</th>
-          <th>Registration Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for et in eval_tokens %}
-        <tr>
-          <td>{{ et.token }}</td>
-          <td>
-            {% if et.registered %}
-              Registered
-            {% else %}
-              Not Registered
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p class="no-data">No evaluator tokens generated yet.</p>
-  {% endif %}
+  <section>
+    <h2>Evaluator Tokens</h2>
+    {% if eval_tokens %}
+      <table>
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Registration Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for et in eval_tokens %}
+          <tr>
+            <td>{{ et.token }}</td>
+            <td>
+              {% if et.registered %}
+                Registered
+              {% else %}
+                Not Registered
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="no-data">No evaluator tokens generated yet.</p>
+    {% endif %}
+  </section>
 </body>
 </html>
