@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <title>Admin Dashboard</title>
   <style>
-    body { font-family:sans-serif; max-width:1000px; margin:2rem auto; }
-    .logout { float:right; padding:.4rem .8rem; background:#dc3545; color:#fff; text-decoration:none; border-radius:4px; }
-    section { border:1px solid #ddd; padding:1rem; margin-bottom:2rem; border-radius:4px; }
-    label { display:block; margin:.5rem 0 .2rem; }
-    input, select, button { width:100%; padding:.4rem; margin-top:.5rem; }
-    button { background:#28a745; color:#fff; border:none; border-radius:4px; }
-    table { width:100%; border-collapse:collapse; margin-top:1rem; }
-    th,td { border:1px solid #ccc; padding:.5rem; vertical-align:top; }
-    th { background:#f4f4f4; }
-    a.btn { padding:.4rem .8rem; background:#007bff; color:#fff; text-decoration:none; border-radius:4px; }
+    body { font-family: sans-serif; max-width: 1000px; margin: 2rem auto; }
+    .logout { float: right; padding: .4rem .8rem; background: #dc3545; color: #fff; text-decoration: none; border-radius: 4px; }
+    section { border: 1px solid #ddd; padding: 1rem; margin-bottom: 2rem; border-radius: 4px; }
+    label { display: block; margin: .5rem 0 .2rem; }
+    input, select, button { width: 100%; padding: .4rem; margin-top: .5rem; }
+    button { background: #28a745; color: #fff; border: none; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: .5rem; vertical-align: top; }
+    th { background: #f4f4f4; }
+    a.btn { padding: .4rem .8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
     .flash { color: green; }
   </style>
 </head>
@@ -30,81 +30,25 @@
       <label>Baseline Education</label>
       <select name="baseline_education" required>
         <option disabled selected>– select –</option>
-        {% for k,v in ed_labels.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
+        {% for k, v in ed_labels.items() %}
+          <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
       </select>
       <label>Baseline Experience</label>
       <select name="baseline_experience" required>
         <option disabled selected>– select –</option>
-        {% for k,v in ex_labels.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
+        {% for k, v in ex_labels.items() %}
+          <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
       </select>
       <label>Baseline Training</label>
       <select name="baseline_training" required>
         <option disabled selected>– select –</option>
-        {% for k,v in tr_labels.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
+        {% for k, v in tr_labels.items() %}
+          <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
       </select>
       <button type="submit">Create Interview</button>
-    </form>
-  </section>
-
-  <section>
-    <h2>Evaluator Tokens</h2>
-    <form method="post" action="{{ url_for('generate_evaluator_tokens') }}">
-      <label>Interview ID</label>
-      <select name="interview_id" required>
-        <option disabled selected>– select –</option>
-        {% for iv in interviews %}<option value="{{ iv.id }}">{{ iv.id }}</option>{% endfor %}
-      </select>
-      <label>How many?</label>
-      <input type="number" name="count_tokens" min="1" value="1" required>
-      <button type="submit">Generate</button>
-    </form>
-    {% if evaluator_tokens %}
-      <table>
-        <thead><tr><th>Token</th><th>Interview</th></tr></thead>
-        <tbody>
-          {% for tk in evaluator_tokens %}
-          <tr><td>{{ tk.token }}</td><td>{{ tk.interview_id }}</td></tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% endif %}
-  </section>
-
-  <section>
-    <h2>Add Applicant</h2>
-    <form method="post" action="{{ url_for('add_applicant') }}">
-      <label>Interview ID</label>
-      <select name="interview_id" required>
-        <option disabled selected>– select –</option>
-        {% for iv in interviews %}<option value="{{ iv.id }}">{{ iv.id }}</option>{% endfor %}
-      </select>
-      <label>Applicant Code</label>
-      <input name="applicant_code" required>
-      <label>Name</label><input name="name" required>
-      <label>Address</label><input name="address" required>
-      <label>Birthday</label><input type="date" name="birthday" required>
-      <label>Age</label><input type="number" name="age" min="0" required>
-      <label>Sex</label>
-      <select name="sex" required>
-        <option disabled selected>– select –</option>
-        <option>Male</option><option>Female</option><option>Other</option>
-      </select>
-      <label>Raw Education</label>
-      <select name="education" required>
-        <option disabled selected>– select –</option>
-        {% for k,v in ed_labels.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
-      </select>
-      <label>Raw Experience</label>
-      <select name="experience" required>
-        <option disabled selected>– select –</option>
-        {% for k,v in ex_labels.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
-      </select>
-      <label>Raw Training</label>
-      <select name="training" required>
-        <option disabled selected>– select –</option>
-        {% for k,v in tr_labels.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}
-      </select>
-      <button type="submit">Add Applicant</button>
     </form>
   </section>
 
@@ -119,7 +63,7 @@
       {% for iv in interviews %}
       <tr>
         <td>{{ iv.id }}</td>
-        <td>Edu {{ iv.base_edu }}/Exp {{ iv.base_exp }}/Trn {{ iv.base_trn }}</td>
+        <td>Edu {{ iv.base_edu }} / Exp {{ iv.base_exp }} / Trn {{ iv.base_trn }}</td>
         <td>{{ iv.evaluator_tokens|length }}</td>
         <td>{{ iv.participants|length }}</td>
         <td><a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn">View</a></td>
