@@ -12,6 +12,7 @@ from scripts.criteriatable import CriteriaTable
 from scripts.incrementstable import IncrementsTable
 from scripts.table_handler import TableHandler
 
+# Commit App
 # -----------------------------------------------------------------------------
 # App & DB setup
 # -----------------------------------------------------------------------------
