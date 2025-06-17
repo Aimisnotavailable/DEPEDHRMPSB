@@ -48,6 +48,14 @@
           <option value="{{ k }}">{{ v }}</option>
         {% endfor %}
       </select>
+      <!-- Added Interview Type Selector -->
+      <label>Interview Type</label>
+      <select name="interview_type" required>
+        <option disabled selected>– select –</option>
+        <option value="non-teaching">Non-Teaching</option>
+        <option value="teaching">Teaching</option>
+        <option value="promotion">Promotion</option>
+      </select>
       <button type="submit">Create Interview</button>
     </form>
   </section>

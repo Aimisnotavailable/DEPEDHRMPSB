@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Applicant {{ applicant.code }} Details</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
+    a.btn { padding: .4rem .8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th, td { padding: .5rem; border: 1px solid #ccc; }
+    h2 { margin-top: 2rem; }
+    ul { list-style: none; padding-left: 0; }
+    li { padding: .4rem 0; border-bottom: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <a href="{{ url_for('admin_interview_detail', iid=applicant.interview_id) }}" class="btn">← Back to Interview Details</a>
+  <h1>Applicant {{ applicant.code }} Details</h1>
+  <table>
+    <tr><th>Name</th><td>{{ applicant.name }}</td></tr>
+    <tr><th>Address</th><td>{{ applicant.address }}</td></tr>
+    <tr><th>Birthday</th><td>{{ applicant.birthday }}</td></tr>
+    <tr><th>Age</th><td>{{ applicant.age }}</td></tr>
+    <tr><th>Sex</th><td>{{ applicant.sex }}</td></tr>
+    <tr><th>Raw Education</th><td>{{ applicant.raw_edu }}</td></tr>
+    <tr><th>Raw Experience</th><td>{{ applicant.raw_exp }}</td></tr>
+    <tr><th>Raw Training</th><td>{{ applicant.raw_trn }}</td></tr>
+    <tr><th>Score Education</th><td>{{ applicant.score_edu }}</td></tr>
+    <tr><th>Score Experience</th><td>{{ applicant.score_exp }}</td></tr>
+    <tr><th>Score Training</th><td>{{ applicant.score_trn }}</td></tr>
+    {% if extra_data %}
+    <tr><th>Extra Information</th>
+      <td>
+        {% for key, value in extra_data.items() %}
+          <strong>{{ key|capitalize }}:</strong> {{ value }}<br>
+        {% endfor %}
+      </td>
+    </tr>
+    {% endif %}
+  </table>
+
+  <h2>Evaluator Comments</h2>
+  {% if validations %}
+    <ul>
+      {% for v in validations %}
+        <li>
+          <strong>{{ v.evaluator_token }}:</strong> {{ v.comment or "(no comment)" }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No evaluator comments available.</p>
+  {% endif %}
+</body>
+</html>

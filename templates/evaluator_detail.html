@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Evaluator Detail</title>
+  <style>
+    body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; }
+    a.btn { padding: .4rem .8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: .5rem; vertical-align: top; }
+    th { background: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <a href="{{ url_for('admin_interview_detail', iid=evaluator.interview_id) }}" class="btn">Back to Interview Details</a>
+  <h1>Evaluator {{ evaluator.token }} Details</h1>
+  <h2>Validations / Comments</h2>
+  {% if validations %}
+    <table>
+      <thead>
+        <tr>
+          <th>Participant Code</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in validations %}
+        <tr>
+          <td>{{ v.participant_code }}</td>
+          <td>{{ v.comment or "(no comment)" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No validations made yet.</p>
+  {% endif %}
+</body>
+</html>
