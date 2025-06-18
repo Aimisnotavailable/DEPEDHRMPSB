@@ -2,108 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Applicant {{ applicant.code }} - Evaluation</title>
+  <title>Applicant {{ applicant.code }} - Your Evaluation</title>
   <style>
-    body {
-      font-family: sans-serif;
-      max-width: 800px;
-      margin: 2rem auto;
-    }
-    a.btn {
-      padding: 0.4rem 0.8rem;
-      background: #007bff;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1rem 0;
-    }
-    th, td {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-    }
-    label {
-      display: block;
-      margin: 0.5rem 0 0.2rem;
-    }
-    textarea {
-      width: 100%;
-      padding: 0.4rem;
-      margin-top: 0.2rem;
-      min-height: 100px;
-    }
-    button {
-      width: 100%;
-      padding: 0.4rem;
-      background: #28a745;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      margin-top: 0.5rem;
-    }
+    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
+    a.btn { padding: 0.4rem 0.8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+    form { margin-top: 1rem; }
+    label { display: block; margin: 0.5rem 0 0.2rem; }
+    input, button { width: 100%; padding: 0.4rem; margin-top: 0.2rem; }
+    button { background: #28a745; color: #fff; border: none; border-radius: 4px; }
   </style>
 </head>
 <body>
   <a href="{{ url_for('evaluator_dashboard') }}" class="btn">← Back to Dashboard</a>
-  <h1>Applicant {{ applicant.code }} Details</h1>
-  <table>
-    <tr>
-      <th>Name</th>
-      <td>{{ applicant.name }}</td>
-    </tr>
-    <tr>
-      <th>Address</th>
-      <td>{{ applicant.address }}</td>
-    </tr>
-    <tr>
-      <th>Birthday</th>
-      <td>{{ applicant.birthday }}</td>
-    </tr>
-    <tr>
-      <th>Age</th>
-      <td>{{ applicant.age }}</td>
-    </tr>
-    <tr>
-      <th>Sex</th>
-      <td>{{ applicant.sex }}</td>
-    </tr>
-    <tr>
-      <th>Raw Education</th>
-      <td>{{ applicant.raw_edu }}</td>
-    </tr>
-    <tr>
-      <th>Raw Experience</th>
-      <td>{{ applicant.raw_exp }}</td>
-    </tr>
-    <tr>
-      <th>Raw Training</th>
-      <td>{{ applicant.raw_trn }}</td>
-    </tr>
-    <tr>
-      <th>Score Education</th>
-      <td>{{ applicant.score_edu }}</td>
-    </tr>
-    <tr>
-      <th>Score Experience</th>
-      <td>{{ applicant.score_exp }}</td>
-    </tr>
-    <tr>
-      <th>Score Training</th>
-      <td>{{ applicant.score_trn }}</td>
-    </tr>
-  </table>
-  
-  <h2>Evaluator Comment</h2>
+  <h1>Applicant {{ applicant.code }} Evaluation</h1>
+  <h2>{{ applicant.name }}</h2>
   <form method="post">
-    <label>Your Comment:</label>
-    <!-- If a comment exists, display it for editing; otherwise, leave it empty -->
-    <textarea name="comment" required>{{ validation.comment if validation else '' }}</textarea>
-    <button type="submit">
-      {% if validation %}Update Comment{% else %}Submit Comment{% endif %}
-    </button>
+    <label>Aptitude (0-1)</label>
+    <input type="number" name="aptitude" step="0.01" min="0" max="1"
+           value="{{ evaluation.aptitude if evaluation else '' }}" required>
+    <label>Characteristics Traits (0-1)</label>
+    <input type="number" name="characteristics" step="0.01" min="0" max="1"
+           value="{{ evaluation.characteristics if evaluation else '' }}" required>
+    <label>Fitness (0-1)</label>
+    <input type="number" name="fitness" step="0.01" min="0" max="1"
+           value="{{ evaluation.fitness if evaluation else '' }}" required>
+    <label>Leadership Ability (0-1)</label>
+    <input type="number" name="leadership" step="0.01" min="0" max="1"
+           value="{{ evaluation.leadership if evaluation else '' }}" required>
+    <label>Communication Skills (0-1)</label>
+    <input type="number" name="communication" step="0.01" min="0" max="1"
+           value="{{ evaluation.communication if evaluation else '' }}" required>
+    <label>TRF Rating (0-20)</label>
+    <input type="number" name="trf_rating" step="0.01" min="0" max="20"
+           value="{{ evaluation.trf_rating if evaluation else '' }}" required>
+    <button type="submit">Save Evaluation</button>
   </form>
+  {% if evaluation %}
+    {% set own_total = evaluation.aptitude + evaluation.characteristics +
+                         evaluation.fitness + evaluation.leadership +
+                         evaluation.communication + evaluation.trf_rating %}
+    <p>Your evaluation score: <strong>{{ own_total | round(2) }}</strong> (max 25)</p>
+  {% endif %}
 </body>
 </html>

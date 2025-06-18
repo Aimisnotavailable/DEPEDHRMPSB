@@ -5,12 +5,10 @@
   <title>Applicant {{ applicant.code }} Details</title>
   <style>
     body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
-    a.btn { padding: .4rem .8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+    a.btn { padding: 0.4rem 0.8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
     table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
-    th, td { padding: .5rem; border: 1px solid #ccc; }
-    h2 { margin-top: 2rem; }
+    th, td { padding: 0.5rem; border: 1px solid #ccc; }
     ul { list-style: none; padding-left: 0; }
-    li { padding: .4rem 0; border-bottom: 1px solid #ddd; }
   </style>
 </head>
 <body>
@@ -28,28 +26,33 @@
     <tr><th>Score Education</th><td>{{ applicant.score_edu }}</td></tr>
     <tr><th>Score Experience</th><td>{{ applicant.score_exp }}</td></tr>
     <tr><th>Score Training</th><td>{{ applicant.score_trn }}</td></tr>
-    {% if extra_data %}
-    <tr><th>Extra Information</th>
-      <td>
-        {% for key, value in extra_data.items() %}
-          <strong>{{ key|capitalize }}:</strong> {{ value }}<br>
-        {% endfor %}
-      </td>
-    </tr>
+    {% if applicant.interview.type == 'teaching' and extra_data %}
+      <tr><th>LPT/PBET/LEPT Raw Score</th><td>{{ extra_data.lpt_rating }}</td></tr>
+      <tr><th>COI</th><td>{{ extra_data.COI }}</td></tr>
+      {% if ncoi is not none %}
+      <tr><th>NCOI (Average Evaluation)</th><td>{{ ncoi }}</td></tr>
+      {% endif %}
     {% endif %}
   </table>
-
-  <h2>Evaluator Comments</h2>
+  
   {% if validations %}
+    <h2>Comments</h2>
     <ul>
       {% for v in validations %}
-        <li>
-          <strong>{{ v.evaluator_token }}:</strong> {{ v.comment or "(no comment)" }}
-        </li>
+        <li><strong>{{ v.evaluator_token }}:</strong> {{ v.comment or "(no comment)" }}</li>
       {% endfor %}
     </ul>
-  {% else %}
-    <p>No evaluator comments available.</p>
   {% endif %}
+  
+  {% if eval_records %}
+    <h2>Evaluations</h2>
+    <ul>
+      {% for ev in eval_records %}
+        {% set score = ev.aptitude + ev.characteristics + ev.fitness + ev.leadership + ev.communication + ev.trf_rating %}
+        <li>Evaluator #{{ loop.index }} score: {{ score | round(2) }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
 </body>
 </html>

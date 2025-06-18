@@ -138,22 +138,10 @@
         {% endfor %}
       </select>
       {% if interview.type == 'teaching' %}
-        <label>Teaching Qualification</label>
-        <input name="teaching_qualification" placeholder="Enter teaching qualification">
-        <label>PBET/LET/LEPT Rating (out of 100)</label>
-        <input type="number" name="pbet_rating" min="0" max="100" required>
-        <label>Classroom Observation Score (out of 30)</label>
-        <input type="number" name="classroom_observation" min="0" max="30" required>
-        <label>Teacher Reflection Score (out of 20)</label>
-        <input type="number" name="teacher_reflection" min="0" max="20" required>
-        <p>
-          Note: In teaching interviews, the overall total is the sum of the base scores (education, experience, training) plus the converted teaching scores:
-          <br>
-          PPST COIs = (PBET/LET/LEPT Rating / 100 * 10), PPST NCOIs = (Classroom Observation / 30 * 35),
-          Teacher Reflection = (Teacher Reflection / 20 * 25).
-          <br>
-          The overall total should equal 100.
-        </p>
+        <label>LPT/PBET/LEPT Rating (out of 100)</label>
+        <input type="number" name="lpt_rating" step="0.01" min="0" max="100" required>
+        <label>COT (out of 30)</label>
+        <input type="number" name="cot" step="0.01" min="0" max="100" required>
       {% endif %}
       <button type="submit">Add Applicant</button>
     </form>

@@ -6,8 +6,8 @@ from enum import Enum
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 
-# These are assumed to be provided by your own code.
 from scripts.criteriatable import CriteriaTable
 from scripts.incrementstable import IncrementsTable
 from scripts.table_handler import TableHandler
@@ -19,8 +19,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 # ------------------------------------------------------------------------------
-# Models
+# MODELS
 # ------------------------------------------------------------------------------
+
 class Interview(db.Model):
     __tablename__ = "interviews"
     id       = db.Column(db.String(8), primary_key=True)
@@ -29,7 +30,7 @@ class Interview(db.Model):
     base_trn = db.Column(db.Integer, nullable=False)
     type     = db.Column(db.Enum("teaching", "promotion", "non-teaching", name="interview_type"),
                          nullable=False, default="non-teaching")
-    # Relationships: evaluator_tokens and participants are auto-populated via backref.
+    # Relationships via backref: evaluator_tokens, participants
 
 class EvaluatorToken(db.Model):
     __tablename__ = "evaluator_tokens"
@@ -54,7 +55,24 @@ class Participant(db.Model):
     score_edu     = db.Column(db.Integer, nullable=False)
     score_exp     = db.Column(db.Integer, nullable=False)
     score_trn     = db.Column(db.Integer, nullable=False)
-    extra_data    = db.Column(db.Text, nullable=True)  # JSON-encoded extra teaching data
+    extra_data    = db.Column(db.Text, nullable=True)
+    # extra_data for teaching interviews stores:
+    #   { "lpt_rating": <raw>, "COI": <computed> }
+
+# Evaluation model – each record is one evaluator’s submission (raw total score out of 25).
+class Evaluation(db.Model):
+    __tablename__ = "evaluations"
+    id = db.Column(db.Integer, primary_key=True)
+    interview_id = db.Column(db.String(8), db.ForeignKey("interviews.id"), nullable=False)
+    evaluator_token = db.Column(db.String(8), db.ForeignKey("evaluator_tokens.token"), nullable=False)
+    participant_code = db.Column(db.String(8), db.ForeignKey("participants.code"), nullable=False)
+    aptitude = db.Column(db.Float, nullable=False)
+    characteristics = db.Column(db.Float, nullable=False)
+    fitness = db.Column(db.Float, nullable=False)
+    leadership = db.Column(db.Float, nullable=False)
+    communication = db.Column(db.Float, nullable=False)
+    trf_rating = db.Column(db.Float, nullable=False)
+    # Each evaluation’s total = (aptitude + characteristics + fitness + leadership + communication + trf_rating) with max 25.
 
 class Validation(db.Model):
     __tablename__ = "validations"
@@ -65,8 +83,9 @@ class Validation(db.Model):
     comment           = db.Column(db.Text, nullable=True)
 
 # ------------------------------------------------------------------------------
-# Authentication helper
+# AUTHENTICATION HELPER
 # ------------------------------------------------------------------------------
+
 def admin_required(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
@@ -76,14 +95,16 @@ def admin_required(f):
     return wrapper
 
 # ------------------------------------------------------------------------------
-# Admin credentials (demo only)
+# ADMIN CREDENTIALS (demo only)
 # ------------------------------------------------------------------------------
+
 ADMIN_USER = "admin"
 ADMIN_PASS = "admin"
 
 # ------------------------------------------------------------------------------
-# Admin Routes
+# ADMIN ROUTES
 # ------------------------------------------------------------------------------
+
 @app.route("/admin/login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
@@ -176,19 +197,44 @@ def applicant_detail(code):
         participant_code=applicant.code
     ).all()
 
+    # Query all evaluation records for this applicant.
+    eval_records = Evaluation.query.filter_by(
+         interview_id=applicant.interview_id,
+         participant_code=applicant.code
+    ).all()
+
+    # Compute average (NCOI) as the average raw evaluation (max 25)
+    ncoi = None
+    avg_eval = None
+    if applicant.interview.type == "teaching" and eval_records:
+        total = sum(e.aptitude + e.characteristics + e.fitness + e.leadership +
+                    e.communication + e.trf_rating for e in eval_records)
+        avg_eval = total / len(eval_records)
+        ncoi = round(avg_eval, 2)
+
     return render_template("applicant_detail.html",
                            applicant=applicant,
                            extra_data=extra_data,
-                           validations=validations)
+                           validations=validations,
+                           eval_records=eval_records,
+                           ncoi=ncoi,
+                           avg_eval=avg_eval)
 
 @app.route("/admin/evaluator/<token>")
 @admin_required
 def evaluator_detail(token):
     evaluator = EvaluatorToken.query.get_or_404(token)
+    # Get all evaluations made by this evaluator.
+    eval_records = Evaluation.query.filter_by(
+         interview_id=evaluator.interview_id,
+         evaluator_token=token
+    ).all()
+    # Also load validations if needed.
     validations = Validation.query.filter_by(evaluator_token=token,
                                              interview_id=evaluator.interview_id).all()
     return render_template("evaluator_detail.html",
                            evaluator=evaluator,
+                           eval_records=eval_records,
                            validations=validations)
 
 @app.route("/admin/add_applicant", methods=["POST"])
@@ -207,7 +253,7 @@ def add_applicant():
 
     name    = request.form["name"].strip()
     address = request.form["address"].strip()
-    bstr    = request.form["birthday"].strip()  # format: YYYY-MM-DD
+    bstr    = request.form["birthday"].strip()  # YYYY-MM-DD
     bd      = datetime.strptime(bstr, "%Y-%m-%d").date()
     age     = int(request.form["age"])
     sex     = request.form["sex"].strip()
@@ -216,7 +262,7 @@ def add_applicant():
     raw_exp = int(request.form["experience"])
     raw_trn = int(request.form["training"])
 
-    # Compute base scores using CriteriaTable and IncrementsTable (assumed to return numeric scores)
+    # Compute base scores using CriteriaTable and IncrementsTable
     crit = CriteriaTable()
     incs = IncrementsTable()
     delta_edu = crit.get_score(raw_edu, interview_obj.base_edu)
@@ -243,39 +289,19 @@ def add_applicant():
         score_trn=s_trn
     )
 
-    # If the interview is of teaching type, then capture and compute teaching-related scores.
+    # For teaching interviews, admin only inputs the raw LPT/PBET/LEPT rating.
     if interview_obj.type == "teaching":
-        teaching_qualification = request.form.get("teaching_qualification", "").strip()
         try:
-            pbet_rating = float(request.form.get("pbet_rating", 0))
-            classroom_obs = float(request.form.get("classroom_observation", 0))
-            teacher_reflection_input = float(request.form.get("teacher_reflection", 0))
+            lpt_rating = float(request.form.get("lpt_rating", 0))
+            cot = float(request.form.get("cot", 0))
         except ValueError:
-            flash("Teaching rating inputs must be numeric.", "error")
+            flash("LPT/PBET/LEPT rating must be numeric.", "error")
             return redirect(url_for("admin_interview_detail", iid=iid))
-
-        # Convert teaching inputs using the specified formulas
-        ppst_cois = (pbet_rating / 100.0) * 10       # out of 10 points
-        ppst_ncois = (classroom_obs / 30.0) * 35       # out of 35 points
-        teacher_reflection_score = (teacher_reflection_input / 20.0) * 25  # out of 25 points
-
-        teaching_total = ppst_cois + ppst_ncois + teacher_reflection_score
-        base_total = s_edu + s_exp + s_trn
-        overall_total = base_total + teaching_total
-
-        # Allow for a very small tolerance due to floating-point arithmetic.
-        if abs(overall_total - 100) > 0.01:
-            flash(f"Total points must equal 100. Calculated total is {overall_total:.2f}.", "error")
-            return redirect(url_for("admin_interview_detail", iid=iid))
-
+        lpt_rating_transmuted = (lpt_rating / 100.0) * 10  # maximum 10 points.
+        coi = (cot / 30) * 35
         extra = {
-            "teaching_qualification": teaching_qualification,
-            "pbet_rating": pbet_rating,
-            "ppst_cois": ppst_cois,
-            "classroom_observation": classroom_obs,
-            "ppst_ncois": ppst_ncois,
-            "teacher_reflection": teacher_reflection_input,
-            "teacher_reflection_score": teacher_reflection_score
+            "lpt_rating": lpt_rating_transmuted,
+            "COI": coi
         }
         p.extra_data = json.dumps(extra)
 
@@ -300,8 +326,9 @@ def generate_evaluator_tokens():
     return redirect(url_for("admin_interview_detail", iid=iid))
 
 # ------------------------------------------------------------------------------
-# Evaluator Routes
+# EVALUATOR ROUTES
 # ------------------------------------------------------------------------------
+
 @app.route("/", methods=["GET", "POST"])
 def evaluator_login():
     if request.method == "POST":
@@ -326,11 +353,36 @@ def evaluator_dashboard():
     if "evaluator_token" not in session:
         return redirect(url_for("evaluator_login"))
     iid = session["interview_id"]
+    tk = session["evaluator_token"]
     iv = Interview.query.get(iid)
     applicants = iv.participants
+
+    # For each applicant, get only the evaluation record for the current evaluator.
+    my_scores = {}
+    for a in applicants:
+        eval_rec = Evaluation.query.filter_by(
+            interview_id=iid,
+            evaluator_token=tk,
+            participant_code=a.code
+        ).first()
+        if eval_rec:
+            total = (
+                eval_rec.aptitude +
+                eval_rec.characteristics +
+                eval_rec.fitness +
+                eval_rec.leadership +
+                eval_rec.communication +
+                eval_rec.trf_rating
+            )
+            my_scores[a.code] = round(total, 2)
+        else:
+            my_scores[a.code] = None
+
     return render_template("evaluator_dashboard.html",
                            applicants=applicants,
-                           interview=iv)
+                           interview=iv,
+                           my_scores=my_scores)
+
 
 @app.route("/evaluator/applicant/<code>", methods=["GET", "POST"])
 def evaluator_applicant_detail(code):
@@ -342,33 +394,63 @@ def evaluator_applicant_detail(code):
     if applicant.interview_id != iid:
         flash("Invalid applicant for this interview.", "error")
         return redirect(url_for("evaluator_dashboard"))
-    validation = Validation.query.filter_by(
+    evaluation = Evaluation.query.filter_by(
         interview_id=iid,
         evaluator_token=tk,
         participant_code=code
     ).first()
     if request.method == "POST":
-        comment = request.form.get("comment", "").strip()
-        if not comment:
-            flash("Comment cannot be empty.", "error")
+        try:
+            aptitude = float(request.form.get("aptitude", 0))
+            characteristics = float(request.form.get("characteristics", 0))
+            fitness = float(request.form.get("fitness", 0))
+            leadership = float(request.form.get("leadership", 0))
+            communication = float(request.form.get("communication", 0))
+            trf_rating = float(request.form.get("trf_rating", 0))
+        except ValueError:
+            flash("Please enter valid numeric values.", "error")
+            return redirect(url_for("evaluator_applicant_detail", code=code))
+        # Validate ranges for five criteria:
+        if not (0 <= aptitude <= 1 and 0 <= characteristics <= 1 and 0 <= fitness <= 1 and
+                0 <= leadership <= 1 and 0 <= communication <= 1):
+            flash("Each of the five criteria must be between 0 and 1.", "error")
+            return redirect(url_for("evaluator_applicant_detail", code=code))
+        if not (0 <= trf_rating <= 20):
+            flash("TRF rating must be between 0 and 20.", "error")
+            return redirect(url_for("evaluator_applicant_detail", code=code))
+        if evaluation:
+            evaluation.aptitude = aptitude
+            evaluation.characteristics = characteristics
+            evaluation.fitness = fitness
+            evaluation.leadership = leadership
+            evaluation.communication = communication
+            evaluation.trf_rating = trf_rating
+            flash("Your evaluation has been updated.", "success")
         else:
-            if validation:
-                validation.comment = comment
-                flash("Your comment has been updated.", "success")
-            else:
-                validation = Validation(
-                    interview_id=iid,
-                    evaluator_token=tk,
-                    participant_code=code,
-                    comment=comment
-                )
-                db.session.add(validation)
-                flash("Your comment has been submitted.", "success")
-            db.session.commit()
+            evaluation = Evaluation(
+                interview_id=iid,
+                evaluator_token=tk,
+                participant_code=code,
+                aptitude=aptitude,
+                characteristics=characteristics,
+                fitness=fitness,
+                leadership=leadership,
+                communication=communication,
+                trf_rating=trf_rating
+            )
+            db.session.add(evaluation)
+            flash("Your evaluation has been submitted.", "success")
+        db.session.commit()
         return redirect(url_for("evaluator_applicant_detail", code=code))
+    overall = None
+    if evaluation:
+        overall = round(evaluation.aptitude + evaluation.characteristics + evaluation.fitness +
+                        evaluation.leadership + evaluation.communication + evaluation.trf_rating, 2)
+    # Note: Evaluators will only see their own evaluation (not the average)
     return render_template("evaluator_applicant_detail.html",
                            applicant=applicant,
-                           validation=validation)
+                           evaluation=evaluation,
+                           overall=overall)
 
 @app.route("/logout")
 def logout():
