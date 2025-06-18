@@ -3,19 +3,18 @@
 <head>
   <meta charset="utf-8">
   <title>Admin Dashboard</title>
-  <style>
-    body { font-family: sans-serif; max-width: 1000px; margin: 2rem auto; }
-    .logout { float: right; padding: .4rem .8rem; background: #dc3545; color: #fff; text-decoration: none; border-radius: 4px; }
-    section { border: 1px solid #ddd; padding: 1rem; margin-bottom: 2rem; border-radius: 4px; }
-    label { display: block; margin: .5rem 0 .2rem; }
-    input, select, button { width: 100%; padding: .4rem; margin-top: .5rem; }
-    button { background: #28a745; color: #fff; border: none; border-radius: 4px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { border: 1px solid #ccc; padding: .5rem; vertical-align: top; }
-    th { background: #f4f4f4; }
-    a.btn { padding: .4rem .8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
-    .flash { color: green; }
-  </style>
+
+  <!-- Google Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Main dashboard styles -->
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/dashboard.css') }}"
+  >
 </head>
 <body>
   <a href="{{ url_for('admin_logout') }}" class="logout">Logout</a>
