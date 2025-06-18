@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRMPSB - Applicant Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .action-btns .btn {
+            margin-right: 5px;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="header-section">
+            <h2>Applicant Management</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addApplicantModal">
+                <i class="bi bi-plus-circle"></i> Add New Applicant
+            </button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Contact</th>
+                        <th>Date Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample data - this would be replaced with actual Flask template variables -->
+                    <tr>
+                        <td>1</td>
+                        <td>John Doe</td>
+                        <td>john@example.com</td>
+                        <td>+1234567890</td>
+                        <td>2023-07-15</td>
+                        <td class="action-btns">
+                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewApplicantModal">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editApplicantModal">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteApplicantModal">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- End sample data -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Applicant Modal -->
+    <div class="modal fade" id="addApplicantModal" tabindex="-1" aria-labelledby="addApplicantModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addApplicantModalLabel">Add New Applicant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/applicants/add">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="contact" class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" id="contact" name="contact">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Applicant</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Applicant Modal -->
+    <div class="modal fade" id="viewApplicantModal" tabindex="-1" aria-labelledby="viewApplicantModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewApplicantModalLabel">Applicant Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <strong>ID:</strong> <span id="view-id">1</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Name:</strong> <span id="view-name">John Doe</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Email:</strong> <span id="view-email">john@example.com</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Contact:</strong> <span id="view-contact">+1234567890</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Date Created:</strong> <span id="view-created">2023-07-15</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Last Updated:</strong> <span id="view-updated">2023-07-15</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Applicant Modal -->
+    <div class="modal fade" id="editApplicantModal" tabindex="-1" aria-labelledby="editApplicantModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editApplicantModalLabel">Edit Applicant</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/applicants/update/1">
+                    <div class="modal-body">
+                        <input type="hidden" id="edit-id" name="id" value="1">
+                        <div class="mb-3">
+                            <label for="edit-name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="edit-name" name="name" value="John Doe" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="edit-email" name="email" value="john@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-contact" class="form-label">Contact Number</label>
+                            <input type="tel" class="form-control" id="edit-contact" name="contact" value="+1234567890">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update Applicant</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteApplicantModal" tabindex="-1" aria-labelledby="deleteApplicantModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteApplicantModalLabel">Confirm Deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete applicant <strong>John Doe</strong> (ID: 1)?</p>
+                    <p class="text-danger">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form method="POST" action="/applicants/delete/1" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete Applicant</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // This would be populated with actual data in a real implementation
+        function populateViewModal(applicant) {
+            document.getElementById('view-id').textContent = applicant.id;
+            document.getElementById('view-name').textContent = applicant.name;
+            document.getElementById('view-email').textContent = applicant.email;
+            document.getElementById('view-contact').textContent = applicant.contact;
+            document.getElementById('view-created').textContent = applicant.date_created;
+            document.getElementById('view-updated').textContent = applicant.date_updated;
+        }
+        
+        function populateEditModal(applicant) {
+            document.getElementById('edit-id').value = applicant.id;
+            document.getElementById('edit-name').value = applicant.name;
+            document.getElementById('edit-email').value = applicant.email;
+            document.getElementById('edit-contact').value = applicant.contact;
+        }
+        
+        function populateDeleteModal(applicant) {
+            document.getElementById('deleteApplicantModalLabel').textContent = 
+                `Confirm Deletion of ${applicant.name}`;
+            document.querySelector('#deleteApplicantModal .modal-body strong').textContent = 
+                applicant.name;
+            document.querySelector('#deleteApplicantModal form').action = 
+                `/applicants/delete/${applicant.id}`;
+        }
+        
+    </script>
+</body>
+</html>

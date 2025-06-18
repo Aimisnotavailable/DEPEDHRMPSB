@@ -1,0 +1,535 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+:root {
+  --maroon:   #800000;
+  --yellow:   #FFD700;
+  --bg-light: #FAFAFA;
+  --text:     #333;
+  --border:   #CCC;
+  --white:    #FFF;
+  --font:     Arial, sans-serif;
+}
+
+/* —— RESET & BASE —— */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg-light);
+  line-height: 1.5;
+}
+
+/* —— ADMIN HEADER —— */
+.admin-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--maroon);
+  color: var(--white);
+  overflow: hidden;
+}
+
+.admin-header .header-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 80px;
+  width: auto;
+  opacity: 0.4;
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.admin-header header {
+  position: relative;
+  z-index: 1;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* —— LOGIN PAGE WRAPPER —— */
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: url('images/emblem-blur.jpg') center/cover no-repeat fixed;
+  overflow: hidden;
+}
+
+.login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(6px);
+  z-index: 0;
+}
+
+/* —— LOGIN BOX —— */
+.login-box {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  height: 640px;
+  margin: auto;
+  padding: 4rem 2.5rem;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+.login-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-color: #d4d4d4;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+/* —— LOGO & TITLE INSIDE BOX —— */
+.login-box .logo-small {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: 0 auto 1.5rem;
+  max-height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+.login-box h2 {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1.5rem;
+  color: var(--maroon);
+  font-size: 2.5rem;
+}
+
+/* —— LOGIN FORM —— */
+.login-form {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-form label {
+  align-self: flex-start;
+  font-weight: bold;
+  color: var(--maroon);
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+/* —— LOGIN BUTTON —— */
+.btn-login {
+  position: relative;
+  z-index: 2;
+  padding: 0.75rem;
+  background: rgba(128,0,0,0.8);
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-login:hover {
+  background: rgba(128,0,0,1);
+}
+
+/* —— ADMIN FOOTER —— */
+.admin-footer {
+  background: var(--maroon);
+  padding: 1.5rem 1rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  color: var(--yellow);
+}
+
+/* Logos with labels */
+.footer-logos {
+    
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4rem;
+  margin-bottom: 1rem;
+}
+
+.footer-logos .logo-item {
+  display: flex;
+  align-items: center;
+  gap: 2.0rem;
+  margin-top: 1.50rem;
+}
+
+.footer-logos .logo-item img {
+  max-height: 40px;
+  width: auto;
+}
+
+.footer-logos .logo-item span {
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+
+
+/* Contact links */
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-links a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.footer-links a i {
+  font-size: 1.1rem;
+}
+
+.footer-links a:hover {
+  opacity: 0.8;
+}
+
+/* —— MEDIA QUERIES —— */
+/* === admin_login.css === */
+/* —— IMPORTS & VARIABLES —— */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+:root {
+  --maroon:   #800000;
+  --yellow:   #FFD700;
+  --bg-light: #FAFAFA;
+  --text:     #333;
+  --border:   #CCC;
+  --white:    #FFF;
+  --font:     Arial, sans-serif;
+}
+
+/* —— RESET & BASE —— */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg-light);
+  line-height: 1.5;
+}
+
+/* —— ADMIN HEADER —— */
+.admin-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--maroon);
+  color: var(--white);
+  padding: 1.5rem 1rem;
+  overflow: hidden;
+}
+
+/* Left logo group */
+.admin-header .logo-group.left {
+  position: absolute;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  z-index: 1;
+}
+
+/* Logo sizing */
+.admin-header .logo-group.left .logo {
+  height: 60px;
+  width: auto;
+}
+
+/* Centered header text */
+.admin-header header {
+  position: relative; 
+  z-index: 2;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 2rem; 
+}
+
+/* —— LOGIN WRAPPER —— */
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: url('images/emblem-blur.jpg') center/cover no-repeat fixed;
+}
+
+.login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(6px);
+  z-index: 0;
+}
+
+/* —— LOGIN BOX —— */
+.login-box {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  margin: auto;
+  padding: 4rem 2.5rem;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 15px;
+  box-shadow: 0 2px 32px rgba(0,0,0,0.1);
+  backdrop-filter: blur(8px);
+  text-align: center;
+}
+
+.login-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #f2f0f0;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.login-box .logo-small {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: 0 auto 1.5rem;
+  max-height: 80px;
+  width: auto;
+}
+
+.login-box h2 {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1.5rem;
+  color: var(--maroon);
+  font-size: 2.5rem;
+}
+
+/* —— FORM —— */
+.login-form {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-form label {
+  align-self: flex-start;
+  font-weight: bold;
+  color: var(--maroon);
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: rgb(255, 255, 255);
+}
+
+/* —— BUTTON —— */
+.btn-login {
+  position: relative;
+  z-index: 2;
+  padding: 0.75rem;
+  background: rgba(128,0,0,0.8);
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-login:hover {
+  background: rgba(128,0,0,1);
+}
+
+/* —— FOOTER —— */
+.admin-footer {
+  background: var(--maroon);
+  padding: 1.5rem 1rem;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
+  color: var(--white);
+}
+
+.footer-logos, .footer-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+}
+
+.footer-logos {
+  display: flex;
+  flex-wrap: nowrap;         
+  overflow-x: auto;          
+  justify-content: center;    
+  gap: 2rem;               
+  margin-bottom: 0;           
+  white-space: nowrap;       
+}
+
+.footer-logos .logo-item {
+  flex: 0 0 auto;         
+}
+
+.footer-logos .logo-item img {
+  max-height: 40px;
+  width: auto;
+}
+
+.footer-logos .logo-item span {
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.footer-links {
+  display: flex;    
+  flex-wrap: nowrap; 
+  gap: 1.5rem;         
+  overflow-x: auto;  
+}
+
+
+.footer-links a {
+  display: inline-flex; 
+  white-space: nowrap;  
+  align-items: center;
+  gap: 0.4rem;
+}
+.footer-links a i {
+  font-size: 1.1rem;
+  color: var(--yellow);
+}
+.footer-links a:hover {
+ color: var(--yellow);
+}
+
+/* —— RESPONSIVE BREAKPOINTS —— */
+
+/* phones */
+@media (max-width: 480px) {
+  .admin-header { padding: 1.5rem .5rem; }
+  .admin-header header { font-size: 1.25rem; }
+  .login-box {
+    width: 90%;
+    padding: 2rem 1rem;
+  }
+  .login-box h2 { font-size: 2rem; }
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .footer-logos { gap: 1.5rem; }
+  .footer-logos .logo-item img { max-height: 32px; }
+  .footer-logos .logo-item span { font-size: 0.8rem; }
+  .footer-links { text-align: center; }
+}
+
+/* tablets & small desktops */
+@media (min-width: 481px) and (max-width: 768px) {
+  .admin-header header { font-size: 1.35rem; }
+  .login-box { width: 80%; max-width: 400px; padding: 3rem 1.5rem; }
+  .login-box h2 { font-size: 2.25rem; }
+  .footer-content { justify-content: space-around; }
+  .footer-logos { gap: 3rem; }
+  .footer-links { gap: 1rem; }
+}
+
+/* medium desktops */
+@media (min-width: 769px) and (max-width: 1439px) {
+  .admin-header { padding: 2.5rem 2rem; }
+  .admin-header header { font-size: 1.75rem; }
+  .login-box { max-width: 460px; padding: 4rem 2.5rem; }
+  .login-box h2 { font-size: 2.5rem; }
+  .footer-content { gap: 3rem; }
+  .footer-logos { gap: 4rem; }
+}
+
+/* large/wide screens */
+@media (min-width: 1440px) {
+  .admin-header { padding: 3rem 2.5rem; }
+  .admin-header header { font-size: 2rem; }
+  .login-page { padding: 3rem 2rem; }
+  .login-box {
+    max-width: 500px;
+    padding: 4rem 3rem;
+  }
+  .login-box h2 { font-size: 3rem; }
+  .footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    gap: 4rem;
+  }
+  .footer-logos .logo-item img { max-height: 48px; }
+  .footer-logos { gap: 5rem; }
+}

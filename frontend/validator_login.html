@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0"/>
+  <title>Validator Login</title>
+  <link rel="stylesheet" href="admin_login.css" />
+</head>
+<body>
+
+  <!-- HEADER with blurred seal behind text -->
+  <div class="admin-header">
+    <img src="images/logo2.png"        alt="DepEd Logo Small"   class="logo">
+    <img src="images/logo-seal.png"   alt="DepEd Seal"        class="logo"> 
+    <header>Department of Education ‒ Laoag City Division</header>
+  </div>
+
+  <!-- LOGIN BOX -->
+  <div class="login-page">
+    <div class="login-box">
+      <img src="images/logo2.png"
+           alt="DepEd Logo"
+           class="logo-small" />
+      <h2>Validator Login</h2>
+      <form class="login-form"
+            action="/admin/login"
+            method="post">
+        <label for="token">Token</label>
+        <input type="text"
+               id="token"
+               name="token"
+               placeholder="Enter your token"
+               required />
+        <button type="submit"
+                class="btn-login">
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FOOTER with logos + contact links -->
+  <footer class="admin-footer">
+    <div class="footer-content">
+      <div class="footer-logos">
+        <div class="logo-item">
+          <img src="images/deped-logo.png"
+               alt="DepEd Logo">
+          <span>Department of Education</span>
+        </div>
+        <div class="logo-item">
+          <img src="images/bagongpilipinas.png"
+               alt="Bagong Pilipinas">
+          <span>Bagong Pilipinas</span>
+        </div>
+        <div class="logo-item">
+          <img src="images/logo2.png"
+               alt="Republika ng Pilipinas">
+          <span>Republika ng Pilipinas</span>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="mailto:laoag.city@deped.gov.ph">
+          <i class="fas fa-envelope"></i>
+          laoag.city@deped.gov.ph
+        </a>
+        <a href="https://www.facebook.com/depedtayolaoagcity"
+           target="_blank">
+          <i class="fab fa-facebook-square"></i>
+          facebook.com/depedtayolaoagcity
+        </a>
+        <a href="https://www.depedlaoagcity.com"
+           target="_blank">
+          <i class="fas fa-globe"></i>
+          depedlaoagcity.com
+        </a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

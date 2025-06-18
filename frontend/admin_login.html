@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="admin_login.css" />
+</head>
+<body>
+    <div class="admin-header">
+  <div class="logo-group left">
+    <img src="images/logo2.png"        alt="DepEd Logo Small"   class="logo">
+    <img src="images/logo-seal.png"   alt="DepEd Seal"        class="logo"> 
+  </div> 
+        <header>SCHOOLS DIVISION OFFICE OF LAOAG CITY</header>
+    </div>
+
+    <div class="login-page">
+      <div class="login-box">
+        <img src="images/logo2.png" alt="DepEd Seal" class="logo-small">
+        <h2>Admin Login</h2>
+        <form class="login-form" action="/admin/login" method="post">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+          <button type="submit" class="btn-login">Login</button>
+        </form>
+      </div>
+    </div>
+
+<footer class="admin-footer">
+  <div class="footer-content">
+    <div class="footer-logos">
+      <div class="logo-item">
+        <img src="images/logo2.png" alt="DepEd Logo">
+        <span>Department of Education</span>
+      </div>
+    </div> 
+    <div class="footer-links">
+      <a href="mailto:laoag.city@deped.gov.ph">
+        <i class="fas fa-envelope"></i>
+        laoag.city@deped.gov.ph
+      </a>
+      <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank">
+        <i class="fab fa-facebook-square"></i>
+        facebook.com/depedtayolaoagcity
+      </a>  
+      <a href="https://www.depedlaoagcity.com" target="_blank">
+        <i class="fas fa-globe"></i>
+        depedlaoagcity.com
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

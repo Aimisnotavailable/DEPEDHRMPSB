@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>IES Evaluation Tool</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="{{ url_for('static', filename='js/form.js') }}" defer></script>
+</head>
+<body>
+  <header class="form-header">
+    <h1>IES Evaluation Tool</h1>
+  </header>
+
+  <div class="form-container grid two-col">
+    <!-- Sidebar -->
+    <section>
+      <h2>Applicants</h2>
+      <ul>
+        {% for app in applicants %}
+          <li>
+            <a href="{{ url_for('form') }}?applicant_id={{ app.id }}">
+              <i class="fa fa-user"></i> {{ app.name }} ({{ app.id }})
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- Main Panel -->
+    <section>
+      {% if details %}
+        <h2>Evaluation Total</h2>
+        <input
+          id="total_score"
+          type="number"
+          value="{{ total_eval|round(2) }}"
+          readonly
+          class="qual-total"
+        >
+
+        <button
+          type="button"
+          id="toggle-details"
+          class="btn-submit"
+        >
+          <i class="fa fa-edit"></i> View / Update Evaluation
+        </button>
+
+        <form
+          id="eval-form"
+          action="{{ url_for('generate') }}"
+          method="post"
+          style="margin-top:1rem;"
+        >
+          <input type="hidden" name="applicant_id" value="{{ details.ApplicantID }}">
+
+          <div id="details-container" class="grid three-col">
+            <div>
+              <label>Aptitude (0–1)</label>
+              <input type="number" name="aptitude" step="0.01" min="0" max="1" required>
+            </div>
+            <div>
+              <label>Characteristics Traits (0–1)</label>
+              <input type="number" name="character_traits" step="0.01" min="0" max="1" required>
+            </div>
+            <div>
+              <label>Fitness (0–1)</label>
+              <input type="number" name="fitness" step="0.01" min="0" max="1" required>
+            </div>
+            <div>
+              <label>Leadership Ability (0–1)</label>
+              <input type="number" name="leadership" step="0.01" min="0" max="1" required>
+            </div>
+            <div>
+              <label>Communication Skills (0–1)</label>
+              <input type="number" name="communication" step="0.01" min="0" max="1" required>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">
+              <i class="fa fa-save"></i> Save Evaluation
+            </button>
+          </div>
+        </form>
+      {% else %}
+        <p>Select an applicant on the left to begin.</p>
+      {% endif %}
+    </section>
+  </div>
+
+  <footer class="form-footer">
+    DepEd Laoag City • &copy; 2025
+  </footer>
+</body>
+</html>
