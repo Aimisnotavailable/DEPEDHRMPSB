@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Interview {{ interview.id }} Details</title>
+  <style>
+    body { font-family: sans-serif; max-width: 900px; margin: 2rem auto; }
+    a.btn { padding: .4rem .8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: .5rem; vertical-align: top; }
+    .tab-nav a { margin-right: 1rem; text-decoration: none; color: #007bff; }
+    section { margin-bottom: 2rem; }
+    label { display: block; margin: .5rem 0 .2rem; }
+    input, select, button, textarea { width: 100%; padding: .4rem; margin-top: .2rem; }
+    button { background: #28a745; color: #fff; border: none; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <a href="{{ url_for('admin_dashboard') }}" class="btn">← Back to Dashboard</a>
+  <h1>Interview {{ interview.id }} Details</h1>
+  <p>
+    <strong>Type:</strong> {{ interview.type.capitalize() }}<br>
+    <strong>Baselines:</strong> Edu: {{ interview.base_edu }}, Exp: {{ interview.base_exp }}, Trn: {{ interview.base_trn }}
+  </p>
+  
+  <!-- Navigation Tabs -->
+  <div class="tab-nav">
+    <a href="#applicants">Applicants</a>
+    <a href="#evaluators">Evaluators</a>
+    <a href="#add-applicant">Add Applicant</a>
+    <a href="#add-token">Generate Tokens</a>
+  </div>
+  
+  <!-- Applicants Summary Section -->
+  <section id="applicants">
+    <h2>Applicants</h2>
+    {% if applicants %}
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in applicants %}
+          <tr>
+            <td>{{ a.code }}</td>
+            <td>{{ a.name }}</td>
+            <td>
+              <a href="{{ url_for('applicant_detail', code=a.code) }}" class="btn">View Details</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No applicants added yet.</p>
+    {% endif %}
+  </section>
+  
+  <!-- Evaluators Summary Section -->
+  <section id="evaluators">
+    <h2>Evaluators</h2>
+    {% if eval_tokens %}
+      <table>
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Registration Status</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for et in eval_tokens %}
+          <tr>
+            <td>{{ et.token }}</td>
+            <td>{{ 'Registered' if et.registered else 'Not Registered' }}</td>
+            <td>
+              <a href="{{ url_for('evaluator_detail', token=et.token) }}" class="btn">View Details</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No evaluator tokens generated yet.</p>
+    {% endif %}
+  </section>
+  
+  <!-- Add Applicant Section -->
+  <section id="add-applicant">
+    <h2>Add Applicant</h2>
+    <form method="post" action="{{ url_for('add_applicant') }}">
+      <input type="hidden" name="interview_id" value="{{ interview.id }}" required>
+      <label>Applicant Code (optional)
+        <input name="applicant_code" placeholder="Leave empty to auto-generate">
+      </label>
+      <label>Name
+        <input name="name" required>
+      </label>
+      <label>Address
+        <input name="address" required>
+      </label>
+      <label>Birthday
+        <input type="date" name="birthday" required>
+      </label>
+      <label>Age
+        <input type="number" name="age" min="0" required>
+      </label>
+      <label>Sex</label>
+      <select name="sex" required>
+        <option disabled selected>– select –</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+      <label>Raw Education</label>
+      <select name="education" required>
+        <option disabled selected>– select –</option>
+        {% for k, v in ed_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
+      </select>
+      <label>Raw Experience</label>
+      <select name="experience" required>
+        <option disabled selected>– select –</option>
+        {% for k, v in ex_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
+      </select>
+      <label>Raw Training</label>
+      <select name="training" required>
+        <option disabled selected>– select –</option>
+        {% for k, v in tr_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
+      </select>
+      {% if interview.type == 'teaching' %}
+        <label>LPT/PBET/LEPT Rating (out of 100)</label>
+        <input type="number" name="lpt_rating" step="0.01" min="0" max="100" required>
+        <label>COT (out of 30)</label>
+        <input type="number" name="cot" step="0.01" min="0" max="30" required>
+        <label>TRF RATING (out of 20)</label>
+        <input type="number" name="trf_rating" step="0.01" min="0" max="20" required>
+      {% endif %}
+      <button type="submit">Add Applicant</button>
+    </form>
+  </section>
+
+  
+  <!-- Generate Evaluator Tokens Section -->
+  <section id="add-token">
+    <h2>Generate Evaluator Tokens</h2>
+    <form method="post" action="{{ url_for('generate_evaluator_tokens') }}">
+      <input type="hidden" name="interview_id" value="{{ interview.id }}" required>
+      <label>How many tokens?
+        <input type="number" name="count_tokens" min="1" value="1" required>
+      </label>
+      <button type="submit">Generate Tokens</button>
+    </form>
+  </section>
+  
+</body>
+</html>

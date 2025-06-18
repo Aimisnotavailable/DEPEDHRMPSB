@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: sans-serif; max-width: 1000px; margin: 2rem auto; }
+    .logout { float: right; padding: .4rem .8rem; background: #dc3545; color: #fff; text-decoration: none; border-radius: 4px; }
+    section { border: 1px solid #ddd; padding: 1rem; margin-bottom: 2rem; border-radius: 4px; }
+    label { display: block; margin: .5rem 0 .2rem; }
+    input, select, button { width: 100%; padding: .4rem; margin-top: .5rem; }
+    button { background: #28a745; color: #fff; border: none; border-radius: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: .5rem; vertical-align: top; }
+    th { background: #f4f4f4; }
+    a.btn { padding: .4rem .8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+    .flash { color: green; }
+  </style>
+</head>
+<body>
+  <a href="{{ url_for('admin_logout') }}" class="logout">Logout</a>
+  <h1>Admin Dashboard</h1>
+  {% with msgs = get_flashed_messages(category_filter=["success"]) %}
+    {% for m in msgs %}<div class="flash">{{ m }}</div>{% endfor %}
+  {% endwith %}
+
+  <section>
+    <h2>Create Interview</h2>
+    <form method="post" action="{{ url_for('create_interview') }}">
+      <label>Baseline Education</label>
+      <select name="baseline_education" required>
+        <option disabled selected>– select –</option>
+        {% for k, v in ed_labels.items() %}
+          <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
+      </select>
+      <label>Baseline Experience</label>
+      <select name="baseline_experience" required>
+        <option disabled selected>– select –</option>
+        {% for k, v in ex_labels.items() %}
+          <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
+      </select>
+      <label>Baseline Training</label>
+      <select name="baseline_training" required>
+        <option disabled selected>– select –</option>
+        {% for k, v in tr_labels.items() %}
+          <option value="{{ k }}">{{ v }}</option>
+        {% endfor %}
+      </select>
+      <!-- Added Interview Type Selector -->
+      <label>Interview Type</label>
+      <select name="interview_type" required>
+        <option disabled selected>– select –</option>
+        <option value="non-teaching">Non-Teaching</option>
+        <option value="teaching">Teaching</option>
+        <option value="promotion">Promotion</option>
+      </select>
+      <button type="submit">Create Interview</button>
+    </form>
+  </section>
+
+  <h2>Existing Interviews</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Baselines</th><th>#Eval</th><th>#Applicants</th><th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for iv in interviews %}
+      <tr>
+        <td>{{ iv.id }}</td>
+        <td>Edu {{ iv.base_edu }} / Exp {{ iv.base_exp }} / Trn {{ iv.base_trn }}</td>
+        <td>{{ iv.evaluator_tokens|length }}</td>
+        <td>{{ iv.participants|length }}</td>
+        <td><a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn">View</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

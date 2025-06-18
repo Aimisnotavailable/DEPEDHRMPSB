@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Evaluator Dashboard</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.5rem; border: 1px solid #ccc; text-align: center; }
+    a.btn { padding: 0.4rem 0.8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Evaluator Dashboard</h1>
+  <h2>Interview: {{ interview.id }} ({{ interview.type.capitalize() }})</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Applicant Code</th>
+        <th>Name</th>
+        <th>Your Evaluation Score (max 25)</th>
+        <th>View / Update Evaluation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in applicants %}
+      <tr>
+        <td>{{ a.code }}</td>
+        <td>{{ a.name }}</td>
+        <td>
+          {% if my_scores[a.code] is not none %}
+            {{ my_scores[a.code] }}
+          {% else %}
+            Not Evaluated
+          {% endif %}
+        </td>
+        <td><a href="{{ url_for('evaluator_applicant_detail', code=a.code) }}" class="btn">View</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+</body>
+</html>
