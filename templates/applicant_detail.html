@@ -29,6 +29,7 @@
     {% if applicant.interview.type == 'teaching' and extra_data %}
       <tr><th>LPT/PBET/LEPT Raw Score</th><td>{{ extra_data.lpt_rating }}</td></tr>
       <tr><th>COI</th><td>{{ extra_data.COI }}</td></tr>
+      <tr><th>TRF</th><td>{{ extra_data.trf_rating }}</td></tr>
       {% if ncoi is not none %}
       <tr><th>NCOI (Average Evaluation)</th><td>{{ ncoi }}</td></tr>
       {% endif %}

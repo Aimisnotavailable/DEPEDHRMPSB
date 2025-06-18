@@ -141,7 +141,9 @@
         <label>LPT/PBET/LEPT Rating (out of 100)</label>
         <input type="number" name="lpt_rating" step="0.01" min="0" max="100" required>
         <label>COT (out of 30)</label>
-        <input type="number" name="cot" step="0.01" min="0" max="100" required>
+        <input type="number" name="cot" step="0.01" min="0" max="30" required>
+        <label>TRF RATING (out of 20)</label>
+        <input type="number" name="trf_rating" step="0.01" min="0" max="20" required>
       {% endif %}
       <button type="submit">Add Applicant</button>
     </form>

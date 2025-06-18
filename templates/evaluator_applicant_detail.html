@@ -32,9 +32,6 @@
     <label>Communication Skills (0-1)</label>
     <input type="number" name="communication" step="0.01" min="0" max="1"
            value="{{ evaluation.communication if evaluation else '' }}" required>
-    <label>TRF Rating (0-20)</label>
-    <input type="number" name="trf_rating" step="0.01" min="0" max="20"
-           value="{{ evaluation.trf_rating if evaluation else '' }}" required>
     <button type="submit">Save Evaluation</button>
   </form>
   {% if evaluation %}
