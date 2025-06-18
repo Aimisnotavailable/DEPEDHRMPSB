@@ -1,0 +1,18 @@
+{
+  "APL001": {
+    "aptitude": 0.0,
+    "character_traits": 0.0,
+    "fitness": 0.0,
+    "leadership": 0.0,
+    "communication": 0.0,
+    "trf_rating": 0.0
+  },
+  "APL003": {
+    "aptitude": 0.02,
+    "character_traits": 0.02,
+    "fitness": 0.05,
+    "leadership": 0.06,
+    "communication": 0.04,
+    "trf_rating": 0.03
+  }
+}
