@@ -28,6 +28,14 @@ EVAL_STRUCUTURE = {
                     }}
 }
 
+WEIGHT_STRUCTURE = {
+    "teaching" : {
+        "education" : 10,
+        "experience" : 10,
+        "training" : 10,
+    }
+}
+
 # ------------------------------------------------------------------------------
 # MODELS
 # ------------------------------------------------------------------------------
@@ -241,7 +249,6 @@ def applicant_detail(code):
     return render_template("applicant_detail.html",
                            applicant=applicant,
                            extra_data=extra_data,
-                           validations=validations,
                            scores=scores,
                            ncoi=ncoi,
                            avg_eval=avg_eval)
@@ -291,6 +298,8 @@ def add_applicant():
     else:
         code = code.strip().upper()
 
+
+    weight_stucture = WEIGHT_STRUCTURE[interview_obj.type]
     name    = request.form["name"].strip()
     address = request.form["address"].strip()
     bstr    = request.form["birthday"].strip()  # Expected format: YYYY-MM-DD
@@ -305,13 +314,18 @@ def add_applicant():
     # Compute base scores using CriteriaTable and IncrementsTable
     crit = CriteriaTable()
     incs = IncrementsTable()
+
     delta_edu = crit.get_score(raw_edu, interview_obj.base_edu)
     delta_exp = crit.get_score(raw_exp, interview_obj.base_exp)
     delta_trn = crit.get_score(raw_trn, interview_obj.base_trn)
 
-    s_edu = incs.get_score(delta_edu, TableHandler().parse_table("increments", "education"))
-    s_exp = incs.get_score(delta_exp, TableHandler().parse_table("increments", "experience"))
-    s_trn = incs.get_score(delta_trn, TableHandler().parse_table("increments", "training"))
+
+    inc_edu = (weight_stucture['education'] // 5)
+    inc_exp = (weight_stucture['experience'] // 5)
+    inc_trn = (weight_stucture['training'] // 5)
+    s_edu = (incs.get_score(delta_edu, TableHandler().parse_table("increments", "education")) // inc_edu) * inc_edu
+    s_exp = (incs.get_score(delta_exp, TableHandler().parse_table("increments", "experience")) // inc_exp) * inc_exp
+    s_trn = (incs.get_score(delta_trn, TableHandler().parse_table("increments", "training")) // inc_trn) * inc_trn
 
     p = Participant(
         code=code,

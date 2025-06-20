@@ -31,19 +31,10 @@
       <tr><th>COI</th><td>{{ extra_data.COI }}</td></tr>
       <tr><th>TRF</th><td>{{ extra_data.trf_rating }}</td></tr>
       {% if ncoi is not none %}
-      <tr><th>NCOI (Average Evaluation)</th><td>{{ ncoi }}</td></tr>
+      <tr><th>NCOI</th><td>{{ ncoi }}</td></tr>
       {% endif %}
     {% endif %}
   </table>
-  
-  {% if validations %}
-    <h2>Comments</h2>
-    <ul>
-      {% for v in validations %}
-        <li><strong>{{ v.evaluator_token }}:</strong> {{ v.comment or "(no comment)" }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
   
   {% if scores %}
     <h2>Evaluations</h2>
