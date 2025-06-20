@@ -18,6 +18,16 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///interviews.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+EVAL_STRUCUTURE = {
+    "teaching" : {"Behavior Interview" : {
+                        "aptitude" : 1,
+                        "characteristics" : 1,
+                        "fitness" : 1,
+                        "leadership" : 1,
+                        "communication" : 1
+                    }}
+}
+
 # ------------------------------------------------------------------------------
 # MODELS
 # ------------------------------------------------------------------------------
@@ -59,20 +69,18 @@ class Participant(db.Model):
     # extra_data for teaching interviews stores:
     #   { "lpt_rating": <raw>, "COI": <computed> }
 
-# Evaluation model – each record is one evaluator’s submission (raw total score out of 25).
 class Evaluation(db.Model):
     __tablename__ = "evaluations"
     id = db.Column(db.Integer, primary_key=True)
     interview_id = db.Column(db.String(8), db.ForeignKey("interviews.id"), nullable=False)
     evaluator_token = db.Column(db.String(8), db.ForeignKey("evaluator_tokens.token"), nullable=False)
     participant_code = db.Column(db.String(8), db.ForeignKey("participants.code"), nullable=False)
-    aptitude = db.Column(db.Float, nullable=False)
-    characteristics = db.Column(db.Float, nullable=False)
-    fitness = db.Column(db.Float, nullable=False)
-    leadership = db.Column(db.Float, nullable=False)
-    communication = db.Column(db.Float, nullable=False)
-    trf_rating = db.Column(db.Float, nullable=False)
-    # Each evaluation’s total = (aptitude + characteristics + fitness + leadership + communication + trf_rating) with max 25.
+    extra_data = db.Column(db.Text, nullable=True)
+
+    # This relationship allows the evaluation to access the associated Interview
+    # with which it is linked via interview_id.
+    interview = db.relationship("Interview", backref="evaluations")
+
 
 class Validation(db.Model):
     __tablename__ = "validations"
@@ -204,16 +212,28 @@ def applicant_detail(code):
 
     # For teaching interviews, compute NCOI as:
     #   NCOI = Admin's TRF (max 20) + Average of evaluators' five criteria scores (max 5)
+    eval_type = Interview.query.filter_by(id=applicant.interview_id).first().type
+    eval_struct = EVAL_STRUCUTURE[eval_type]
+
     ncoi = None
     avg_eval = None
-
+    scores = []
     if applicant.interview.type == "teaching" and eval_records:
-        total_eval = sum(e.aptitude + e.characteristics + e.fitness + e.leadership + e.communication 
-                         for e in eval_records)
+        
+        for eval_record in eval_records:
+            overall = 0
+            extra_data_json = json.loads(eval_record.extra_data)
+            for key in eval_struct.keys():
+                for field in eval_struct[key].keys():
+                    overall = round(overall + extra_data_json[key][field], 2)
+                scores.append(overall)
+
+        total_eval = sum(score
+                        for score in scores)
         avg_eval = total_eval / len(eval_records)
+        print(scores)
         try:
             admin_trf = float(json.loads(applicant.extra_data).get("trf_rating", 0))
-            print(applicant.extra_data)
         except Exception:
             admin_trf = 0
         ncoi = round(admin_trf + avg_eval, 2)
@@ -222,7 +242,7 @@ def applicant_detail(code):
                            applicant=applicant,
                            extra_data=extra_data,
                            validations=validations,
-                           eval_records=eval_records,
+                           scores=scores,
                            ncoi=ncoi,
                            avg_eval=avg_eval)
 
@@ -239,9 +259,22 @@ def evaluator_detail(token):
     # Also load validations if needed.
     validations = Validation.query.filter_by(evaluator_token=token,
                                              interview_id=evaluator.interview_id).all()
+    
+    eval_type = Interview.query.filter_by(id=evaluator.interview_id).first().type
+    eval_struct = EVAL_STRUCUTURE[eval_type]
+    scores = []
+    for eval_record in eval_records:
+        overall = 0
+        extra_data_json = json.loads(eval_record.extra_data)
+        for key in eval_struct.keys():
+            for field in eval_struct[key].keys():
+                overall = round(overall + extra_data_json[key][field], 2)
+            scores.append(overall)
+
     return render_template("evaluator_detail.html",
                            evaluator=evaluator,
                            eval_records=eval_records,
+                           scores=scores,
                            validations=validations)
 
 @app.route("/admin/add_applicant", methods=["POST"])
@@ -363,6 +396,9 @@ def evaluator_dashboard():
     iv = Interview.query.get(iid)
     applicants = iv.participants
 
+    # print(evaluation.interview.type)
+    eval_type = Interview.query.filter_by(id=iid).first().type
+    eval_struct = EVAL_STRUCUTURE[eval_type]
     # For each applicant, get only the evaluation record for the current evaluator.
     my_scores = {}
     for a in applicants:
@@ -372,15 +408,12 @@ def evaluator_dashboard():
             participant_code=a.code
         ).first()
         if eval_rec:
-            total = (
-                eval_rec.aptitude +
-                eval_rec.characteristics +
-                eval_rec.fitness +
-                eval_rec.leadership +
-                eval_rec.communication +
-                eval_rec.trf_rating
-            )
-            my_scores[a.code] = round(total, 2)
+            extra_data_json = json.loads(eval_rec.extra_data)
+            overall = 0
+            for key in eval_struct.keys():
+                for field in eval_struct[key].keys():
+                    overall = round(overall + extra_data_json[key][field], 2)
+            my_scores[a.code] = round(overall, 2)
         else:
             my_scores[a.code] = None
 
@@ -406,43 +439,39 @@ def evaluator_applicant_detail(code):
         evaluator_token=tk,
         participant_code=code
     ).first()
-    
+ 
+    # print(evaluation.interview.type)
+    eval_type = Interview.query.filter_by(id=iid).first().type
+    eval_struct = EVAL_STRUCUTURE[eval_type]
     if request.method == "POST":
         try:
-            aptitude = float(request.form.get("aptitude", 0))
-            characteristics = float(request.form.get("characteristics", 0))
-            fitness = float(request.form.get("fitness", 0))
-            leadership = float(request.form.get("leadership", 0))
-            communication = float(request.form.get("communication", 0))
+            extra_data = {}
+            for key in eval_struct.keys():
+                extra_data[key] = {}
+                for field in eval_struct[key].keys():
+                    extra_data[key][field] = float(request.form.get(field, 0))
         except ValueError:
             flash("Please enter valid numeric values.", "error")
             return redirect(url_for("evaluator_applicant_detail", code=code))
             
         # Validate that each score is between 0 and 1
-        if not (0 <= aptitude <= 1 and 0 <= characteristics <= 1 and 0 <= fitness <= 1 and
-                0 <= leadership <= 1 and 0 <= communication <= 1):
-            flash("Each criteria must be between 0 and 1.", "error")
-            return redirect(url_for("evaluator_applicant_detail", code=code))
-        
+
+        for key in eval_struct.keys():
+            for field in eval_struct[key].keys():
+                if extra_data[key][field] <= 0 or extra_data[key][field] > eval_struct[key][field]:
+                    flash("Each criteria must be between 0 and 1.", "error")
+                    return redirect(url_for("evaluator_applicant_detail", code=code))
+
+        extra_data_str = json.dumps(extra_data)               
         if evaluation:
-            evaluation.aptitude = aptitude
-            evaluation.characteristics = characteristics
-            evaluation.fitness = fitness
-            evaluation.leadership = leadership
-            evaluation.communication = communication
+            evaluation.extra_data = extra_data_str
             flash("Your evaluation has been updated.", "success")
         else:
             evaluation = Evaluation(
                 interview_id=iid,
                 evaluator_token=tk,
                 participant_code=code,
-                # Note: We no longer accept a TRF rating here.
-                aptitude=aptitude,
-                characteristics=characteristics,
-                fitness=fitness,
-                leadership=leadership,
-                communication=communication,
-                trf_rating=0  # You might later choose to remove this field.
+                extra_data=extra_data_str
             )
             db.session.add(evaluation)
             flash("Your evaluation has been submitted.", "success")
@@ -450,16 +479,30 @@ def evaluator_applicant_detail(code):
         db.session.commit()
         return redirect(url_for("evaluator_applicant_detail", code=code))
     
+    if evaluation and evaluation.extra_data:
+        try:
+            existing_data = json.loads(evaluation.extra_data)
+        except ValueError:
+            existing_data = {}
+    else:
+        existing_data = {}
+
     overall = None
     if evaluation:
-        overall = round(evaluation.aptitude + evaluation.characteristics +
-                        evaluation.fitness + evaluation.leadership + evaluation.communication, 2)
-    
-    return render_template("evaluator_applicant_detail.html",
-                           applicant=applicant,
-                           evaluation=evaluation,
-                           overall=overall)
+        extra_data_json = json.loads(evaluation.extra_data)
+        overall = 0
+        for key in eval_struct.keys():
+            for field in eval_struct[key].keys():
+                overall = round(overall + extra_data_json[key][field], 2)
 
+    return render_template(
+        "evaluator_applicant_detail.html",
+        applicant=applicant,
+        evaluation=evaluation,
+        overall=overall,
+        eval_struct=eval_struct,
+        existing_data=existing_data  # Pass it directly
+    )
 
 @app.route("/logout")
 def logout():

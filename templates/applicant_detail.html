@@ -45,11 +45,10 @@
     </ul>
   {% endif %}
   
-  {% if eval_records %}
+  {% if scores %}
     <h2>Evaluations</h2>
     <ul>
-      {% for ev in eval_records %}
-        {% set score = ev.aptitude + ev.characteristics + ev.fitness + ev.leadership + ev.communication + ev.trf_rating %}
+      {% for score in scores %}
         <li>Evaluator #{{ loop.index }} score: {{ score | round(2) }}</li>
       {% endfor %}
     </ul>

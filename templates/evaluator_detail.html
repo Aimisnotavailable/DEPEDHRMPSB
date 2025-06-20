@@ -22,10 +22,9 @@
       </thead>
       <tbody>
         {% for ev in eval_records %}
-          {% set score = ev.aptitude + ev.characteristics + ev.fitness + ev.leadership + ev.communication + ev.trf_rating %}
           <tr>
             <td>{{ ev.participant_code }}</td>
-            <td>{{ score | round(2) }}</td>
+            <td>{{ scores[loop.index0] | default(0) | round(2) }}</td>
           </tr>
         {% endfor %}
       </tbody>
