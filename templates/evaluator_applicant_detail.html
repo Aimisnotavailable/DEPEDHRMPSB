@@ -3,20 +3,30 @@
 <head>
   <meta charset="utf-8">
   <title>Applicant {{ applicant.code }} - Your Evaluation</title>
-  <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
-    a.btn { padding: 0.4rem 0.8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
-    form { margin-top: 1rem; }
-    label { display: block; margin: 0.5rem 0 0.2rem; }
-    input, button { width: 100%; padding: 0.4rem; margin-top: 0.2rem; }
-    button { background: #28a745; color: #fff; border: none; border-radius: 4px; }
-  </style>
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/evaluator_applicant_detail.css') }}"
+  />
 </head>
 <body>
-  <a href="{{ url_for('evaluator_dashboard') }}" class="btn">← Back to Dashboard</a>
+
+       <header class="admin-header">
+    <div class="logo-group">
+      <img
+        src="{{ url_for('static', filename='images/deped_seal.png') }}"
+        alt="DepEd Seal"
+        class="logo"
+      />
+    </div>
+    <h1>SCHOOLS DIVISION OFFICE OF LAOAG CITY</h1>
+  </header>
+
+ <div class="content-container">
+  <form method="post">
+
+         <a href="{{ url_for('evaluator_dashboard') }}" class="btn">←</a>
   <h1>Applicant {{ applicant.code }} Evaluation</h1>
   <h2>{{ applicant.name }}</h2>
-  <form method="post">
     <label>Aptitude (0-1)</label>
     <input type="number" name="aptitude" step="0.01" min="0" max="1"
            value="{{ evaluation.aptitude if evaluation else '' }}" required>
@@ -32,13 +42,45 @@
     <label>Communication Skills (0-1)</label>
     <input type="number" name="communication" step="0.01" min="0" max="1"
            value="{{ evaluation.communication if evaluation else '' }}" required>
-    <button type="submit">Save Evaluation</button>
-  </form>
-  {% if evaluation %}
+               {% if evaluation %}
     {% set own_total = evaluation.aptitude + evaluation.characteristics +
                          evaluation.fitness + evaluation.leadership +
                          evaluation.communication + evaluation.trf_rating %}
     <p>Your evaluation score: <strong>{{ own_total | round(2) }}</strong> (max 25)</p>
   {% endif %}
+    <button type="submit">Save Evaluation</button>
+  </form>
+</div>
+
+
+    <footer class="admin-footer" role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-logos">
+        <img
+          src="{{ url_for('static', filename='images/deped_logo.png') }}"
+          alt="DepEd Logo"
+        />
+      </div>
+      <div class="footer-links">
+        <a href="mailto:laoag.city@deped.gov.ph">
+          <i class="fas fa-envelope"></i>
+          laoag.city@deped.gov.ph
+        </a>
+        <a
+          href="https://www.facebook.com/depedtayolaoagcity"
+          target="_blank"
+        >
+          <i class="fab fa-facebook-square"></i>
+          facebook.com/depedtayolaoagcity
+        </a>
+        <a href="https://www.depedlaoagcity.com" target="_blank">
+          <i class="fas fa-globe"></i>
+          depedlaoagcity.com
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  
 </body>
 </html>

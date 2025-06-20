@@ -1,0 +1,239 @@
+/* —— IMPORTS & VARIABLES —— */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+:root {
+  --maroon:   #800000;
+  --yellow:   #FFD700;
+  --bg-light: #FAFAFA;
+  --text:     #333;
+  --border:   #CCC;
+  --white:    #fff;
+  --font:     'Montserrat', Arial, sans-serif;
+  --radius:   8px;
+  --gap:      1rem;
+}
+
+/* —— RESET & BASE —— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: var(--font);
+  background: var(--bg-light);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* —— SITE BANNER HEADER —— */
+.site-banner {
+  background: var(--maroon);
+  color: var(--white);
+}
+
+/* make banner-top a centered flexbox but position:relative for absolute children */
+.site-banner .banner-top {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* centers the <h1> */
+  padding: 1rem 2rem;
+  background: var(--maroon);
+}
+
+/* pin the logo absolutely to the left */
+.site-banner .banner-logo {
+  position: absolute;
+  left: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 50px;
+}
+
+/* your centered title */
+.site-banner .banner-top h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* —— BOTTOM STRIP —— */
+.site-banner .banner-bottom {
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding: 0.5rem 2rem;
+  background: rgba(0,0,0,0.1);
+}
+
+.site-banner .contact-list {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0;
+}
+.site-banner .contact-list a {
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-banner .contact-list a:hover {
+  color: var(--yellow);
+}
+
+
+/* —— MAIN PANEL (FROSTED-GLASS) —— */
+.form-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: var(--gap);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* —— FORM HEADER —— */
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--gap);
+}
+.form-header h1 {
+  font-size: 2rem;
+  color: var(--maroon);
+}
+.btn-back {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: var(--yellow);
+  color: var(--maroon);
+  text-decoration: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.btn-back:hover { background: #e5c100; }
+
+/* —— DETAIL TABLE —— */
+.detail-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-bottom: var(--gap);
+}
+.detail-table th,
+.detail-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+.detail-table th {
+  background: var(--bg-light);
+  width: 30%;
+  text-align: left;
+  font-weight: 600;
+}
+.detail-table td {
+  width: 70%;
+}
+
+/* —— SECTION WRAPPERS —— */
+.section {
+  margin-bottom: 2rem;
+}
+.section h2 {
+  font-size: 1.5rem;
+  color: var(--maroon);
+  border-bottom: 2px solid var(--maroon);
+  display: inline-block;
+  padding-bottom: 0.25rem;
+  margin-bottom: var(--gap);
+}
+.section-content {
+  background: var(--white);
+  padding: var(--gap);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* —— COMMENTS & EVALUATIONS LIST —— */
+.detail-list {
+  list-style: disc inside;
+  line-height: 1.4;
+}
+.detail-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* —— SITE FOOTER —— */
+.admin-footer {
+  display: flex;
+  justify-content: center;
+  background: var(--maroon);
+  color: var(--white);
+  padding: 1rem 0;
+}
+.admin-footer .footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  max-width: 1700px;
+  width: 100%;
+  gap: var(--gap);
+}
+.admin-footer .footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.admin-footer .footer-logos img {
+  height: 60px;
+}
+.admin-footer .footer-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+}
+.admin-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.admin-footer .footer-links a:hover {
+  color: var(--yellow);
+}
+
+/* —— RESPONSIVE —— */
+@media (max-width: 768px) {
+  .form-container { padding: 0.5rem; }
+  .form-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .detail-table th,
+  .detail-table td {
+    display: block;
+    width: 100%;
+  }
+  .detail-table th {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .admin-footer .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+}

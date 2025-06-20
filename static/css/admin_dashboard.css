@@ -1,21 +1,19 @@
-/* admin_dashboard.css */
-
-/* 1) IMPORTS */
+/* —— IMPORTS & VARIABLES —— */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
 
-/* 2) VARIABLES & RESET */
 :root {
   --maroon:   #800000;
   --yellow:   #FFD700;
   --bg-light: #FAFAFA;
-  --text:     #333333;
-  --border:   #CCCCCC;
+  --text:     #333;
+  --border:   #CCC;
   --font:     'Montserrat', Arial, sans-serif;
-  --radius:   6px;
+  --radius:   8px;
   --gap:      1rem;
 }
 
+/* —— RESET & BASE —— */
 *,
 *::before,
 *::after {
@@ -23,140 +21,208 @@
   margin: 0;
   padding: 0;
 }
-
-html {
+body {
   font-family: var(--font);
   background: var(--bg-light);
   color: var(--text);
   line-height: 1.5;
 }
 
-body {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 0 var(--gap);
+/* —— SITE BANNER —— */
+.site-banner .banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background: var(--maroon);
+  color: #fff;
 }
-
-/* 3) LOGOUT BUTTON */
-.logout {
-  float: right;
+.site-banner .banner-logo {
+  height: 60px;
+}
+.site-banner .banner-top h1 {
+  flex: 1;
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.site-banner .banner-logout {
   background: var(--yellow);
   color: var(--maroon);
   padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-weight: 500;
+  border-radius: var(--radius);
   text-decoration: none;
-  transition: background 0.2s ease;
+  font-weight: 500;
+  transition: background 0.2s;
 }
-.logout:hover {
+.site-banner .banner-logout:hover {
   background: #e5c100;
 }
-
-/* 4) SECTIONS */
-section {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+.site-banner .banner-bottom {
+  background: rgba(255,255,255,0.1);
+  padding: 0.5rem 2rem;
 }
-section h2 {
+.site-banner .contact-list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+}
+.site-banner .contact-list a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-banner .contact-list a:hover {
+  color: var(--yellow);
+}
+
+/* —— MAIN CONTAINER BOX —— */
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--bg-light);
+}
+.dashboard-box {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.dashboard-box .card {
+  padding: var(--gap);
+  border-bottom: 1px solid #eee;
+}
+.dashboard-box .card:last-child {
+  border-bottom: none;
+}
+.card h2 {
+  margin-bottom: var(--gap);
   font-size: 1.25rem;
   color: var(--maroon);
   border-bottom: 2px solid var(--maroon);
   display: inline-block;
   padding-bottom: 0.25rem;
-  margin-bottom: var(--gap);
 }
 
-/* 5) FORMS */
+/* —— FORM ELEMENTS —— */
 label {
   display: block;
+  margin-top: var(--gap);
   font-weight: bold;
-  margin: 0 0 0.25rem;
 }
 input,
-select,
-button[type="submit"] {
+select {
   width: 100%;
+  max-width: 1000px;
+  margin: 0.25rem 0 var(--gap);
   padding: 0.5rem;
-  margin-top: 0.5rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 9px;
   font-size: 1rem;
 }
-select {
-  appearance: none;
-  background-image:
-    url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path fill='%23333' d='M4 6l4 4 4-4z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 0.65rem;
-}
-select:focus,
-input:focus {
-  outline: none;
-  border-color: var(--maroon);
-}
 
-button[type="submit"] {
+/* —— FORM ACTIONS & BUTTONS —— */
+.form-actions {
+  text-align: center;
+}
+.btn-submit {
   background: var(--yellow);
   color: var(--maroon);
   border: none;
+  padding: 0.75rem 1.5rem;
   border-radius: 10px;
+  font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s ease;
-  font-weight: 500;
 }
-button[type="submit"]:hover {
+.btn-submit:hover {
   background: #e5c100;
 }
 
-/* 6) TABLES */
-table {
+/* —— TABLE STYLES —— */
+.qual-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
-  background: #fff;
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: var(--gap);
 }
-th,
-td {
+.qual-table th,
+.qual-table td {
   padding: 0.75rem 1rem;
   border: 1px solid var(--border);
-  vertical-align: top;
+  text-align: left;
 }
-th {
+.qual-table th {
   background: var(--bg-light);
-  font-weight: bold;
 }
-tbody tr:nth-child(even) {
+.qual-table tbody tr:nth-child(even) {
   background: #f9f9f9;
 }
-tbody tr:hover {
+.qual-table tbody tr:hover {
   background: #fff8e1;
 }
 
-/* 7) LINK BUTTONS */
-a.btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
+/* —— SITE FOOTER —— */
+.admin-footer {
   background: var(--maroon);
   color: #fff;
-  text-decoration: none;
-  border-radius: var(--radius);
-  transition: background 0.2s ease;
+  max-width: 100%;
+  padding: 1rem 2rem;
 }
-a.btn:hover {
-  background: #660000;
+.admin-footer .footer-content {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-footer .footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* 8) FLASH MESSAGES */
-.flash {
-  color: var(--maroon);
-  font-weight: 500;
-  margin-bottom: var(--gap);
+.admin-footer .footer-logos img {
+  height: 70px;  
+  width: auto;
+}
+
+.admin-footer .footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+.admin-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.admin-footer .footer-links a:hover {
+  color: var(--yellow);
+}
+
+
+/* —— RESPONSIVE —— */
+@media (max-width: 480px) {
+  .site-banner .banner-top,
+  .form-container,
+  .admin-footer .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .site-banner .banner-logo {
+    height: 40px;
+  }
+  .site-banner .banner-top h1 {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+  }
+  .btn-submit {
+    width: 100%;
+  }
 }

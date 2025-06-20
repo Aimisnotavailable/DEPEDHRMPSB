@@ -3,15 +3,24 @@
 <head>
   <meta charset="utf-8">
   <title>Evaluator Dashboard</title>
-  <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 0.5rem; border: 1px solid #ccc; text-align: center; }
-    a.btn { padding: 0.4rem 0.8rem; background: #007bff; color: #fff; text-decoration: none; border-radius: 4px; }
-  </style>
+  <link
+    rel="stylesheet"
+    href="{{url_for('static', filename="css/evaluator_dashboard.css")}}"
+  >
 </head>
 <body>
-  <h1>Evaluator Dashboard</h1>
+  <header>
+
+    <img src="{{url_for('static', filename="images/deped_seal.png")}}"
+    rel="stylesheet"
+    class="Deped Logo"
+    >
+    <h1>Evaluator Dashboard</h1>
+  <a href="{{ url_for('logout') }}" class="btn logout-btn">Logout</a>
+  
+  </header>
+
+
   <h2>Interview: {{ interview.id }} ({{ interview.type.capitalize() }})</h2>
   <table>
     <thead>
@@ -39,6 +48,5 @@
       {% endfor %}
     </tbody>
   </table>
-  <a href="{{ url_for('logout') }}" class="btn">Logout</a>
 </body>
 </html>

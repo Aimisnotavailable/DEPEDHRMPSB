@@ -3,80 +3,150 @@
 <head>
   <meta charset="utf-8">
   <title>Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Google Font -->
+  <!-- Icons & Fonts -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     rel="stylesheet"
-  >
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-  <!-- Main dashboard styles -->
+  <!-- Main stylesheet -->
   <link
     rel="stylesheet"
-    href="{{ url_for('static', filename='css/dashboard.css') }}"
-  >
+    href="{{ url_for('static', filename='css/admin_dashboard.css') }}"
+  />
 </head>
 <body>
-  <a href="{{ url_for('admin_logout') }}" class="logout">Logout</a>
-  <h1>Admin Dashboard</h1>
-  {% with msgs = get_flashed_messages(category_filter=["success"]) %}
-    {% for m in msgs %}<div class="flash">{{ m }}</div>{% endfor %}
-  {% endwith %}
 
-  <section>
-    <h2>Create Interview</h2>
-    <form method="post" action="{{ url_for('create_interview') }}">
-      <label>Baseline Education</label>
-      <select name="baseline_education" required>
-        <option disabled selected>– select –</option>
-        {% for k, v in ed_labels.items() %}
-          <option value="{{ k }}">{{ v }}</option>
-        {% endfor %}
-      </select>
-      <label>Baseline Experience</label>
-      <select name="baseline_experience" required>
-        <option disabled selected>– select –</option>
-        {% for k, v in ex_labels.items() %}
-          <option value="{{ k }}">{{ v }}</option>
-        {% endfor %}
-      </select>
-      <label>Baseline Training</label>
-      <select name="baseline_training" required>
-        <option disabled selected>– select –</option>
-        {% for k, v in tr_labels.items() %}
-          <option value="{{ k }}">{{ v }}</option>
-        {% endfor %}
-      </select>
-      <!-- Added Interview Type Selector -->
-      <label>Interview Type</label>
-      <select name="interview_type" required>
-        <option disabled selected>– select –</option>
-        <option value="non-teaching">Non-Teaching</option>
-        <option value="teaching">Teaching</option>
-        <option value="promotion">Promotion</option>
-      </select>
-      <button type="submit">Create Interview</button>
-    </form>
-  </section>
+  <!-- SITE BANNER -->
+  <header class="site-banner" role="banner">
+    <div class="banner-top">
+            <img
+        src="{{ url_for('static', filename='images/deped_seal.png') }}"
+        alt="DepEd Logo"
+        class="banner-logo"
+      />
+      <h1>SCHOOLS DIVISION OF LAOAG CITY</h1>
+      <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
+    </div>
+    </div>
+  </header>
 
-  <h2>Existing Interviews</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th><th>Baselines</th><th>#Eval</th><th>#Applicants</th><th>Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for iv in interviews %}
-      <tr>
-        <td>{{ iv.id }}</td>
-        <td>Edu {{ iv.base_edu }} / Exp {{ iv.base_exp }} / Trn {{ iv.base_trn }}</td>
-        <td>{{ iv.evaluator_tokens|length }}</td>
-        <td>{{ iv.participants|length }}</td>
-        <td><a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn">View</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <!-- MAIN CONTAINER BOX -->
+  <main class="form-container" role="main">
+
+    <div class="dashboard-box">
+      <!-- Create Interview Panel -->
+      <section class="card panel-create" aria-labelledby="create-heading">
+        <h2 id="create-heading">Create Interview</h2>
+        <form method="post" action="{{ url_for('create_interview') }}">
+          <label for="baseline_education">Baseline Education</label>
+          <select id="baseline_education" name="baseline_education" required>
+            <option disabled selected>– select –</option>
+            {% for k, v in ed_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="baseline_experience">Baseline Experience</label>
+          <select id="baseline_experience" name="baseline_experience" required>
+            <option disabled selected>– select –</option>
+            {% for k, v in ex_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="baseline_training">Baseline Training</label>
+          <select id="baseline_training" name="baseline_training" required>
+            <option disabled selected>– select –</option>
+            {% for k, v in tr_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="interview_type">Interview Type</label>
+          <select id="interview_type" name="interview_type" required>
+            <option disabled selected>– select –</option>
+            <option value="non-teaching">Non-Teaching</option>
+            <option value="teaching">Teaching</option>
+            <option value="promotion">Promotion</option>
+          </select>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Create Interview</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Existing Interviews Panel -->
+      <section class="card panel-list" aria-labelledby="list-heading">
+        <h2 id="list-heading">Existing Interviews</h2>
+        <table class="qual-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Baselines</th>
+              <th>#Eval</th>
+              <th>#Applicants</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for iv in interviews %}
+            <tr>
+              <td>{{ iv.id }}</td>
+              <td>
+                Edu {{ iv.base_edu }} / 
+                Exp {{ iv.base_exp }} / 
+                Trn {{ iv.base_trn }}
+              </td>
+              <td>{{ iv.evaluator_tokens|length }}</td>
+              <td>{{ iv.participants|length }}</td>
+              <td>
+                <a
+                  href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
+                  class="btn-submit"
+                  >View</a
+                >
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="admin-footer" role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-logos">
+        <img
+          src="{{ url_for('static', filename='images/deped_logo.png') }}"
+          alt="DepEd Logo"
+        />
+      </div>
+      <div class="footer-links">
+        <a href="mailto:laoag.city@deped.gov.ph"
+          ><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a
+        >
+        <a
+          href="https://www.facebook.com/depedtayolaoagcity"
+          target="_blank"
+          ><i class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a
+        >
+        <a href="https://www.depedlaoagcity.com" target="_blank"
+          ><i class="fas fa-globe"></i>depedlaoagcity.com</a
+        >
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>
