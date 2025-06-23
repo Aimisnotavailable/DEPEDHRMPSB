@@ -29,44 +29,106 @@ body {
 }
 
 /* —— ADMIN HEADER —— */
-.admin-header {
-  position: relative;
+/* —— SITE BANNER —— */
+.site-banner .banner-top {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Changed from space-between to center */
+  padding: 0.5rem 2rem;
   background: var(--maroon);
-  color: var(--white);
-  padding: 1.5rem 1rem;
-  overflow: hidden;
-}
-header{
-  color: white;
+  color: #fff;
+  text-align: center; /* Added for text centering */
 }
 
-/* Left logo group */
-.admin-header .logo-group.left {
-  position: absolute;
-  left: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  z-index: 1;
-}
-
-/* Logo sizing */
-.admin-header .logo-group.left .logo {
+.site-banner .banner-logo {
   height: 60px;
-  width: auto;
+  position: absolute; /* Position logos absolutely */
+  left: 2rem; /* Position left logo */
 }
 
-/* Centered header text */
-.admin-header header {
-  position: relative; 
-  z-index: 2;
-  font-size: 1.5rem;
-  font-weight: bold;
+.site-banner .banner-logout {
+  position: absolute; /* Position logout button absolutely */
+  right: 2rem; /* Position right */
+  background: var(--yellow);
+  color: var(--maroon);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.site-banner .banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  gap: 0.25rem;
+  position: relative; /* Needed for z-index */
+  z-index: 1; /* Ensure text appears above absolutely positioned elements */
+}
+
+/* Keep all other existing banner styles the same */
+.site-banner .banner-text h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+.site-banner .banner-subtitle,
+.site-banner .sub-banner-dept,
+.site-banner .sub-banner-region {
+  margin: 0;
+  color: #fff;
+}
+
+.site-banner .banner-text {
+  flex: 1;                    /* take up all space between logo & logout */
+  display: flex;
+  flex-direction: column;     /* stack H1, H2, Ps vertically */
+  align-items: center;        /* center them horizontally */
+  gap: 0.25rem;               /* small spacing between lines */
+}
+
+/* 2. Tweak margins so they don’t collide */
+.site-banner .banner-text h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+.site-banner .banner-subtitle,
+.site-banner .sub-banner-dept,
+.site-banner .sub-banner-region {
+  margin: 0;
+  color: #fff;
+}
+
+.sub-banner {
+  padding: 0.75rem 10rem;
+  width: 100%;
+}
+.hr-section {
+  width: 100%;                   
+  background: rgba(128,0,0,0.9);
+  padding: 0.75rem 1rem;
+}
+
+.hr-section h2 {
+  margin: 0;                    
+  color: #fff;                   
   text-align: center;
-  margin: 0 2rem; 
+  font-size: 1.25rem;           
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+.site-banner .sub-banner-dept {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.site-banner .sub-banner-region {
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-style: italic;
 }
 
 /* —— LOGIN WRAPPER —— */

@@ -12,17 +12,27 @@
 
 <body>
     <!-- SITE BANNER -->
-  <header class="site-banner" role="banner">
-    <div class="banner-top">
-            <img
-        src="{{ url_for('static', filename='images/deped_seal.png') }}"
-        alt="DepEd Logo"
-        class="banner-logo"
-      />
-      <h1>SCHOOLS DIVISION OF LAOAG CITY</h1>
+<!-- SITE BANNER -->
+<header class="site-banner" role="banner">
+  <div class="banner-top">
+    <img
+      src="{{ url_for('static', filename='images/deped_seal.png') }}"
+      alt="DepEd Logo"
+      class="banner-logo"
+    />
+    <!-- new centered text column -->
+    <div class="banner-text">
+      <h1>DEPARTMENT OF EDUCATION</h1>
+      <p class="sub-banner-region">Region I – Ilocos Region</p>
+      <p class="sub-banner-dept">Schools Division of Laoag City</p>
     </div>
-    </div>
+  </div>
   </header>
+  <section class="hr-section" aria-labelledby="hr-section-title">
+    <h2 id="hr-section-title">
+      HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
+    </h2>
+  </section>
 
   <!-- CONTENT -->
   <main class="content-container" role="main">
