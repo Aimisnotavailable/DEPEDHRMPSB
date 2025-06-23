@@ -1,82 +1,67 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Applicant {{ applicant.code }} - Your Evaluation</title>
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/evaluator_applicant_detail.css') }}"
-  />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/evaluator_applicant_detail.css') }}" />
 </head>
+
 <body>
-  
-       <header class="admin-header">
+
+  <header class="admin-header">
     <div class="logo-group">
-      <img
-        src="{{ url_for('static', filename='images/deped_seal.png') }}"
-        alt="DepEd Seal"
-        class="logo"
-      />
+      <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Seal" class="logo" />
     </div>
     <h1>SCHOOLS DIVISION OFFICE OF LAOAG CITY</h1>
   </header>
 
- <div class="content-container">
-  <form method="post">
-
-    <a href="{{ url_for('evaluator_dashboard') }}" class="btn">← Back to Dashboard</a>
-    <h1>Applicant {{ applicant.code }} Evaluation</h1>
-    <h2>{{ applicant.name }}</h2>
-    
+  <div class="content-container">
     <form method="post">
-      {# If an evaluation exists with extra_data, parse it as JSON; otherwise use an empty dict #}
-      {% if evaluation and evaluation.extra_data %}
+
+      <a href="{{ url_for('evaluator_dashboard') }}" class="btn">← Back to Dashboard</a>
+      <h1>Applicant {{ applicant.code }} Evaluation</h1>
+      <h2>{{ applicant.name }}</h2>
+
+      <form method="post">
+        {# If an evaluation exists with extra_data, parse it as JSON; otherwise use an empty dict #}
+        {% if evaluation and evaluation.extra_data %}
         {% set existing_data = existing_data %}
-      {% else %}
+        {% else %}
         {% set existing_data = {} %}
-      {% endif %}
-      
-      {# Loop over each section in the evaluation structure #}
-      {% for section, fields in eval_struct.items() %}
+        {% endif %}
+
+        {# Loop over each section in the evaluation structure #}
+        {% for section, fields in eval_struct.items() %}
         <fieldset>
           <legend>{{ section|capitalize }}</legend>
           {% for field, max_val in fields.items() %}
-            <label for="{{ field }}">{{ field|replace("_", " ")|capitalize }} (0-{{ max_val }})</label>
-            <input type="number"
-                   name="{{ field }}"
-                   step="0.01"
-                   min="0"
-                   max="{{ max_val }}"
-                   value="{% if existing_data.get(section) and existing_data[section].get(field) is not none %}{{ existing_data[section][field] }}{% endif %}"
-                   required>
+          <label for="{{ field }}">{{ field|replace("_", " ")|capitalize }} (0-{{ max_val }})</label>
+          <input type="number" name="{{ field }}" step="0.01" min="0" max="{{ max_val }}"
+            value="{% if existing_data.get(section) and existing_data[section].get(field) is not none %}{{ existing_data[section][field] }}{% endif %}"
+            required>
           {% endfor %}
         </fieldset>
-      {% endfor %}
-      
-    {% if overall is not none %}
-      <p>Your evaluation score: <strong>{{ overall }}</strong> (max 25)</p>
-    {% endif %}
-        <button type="submit">Save Evaluation</button>
-  </form>
-</div>
+        {% endfor %}
 
-    <footer class="admin-footer" role="contentinfo">
+        {% if overall is not none %}
+        <p>Your evaluation score: <strong>{{ overall }}</strong> (max 25)</p>
+        {% endif %}
+        <button type="submit">Save Evaluation</button>
+      </form>
+  </div>
+
+  <footer class="admin-footer" role="contentinfo">
     <div class="footer-content">
       <div class="footer-logos">
-        <img
-          src="{{ url_for('static', filename='images/deped_logo.png') }}"
-          alt="DepEd Logo"
-        />
+        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
       </div>
       <div class="footer-links">
         <a href="mailto:laoag.city@deped.gov.ph">
           <i class="fas fa-envelope"></i>
           laoag.city@deped.gov.ph
         </a>
-        <a
-          href="https://www.facebook.com/depedtayolaoagcity"
-          target="_blank"
-        >
+        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank">
           <i class="fab fa-facebook-square"></i>
           facebook.com/depedtayolaoagcity
         </a>
@@ -88,4 +73,5 @@
     </div>
   </footer>
 </body>
+
 </html>

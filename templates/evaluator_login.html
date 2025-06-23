@@ -1,33 +1,22 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Evaluator Login</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <!-- Icons & Font -->
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    rel="stylesheet"
-  >
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  >
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/evaluator_login.css') }}"
-  >
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/evaluator_login.css') }}">
 </head>
+
 <body>
 
   <!-- SITE BANNER -->
   <header class="site-banner" role="banner">
     <div class="banner-top">
-      <img
-        src="{{ url_for('static', filename='images/deped_seal.png') }}"
-        alt="DepEd Seal"
-        class="banner-logo"
-      >
+      <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Seal" class="banner-logo">
       <div class="banner-title">Department of Education</div>
     </div>
   </header>
@@ -35,28 +24,18 @@
   <!-- LOGIN FORM -->
   <main class="login-page">
     <div class="login-box">
-      <img
-        src="{{ url_for('static', filename='images/deped_seal.png') }}"
-        alt="DepEd Seal"
-        class="logo-small"
-      >
+      <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Seal" class="logo-small">
       <h2>Evaluator Login</h2>
 
       {% with msgs = get_flashed_messages(category_filter=['error']) %}
-        {% for m in msgs %}
-          <div class="flash">{{ m }}</div>
-        {% endfor %}
+      {% for m in msgs %}
+      <div class="flash">{{ m }}</div>
+      {% endfor %}
       {% endwith %}
 
       <form class="login-form" method="post" action="{{ url_for('evaluator_login') }}">
         <label for="token">Token</label>
-        <input
-          id="token"
-          name="token"
-          type="text"
-          placeholder="Enter your token"
-          required
-        >
+        <input id="token" name="token" type="text" placeholder="Enter your token" required>
         <div class="form-actions">
           <button type="submit" class="btn-login">
             Login <i class="fas fa-arrow-right"></i>
@@ -70,10 +49,7 @@
   <footer class="site-footer" role="contentinfo">
     <div class="footer-inner">
       <div class="footer-logos">
-        <img
-          src="{{ url_for('static', filename='images/deped_logo.png') }}"
-          alt="DepEd Logo"
-        >
+        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo">
       </div>
       <div class="footer-links">
         <a href="mailto:laoag.city@deped.gov.ph">
@@ -93,4 +69,5 @@
   </footer>
 
 </body>
+
 </html>
