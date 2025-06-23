@@ -1,0 +1,228 @@
+/* —— IMPORTS & VARIABLES —— */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+:root {
+  --maroon:   #800000;
+  --yellow:   #FFD700;
+  --bg-light: #FAFAFA;
+  --text:     #333;
+  --border:   #CCC;
+  --font:     'Montserrat', Arial, sans-serif;
+  --radius:   8px;
+  --gap:      1rem;
+}
+
+/* —— RESET & BASE —— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: var(--font);
+  background: var(--bg-light);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* —— SITE BANNER —— */
+.site-banner .banner-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background: var(--maroon);
+  color: #fff;
+}
+.site-banner .banner-logo {
+  height: 60px;
+}
+.site-banner .banner-top h1 {
+  flex: 1;
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.site-banner .banner-logout {
+  background: var(--yellow);
+  color: var(--maroon);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.site-banner .banner-logout:hover {
+  background: #e5c100;
+}
+.site-banner .banner-bottom {
+  background: rgba(255,255,255,0.1);
+  padding: 0.5rem 2rem;
+}
+.site-banner .contact-list {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+}
+.site-banner .contact-list a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-banner .contact-list a:hover {
+  color: var(--yellow);
+}
+
+/* —— MAIN CONTAINER BOX —— */
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: var(--bg-light);
+}
+.dashboard-box {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+.dashboard-box .card {
+  padding: var(--gap);
+  border-bottom: 1px solid #eee;
+}
+.dashboard-box .card:last-child {
+  border-bottom: none;
+}
+.card h2 {
+  margin-bottom: var(--gap);
+  font-size: 1.25rem;
+  color: var(--maroon);
+  border-bottom: 2px solid var(--maroon);
+  display: inline-block;
+  padding-bottom: 0.25rem;
+}
+
+/* —— FORM ELEMENTS —— */
+label {
+  display: block;
+  margin-top: var(--gap);
+  font-weight: bold;
+}
+input,
+select {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0.25rem 0 var(--gap);
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font-size: 1rem;
+}
+
+/* —— FORM ACTIONS & BUTTONS —— */
+.form-actions {
+  text-align: center;
+}
+.btn-submit {
+  background: var(--yellow);
+  color: var(--maroon);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.btn-submit:hover {
+  background: #e5c100;
+}
+
+/* —— TABLE STYLES —— */
+.qual-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--gap);
+}
+.qual-table th,
+.qual-table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.qual-table th {
+  background: var(--bg-light);
+}
+.qual-table tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+.qual-table tbody tr:hover {
+  background: #fff8e1;
+}
+
+/* —— SITE FOOTER —— */
+.admin-footer {
+  background: var(--maroon);
+  color: #fff;
+  max-width: 100%;
+  padding: 1rem 2rem;
+}
+.admin-footer .footer-content {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-footer .footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-footer .footer-logos img {
+  height: 70px;  
+  width: auto;
+}
+
+.admin-footer .footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+.admin-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.admin-footer .footer-links a:hover {
+  color: var(--yellow);
+}
+
+
+/* —— RESPONSIVE —— */
+@media (max-width: 480px) {
+  .site-banner .banner-top,
+  .form-container,
+  .admin-footer .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .site-banner .banner-logo {
+    height: 40px;
+  }
+  .site-banner .banner-top h1 {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+  }
+  .btn-submit {
+    width: 100%;
+  }
+}

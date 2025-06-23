@@ -1,0 +1,201 @@
+/* static/css/evaluator_applicant_detail.css */
+
+/* —— IMPORTS & VARIABLES —— */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+:root {
+  --maroon:   #800000;
+  --yellow:   #FFD700;
+  --bg-light: #FAFAFA;
+  --text:     #333333;
+  --border:   #CCCCCC;
+  --font:     'Montserrat', Arial, sans-serif;
+  --radius:   6px;
+  --gap:      1rem;
+}
+
+/* —— RESET & BASE STYLES —— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--font);
+  background: var(--bg-light);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* —— WRAP ALL CONTENT —— */
+.container {
+  flex: 1;                  
+  display: flex;
+  flex-direction: column;
+}
+
+/* —— SITE HEADER —— */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  background: var(--maroon);
+  color: var(--black);
+}
+
+/* seal logo on left */
+.admin-header .logo-group {
+  flex: 0 0 auto;
+  margin-right: 1rem;
+}
+.admin-header .logo {
+  height: 60px;
+  width: auto;
+  display: block;
+}
+
+/* page title centered */
+.admin-header h1 {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+}
+
+
+
+/* —— MAIN CONTENT —— */
+.content-container {
+  flex: 1;                    /* fill available space */
+  max-width: 480px;
+  width: 90%;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 2rem;
+}
+
+/* —— BACK BUTTON —— */
+.btn {
+  display: inline-block;
+  margin-bottom: var(--gap);
+  padding: 0.5rem 0.5rem;     
+  background: var(--yellow);
+  color: var(--maroon);
+  text-decoration: none;
+  border-radius: 120px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.btn:hover {
+  background: #e5c100;
+}
+
+
+
+
+/* —— PAGE TITLES —— */
+h1 {
+  font-size: 2rem;
+  color: var(--maroon);
+  text-align: center;
+  margin-bottom: var(--gap);
+}
+h2 {
+  font-size: 1.25rem;
+  text-align: center;
+  margin-bottom: var(--gap);
+}
+
+/* —— FORM —— */
+form {
+  margin-top: 1rem;
+}
+form label {
+  display: block;
+  margin: 0.5rem 0 0.2rem;
+  font-weight: 600;
+}
+form input,
+form button {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+}
+form button[type="submit"] {
+  background: var(--yellow);
+  color: var(--maroon);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+form button[type="submit"]:hover {
+  background: #e5c100;
+}
+
+/* —— SCORE —— */
+.score {
+  text-align: center;
+  margin-top: var(--gap);
+  font-size: 1rem;
+}
+.score strong {
+  color: var(--maroon);
+}
+
+/* —— FOOTER —— */
+.admin-footer {
+  background: var(--maroon);
+  color: #fff;
+  padding: 1rem 2rem;
+}
+.footer-content {
+  max-width: 1900px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--gap);
+}
+.footer-logos img {
+  height: 60px;
+}
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--yellow);
+}
+
+/* —— RESPONSIVE —— */
+@media (max-width: 600px) {
+  .content-container {
+    margin: 1rem auto;
+    padding: 1.5rem;
+  }
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}

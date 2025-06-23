@@ -1,0 +1,133 @@
+/* —— IMPORTS & VARIABLES —— */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+:root {
+  --maroon:   #800000;
+  --yellow:   #FFD700;
+  --bg-light: #FAFAFA;
+  --text:     #333;
+  --border:   #CCC;
+  --white:    #fff;
+  --font:     'Montserrat', Arial, sans-serif;
+  --radius:   8px;
+  --gap:      1rem;
+}
+
+/* —— RESET & BASE —— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: var(--font);
+  background: var(--bg-light);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* —— HEADER —— */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap);
+  padding: 1rem var(--gap);
+  background: var(--maroon);
+  color: var(--white);
+}
+header img {
+  height: 60px;
+}
+header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.logout-btn {
+    white-space: nowrap;
+}
+
+/* —— PAGE TITLE —— */
+h2 {
+  font-size: 1.5rem;
+  color: var(--maroon);
+  margin: var(--gap) auto var(--gap);
+  text-align: center;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid var(--maroon);
+  max-width: max-content;
+}
+
+/* —— FROSTED-GLASS CONTENT WRAPPER —— */
+body > table,
+body > .btn {
+  max-width: 900px;
+  margin: 0 auto var(--gap);
+  padding: var(--gap);
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* —— TABLE STYLES —— */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  overflow-x: auto;
+}
+thead {
+  background: var(--maroon);
+  color: var(--white);
+}
+th, td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+th {
+  font-weight: 600;
+}
+tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* —— BUTTONS —— */
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: var(--yellow);
+  color: var(--maroon);
+  text-decoration: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.btn:hover,
+.btn:focus {
+  background: #e5c100;
+}
+.btn:focus {
+  outline: 3px solid var(--maroon);
+  outline-offset: 2px;
+}
+
+/* —— RESPONSIVE —— */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+  table,
+  body > .btn {
+    padding: 0.5rem;
+  }
+  th, td {
+    padding: 0.5rem;
+  }
+}

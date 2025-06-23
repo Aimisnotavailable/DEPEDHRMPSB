@@ -1,0 +1,308 @@
+/* static/css/interview_detail.css */
+
+/* —— IMPORTS & VARIABLES —— */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+:root {
+  --maroon:   #800000;
+  --yellow:   #FFD700;
+  --bg-light: #FAFAFA;
+  --text:     #333333;
+  --border:   #CCCCCC;
+  --font:     'Montserrat', Arial, sans-serif;
+  --radius:   6px;
+  --gap:      1rem;
+}
+
+/* —— RESET & BASE STYLES —— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Full-width header/footer; page content inside .content-container */
+body {
+  font-family: var(--font);
+  background: var(--bg-light);
+  color: var(--text);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+/* centered main content */
+.content-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 var(--gap);
+}
+
+/* —— SITE BANNER —— */
+header.site-banner {
+  width: 100%;
+  background: var(--maroon);
+  color: #fff;
+}
+.site-banner .banner-top {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+.site-banner .banner-logo {
+  height: 60px;
+  flex: 0 0 auto;
+}
+.site-banner .banner-top h1 {
+  flex:1 auto;
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.site-banner .banner-logout {
+  flex: 0 0 auto;
+  background: var(--yellow);
+  color: var(--maroon);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.site-banner .banner-logout:hover {
+  background: #e5c100;
+}
+.site-banner .banner-bottom {
+  background: rgba(255,255,255,0.1);
+  padding: 0.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.site-banner .contact-list {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+.site-banner .contact-list a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-banner .contact-list a:hover {
+  color: var(--yellow);
+}
+
+/* —— BACK BUTTON —— */
+/* back-to-dashboard button */
+a.btn,
+a.btn-back {
+  display: inline-block;
+  margin-bottom: var(--gap);
+  padding: 0.75rem 1.5rem;       /* same as .btn-submit */
+  background: var(--yellow);
+  color: var(--maroon);
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+a.btn:hover,
+a.btn-back:hover {
+  background: #e5c100;
+}
+
+/* —— PAGE TITLE & INFO —— */
+.content-container > h1 {
+  font-size: 2rem;
+  margin-bottom: var(--gap);
+  color: var(--maroon);
+}
+.content-container p {
+  margin-bottom: var(--gap);
+}
+.content-container p strong {
+  color: var(--maroon);
+}
+
+/* —— TAB NAVIGATION —— */
+.tab-nav {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--gap);
+}
+.tab-nav a {
+  display: inline-block;
+  margin-right: 1.5rem;
+  padding: 0.5rem 0;
+  color: var(--maroon);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.tab-nav a:hover,
+.tab-nav a.active {
+  color: var(--yellow);
+  border-bottom: 2px solid var(--yellow);
+}
+
+/* —— SECTIONS —— */
+section {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+section h2 {
+  font-size: 1.5rem;
+  color: var(--maroon);
+  border-bottom: 2px solid var(--maroon);
+  display: inline-block;
+  padding-bottom: 0.25rem;
+  margin-bottom: var(--gap);
+}
+
+/* —— TABLES —— */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--gap);
+}
+th,
+td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+th {
+  background: var(--bg-light);
+  font-weight: 600;
+  text-align: left;
+}
+tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+tbody tr:hover {
+  background: #fff8e1;
+}
+
+/* —— FORMS —— */
+label {
+  display: block;
+  font-weight: 600;
+  margin: 0.5rem 0 0.25rem;
+}
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  margin-top: 0.25rem;
+}
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><path fill='%23333' d='M4 6l4 4 4-4z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 0.65rem;
+}
+textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* —— BUTTONS —— */
+button,
+button[type="submit"] {
+  display: inline-block;
+  margin-top: var(--gap);
+  background: var(--yellow);
+  color: var(--maroon);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+button:hover {
+  background: #e5c100;
+}
+
+/* —— SITE FOOTER —— */
+footer.site-footer {
+  width: 100%;
+  background: var(--maroon);
+  color: #fff;
+  padding: 1rem 2rem;
+}
+.site-footer .footer-inner {
+  max-width: 1900px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--gap);
+}
+.site-footer .footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.site-footer .footer-logos img {
+  height: 60px;
+  width: auto;
+}
+.site-footer .footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.site-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-footer .footer-links a:hover {
+  color: var(--yellow);
+}
+
+/* —— RESPONSIVE —— */
+@media (max-width: 600px) {
+  .tab-nav a {
+    margin-right: 1rem;
+  }
+  .site-banner .banner-top,
+  .site-banner .banner-bottom,
+  .content-container,
+  .site-footer .footer-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+  .site-banner .banner-logo {
+    height: 50px;
+  }
+  .site-banner .banner-top h1 {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+  }
+  a.btn,
+  button,
+  button[type="submit"] {
+    width: 100%;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
