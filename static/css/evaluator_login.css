@@ -34,50 +34,95 @@ body {
   min-height: 100vh;
 }
 
-/* —— SITE BANNER HEADER —— */
-header.site-banner {
-  width: 100%;
-  background: var(--maroon);
-  color: var(--white);
-}
+/* —— SITE BANNER —— */
 .site-banner .banner-top {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
-  padding: 1.5rem 2rem;
+  justify-content: center;
+  padding: 0.5rem 2rem;
+  background: var(--maroon);
+  color: #fff;
+  
 }
 .site-banner .banner-logo {
-  grid-column: 1;
   height: 60px;
-  width: auto;
 }
-.site-banner .banner-title {
-  grid-column: 2;
+.site-banner .banner-top h1 {
+  flex: 1;
   text-align: center;
   font-size: 1.75rem;
   font-weight: 600;
 }
-.site-banner .banner-action {
-  grid-column: 3;
-  /* empty for symmetry or you can place a logout link here */
-}
-.site-banner .banner-bottom {
-  background: rgba(255,255,255,0.1);
-  padding: 0.5rem 2rem;
-  text-align: center;
-}
-.site-banner .contact-list {
-  list-style: none;
-  display: inline-flex;
-  gap: 2rem;
-}
-.site-banner .contact-list a {
-  color: var(--white);
+.site-banner .banner-logout {
+  background: var(--yellow);
+  color: var(--maroon);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
   text-decoration: none;
-  transition: color 0.2s;
+  font-weight: 500;
+  transition: background 0.2s;
 }
-.site-banner .contact-list a:hover {
-  color: var(--yellow);
+.site-banner .banner-logout:hover {
+  background: #e5c100;
+}
+
+/* 1. Make the .banner-text a middle flex‐column */
+.site-banner .banner-top {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; remove this so left & right items stay pinned */
+  justify-content: space-between;
+}
+
+.site-banner .banner-text {
+  flex: 1;                    /* take up all space between logo & logout */
+  display: flex;
+  flex-direction: column;     /* stack H1, H2, Ps vertically */
+  align-items: center;        /* center them horizontally */
+  gap: 0.25rem;               /* small spacing between lines */
+}
+
+/* 2. Tweak margins so they don’t collide */
+.site-banner .banner-text h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+.site-banner .banner-subtitle,
+.site-banner .sub-banner-dept,
+.site-banner .sub-banner-region {
+  margin: 0;
+  color: #fff;
+}
+
+.sub-banner {
+  padding: 0.75rem 10rem;
+  width: 100%;
+}
+.hr-section {
+  width: 100%;                   
+  background: rgba(128,0,0,0.9);
+  padding: 0.75rem 1rem;
+}
+
+.hr-section h2 {
+  margin: 0;                    
+  color: #fff;                   
+  text-align: center;
+  font-size: 1.25rem;           
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+.site-banner .sub-banner-dept {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.site-banner .sub-banner-region {
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-style: italic;
 }
 
 /* —— LOGIN PAGE WRAPPER —— */
