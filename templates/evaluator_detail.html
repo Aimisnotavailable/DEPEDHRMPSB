@@ -1,37 +1,38 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Evaluator Details</title>
-  <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 2rem auto; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-    th, td { padding: 0.5rem; border: 1px solid #ccc; }
-  </style>
-</head>
-<body>
-  <a href="{{ url_for('admin_interview_detail', iid=evaluator.interview_id) }}" class="btn">← Back to Interview Details</a>
-  <h1>Evaluator Details</h1>
-  {% if eval_records %}
-    <table>
-      <thead>
-        <tr>
-          <th>Applicant Code</th>
-          <th>Evaluation Score (out of 25)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for ev in eval_records %}
-          {% set score = ev.aptitude + ev.characteristics + ev.fitness + ev.leadership + ev.communication + ev.trf_rating %}
+  <!doctype html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Evaluator Details</title>
+<link
+rel="stylesheet" 
+href="{{url_for('static', filename='css/evaluator_detail.css')}}"
+>
+  </head>
+  <body>
+    <header>Department of Education</header>
+    <a href="{{ url_for('admin_interview_detail', iid=evaluator.interview_id) }}" class="btn">← Back to Interview Details</a>
+    <h1>Evaluator Details</h1>
+    {% if eval_records %}
+      <table>
+        <thead>
           <tr>
-            <td>{{ ev.participant_code }}</td>
-            <td>{{ score | round(2) }}</td>
+            <th>Applicant Code</th>
+            <th>Evaluation Score (out of 25)</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p>No evaluations submitted by this evaluator.</p>
-  {% endif %}
-</body>
-</html>
+        </thead>
+        <tbody>
+          {% for ev in eval_records %}
+            {% set score = ev.aptitude + ev.characteristics + ev.fitness + ev.leadership + ev.communication + ev.trf_rating %}
+            <tr>
+              <td>{{ ev.participant_code }}</td>
+              <td>{{ score | round(2) }}</td>
+            </tr>
+          {% endfor %}
+          <footer></footer>
+        </tbody>
+      </table>
+    {% else %}
+      <p>No evaluations submitted by this evaluator.</p>
+    {% endif %}
+  </body>
+  </html>
