@@ -9,7 +9,17 @@ href="{{url_for('static', filename='css/evaluator_detail.css')}}"
 >
   </head>
   <body>
-    <header>Department of Education</header>
+  <header class="site-banner" role="banner">
+    <div class="banner-top">
+            <img
+        src="{{ url_for('static', filename='images/deped_seal.png') }}"
+        alt="DepEd Logo"
+        class="banner-logo"
+      />
+      <h1>SCHOOLS DIVISION OF LAOAG CITY</h1>
+    </div>
+    </div>
+  </header>
     <a href="{{ url_for('admin_interview_detail', iid=evaluator.interview_id) }}" class="btn">← Back to Interview Details</a>
     <h1>Evaluator Details</h1>
     {% if eval_records %}
@@ -33,5 +43,30 @@ href="{{url_for('static', filename='css/evaluator_detail.css')}}"
     {% else %}
       <p>No evaluations submitted by this evaluator.</p>
     {% endif %}
+
+      <!-- SITE FOOTER -->
+  <footer class="admin-footer" role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-logos">
+        <img
+          src="{{ url_for('static', filename='images/deped_logo.png') }}"
+          alt="DepEd Logo"
+        />
+      </div>
+      <div class="footer-links">
+        <a href="mailto:laoag.city@deped.gov.ph"
+          ><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a
+        >
+        <a
+          href="https://www.facebook.com/depedtayolaoagcity"
+          target="_blank"
+          ><i class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a
+        >
+        <a href="https://www.depedlaoagcity.com" target="_blank"
+          ><i class="fas fa-globe"></i>depedlaoagcity.com</a
+        >
+      </div>
+    </div>
+  </footer>
   </body>
   </html>

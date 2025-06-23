@@ -83,6 +83,7 @@ body {
   justify-content: center;
   padding: 2rem 1rem;
   background: var(--bg-light);
+  
 }
 .dashboard-box {
   width: 100%;
@@ -113,6 +114,7 @@ label {
   display: block;
   margin-top: var(--gap);
   font-weight: bold;
+  
 }
 input,
 select {
@@ -138,6 +140,7 @@ select {
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s ease;
+  
 }
 .btn-submit:hover {
   background: #e5c100;
@@ -148,6 +151,7 @@ select {
   width: 100%;
   border-collapse: collapse;
   margin-top: var(--gap);
+  
 }
 .qual-table th,
 .qual-table td {

@@ -1,20 +1,89 @@
-/* Global Styles */
+/* —— IMPORTS & VARIABLES —— */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+:root {
+  --maroon:   #800000;
+  --yellow:   #FFD700;
+  --bg-light: #FAFAFA;
+  --text:     #333;
+  --border:   #CCC;
+  --white:    #FFF;
+  --font:     'Montserrat', Arial, sans-serif;
+  --radius:   10px;
+  --gap:      1rem;
+}
+
+/* —— RESET & BASE —— */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f9fa;
-    color: #333;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg-light);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
 /* Header Styles */
-header {
-    background-color: #800000;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-    font-size: 36px;
+header.site-banner {
+  width: 100%;
+  background: var(--maroon);
+  color: var(--white);
+  text-align: center;
 }
+
+h1{
+    text-align: center;
+
+}
+.site-banner .banner-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 1.5rem 2rem;
+}
+.site-banner .banner-logo {
+  grid-column: 1;
+  height: 60px;
+  width: auto;
+}
+.site-banner .banner-title {
+  grid-column: 2;
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+.site-banner .banner-action {
+  grid-column: 3;
+  /* empty for symmetry or you can place a logout link here */
+}
+.site-banner .banner-bottom {
+  background: rgba(255,255,255,0.1);
+  padding: 0.5rem 2rem;
+  text-align: center;
+}
+.site-banner .contact-list {
+  list-style: none;
+  display: inline-flex;
+  gap: 2rem;
+}
+.site-banner .contact-list a {
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-banner .contact-list a:hover {
+  color: var(--yellow);
+}
+
 
 /* Footer Styles */
 footer {
@@ -28,12 +97,13 @@ footer {
 }
 
 /* Navigation Button */
+
 a.btn {
     display: inline-block;
     margin: 20px;
     padding: 10px 20px;
     background-color: #e5c300;
-    color: #fff;
+    color: var(--maroon);
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
@@ -44,12 +114,6 @@ a.btn:hover {
 }
 
 /* Main Heading */
-h1 {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 28px;
-    color: #333;
-}
 
 /* Table Styles */
 table {
@@ -88,4 +152,67 @@ p {
 .container {
     padding: 20px;
     padding-bottom: 80px; /* This prevents content from being hidden behind the fixed footer */
+}
+
+
+/* —— SITE FOOTER —— */
+.admin-footer {
+  background: var(--maroon);
+  color: #fff;
+  max-width: 100%;
+  padding: 1rem 2rem;
+}
+.admin-footer .footer-content {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-footer .footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-footer .footer-logos img {
+  height: 70px;  
+  width: auto;
+}
+
+.admin-footer .footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+.admin-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.admin-footer .footer-links a:hover {
+  color: var(--yellow);
+}
+
+
+/* —— RESPONSIVE —— */
+@media (max-width: 480px) {
+  .site-banner .banner-top,
+  .form-container,
+  .admin-footer .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .site-banner .banner-logo {
+    height: 40px;
+  }
+  .site-banner .banner-top h1 {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+  }
+  .btn-submit {
+    width: 100%;
+  }
 }
