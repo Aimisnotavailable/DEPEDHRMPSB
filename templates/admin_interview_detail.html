@@ -140,12 +140,10 @@
         {% endfor %}
       </select>
       {% if interview.type == 'teaching' %}
-        <label>LPT/PBET/LEPT Rating (out of 100)</label>
-        <input type="number" name="lpt_rating" step="0.01" min="0" max="100" required>
-        <label>COT (out of 30)</label>
-        <input type="number" name="cot" step="0.01" min="0" max="30" required>
-        <label>TRF RATING (out of 20)</label>
-        <input type="number" name="trf_rating" step="0.01" min="0" max="20" required>
+        {% for k, v in applicant_structure.items() %}
+          <label>{{ v['LABEL'] }}</label>
+          <input type="number" name="{{ k }}" step="0.01" min="0" max="{{ v['MAX_SCORE'] }}" required>
+        {% endfor %}
       {% endif %}
       <button type="submit">Add Applicant</button>
     </form>

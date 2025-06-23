@@ -36,6 +36,14 @@ WEIGHT_STRUCTURE = {
     }
 }
 
+APPLICANT_STRUCTURE = {
+    "teaching" : {
+        "lpt_rating" : {"WEIGHT" : 10, "MAX_SCORE" : 100, "LABEL" : "LPT/PBET/LEPT Rating"},
+        "cot" : {"WEIGHT" : 35, "MAX_SCORE" : 30, "LABEL" : "COT"},
+        "trf_rating" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "TRF"}
+    }
+}
+
 # ------------------------------------------------------------------------------
 # MODELS
 # ------------------------------------------------------------------------------
@@ -188,9 +196,12 @@ def admin_interview_detail(iid):
     for v in validations:
         val_map.setdefault(v.participant_code, []).append(v)
 
+    applicant_structure = APPLICANT_STRUCTURE[iv.type]
+    print(applicant_structure)
     return render_template("admin_interview_detail.html",
                            interview=iv,
                            applicants=applicants,
+                           applicant_structure=applicant_structure,
                            eval_tokens=eval_tokens,
                            ed_labels=ed_labels,
                            ex_labels=ex_labels,
@@ -344,11 +355,12 @@ def add_applicant():
     )
 
     # For teaching interviews, the admin now inputs the TRF rating (max 20)
+    applicant_structure = APPLICANT_STRUCTURE[interview_obj.type]
     if interview_obj.type == "teaching":
         try:
-            lpt_rating = (float(request.form.get('lpt_rating', 0)) / 100) * 10
-            coi = (float(request.form.get('cot', 0)) / 30) * 35
-            trf_rating = float(request.form.get("trf_rating", 0))
+            lpt_rating = (float(request.form.get('lpt_rating', 0)) /  applicant_structure['lpt_rating']['MAX_SCORE']) * applicant_structure['lpt_rating']['WEIGHT']
+            coi = (float(request.form.get('cot', 0)) / applicant_structure['cot']['MAX_SCORE']) * applicant_structure['cot']['WEIGHT']
+            trf_rating = (float(request.form.get("trf_rating", 0)))
         except ValueError:
             flash("TRF rating must be numeric.", "error")
             return redirect(url_for("admin_interview_detail", iid=iid))
@@ -471,7 +483,7 @@ def evaluator_applicant_detail(code):
         # Validate that each score is between 0 and 1
 
         for key in eval_struct.keys():
-            for field in eval_struct[key].keys():
+            for field in eval_struct[key].keys():   
                 if extra_data[key][field] <= 0 or extra_data[key][field] > eval_struct[key][field]:
                     flash("Each criteria must be between 0 and 1.", "error")
                     return redirect(url_for("evaluator_applicant_detail", code=code))
