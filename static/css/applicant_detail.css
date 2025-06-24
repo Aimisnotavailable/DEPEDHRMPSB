@@ -88,8 +88,10 @@ body {
 
 /* —— MAIN PANEL (FROSTED-GLASS) —— */
 .form-container {
-  max-width: 900px;
+  max-width: 400px;
+  width: 100%;
   margin: 2rem auto;
+  text-align: center;
   padding: var(--gap);
   background: rgba(255,255,255,0.65);
   backdrop-filter: blur(8px);
@@ -104,7 +106,12 @@ body {
   justify-content: space-between;
   margin-bottom: var(--gap);
 }
-.form-header h1 {
+.title{
+  text-align: center;
+
+}
+.form-header h1 
+{
   font-size: 2rem;
   color: var(--maroon);
 }
@@ -121,49 +128,81 @@ body {
 .btn-back:hover { background: #e5c100; }
 
 /* —— DETAIL TABLE —— */
+
 .detail-table {
+  margin: var(--gap) auto; /* centers table and adds vertical spacing */
+  max-width: 1000px;
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  margin-bottom: var(--gap);
+
 }
+
 .detail-table th,
 .detail-table td {
   padding: 0.75rem 1rem;
   border: 1px solid var(--border);
   vertical-align: top;
 }
+
 .detail-table th {
   background: var(--bg-light);
-  width: 30%;
-  text-align: left;
   font-weight: 600;
+  text-align: left;
+  width: 30%;
 }
+
 .detail-table td {
   width: 70%;
 }
 
+
 /* —— SECTION WRAPPERS —— */
+
 .section {
   margin-bottom: 2rem;
 }
 .section h2 {
+  font-weight:400 ;
   font-size: 1.5rem;
   color: var(--maroon);
   border-bottom: 2px solid var(--maroon);
   display: inline-block;
   padding-bottom: 0.25rem;
-  margin-bottom: var(--gap);
+  margin-bottom: var(--gap) auto;
 }
 .section-content {
+  text-align: center;
   background: var(--white);
   padding: var(--gap);
   border-radius: var(--radius);
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
+/* center the heading & list container */
+.evaluations {
+  text-align: center;
+  margin: var(--gap) auto;
+}
+
+/* shrink & center the UL itself */
+.evaluation-list {
+  display: inline-block; /* makes width shrink to content */
+  text-align: left;      /* keep bullets/text left-aligned */
+  padding: 0;
+  margin: 0;             /* already centered by parent */
+  list-style: disc inside;
+}
+
+/* optional spacing between items */
+.evaluation-list li {
+  margin-bottom: 0.5rem;
+}
+
+
 /* —— COMMENTS & EVALUATIONS LIST —— */
 .detail-list {
+  text-align: center;
   list-style: disc inside;
   line-height: 1.4;
 }
@@ -237,3 +276,32 @@ body {
     gap: 1rem;
   }
 }
+
+
+/*
+/* —— DOWNLOAD BUTTON —— */
+.btn-download {
+margin: 1rem auto;
+  text-align: center;
+  display: block;
+  max-width: 20%;
+  width: 100%;
+  padding: 0.6rem 0.2rem;
+  background: var(--maroon);
+  color: var(--white);
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid var(--maroon);
+  border-radius: var(--radius);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-download:hover {
+  background: var(--yellow);
+  color: var(--maroon);
+}
+
+.btn-download i {
+  margin-right: 0.5rem;
+}
+

@@ -4,7 +4,7 @@ from datetime import datetime
 from functools import wraps
 from enum import Enum
 
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
 
@@ -12,13 +12,16 @@ from scripts.criteriatable import CriteriaTable
 from scripts.incrementstable import IncrementsTable
 from scripts.table_handler import TableHandler
 
+from download import download_pdf
+
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "super-secret-key"  # Change for production!
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///interviews.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-EVAL_STRUCUTURE = {
+EVAL_STRUCTURE = {
     "teaching" : {"Behavior Interview" : {
                         "aptitude" : 1,
                         "characteristics" : 1,
@@ -246,7 +249,7 @@ def applicant_detail(code):
     # For teaching interviews, compute NCOI as:
     #   NCOI = Admin's TRF (max 20) + Average of evaluators' five criteria scores (max 5)
     eval_type = Interview.query.filter_by(id=applicant.interview_id).first().type
-    eval_struct = EVAL_STRUCUTURE[eval_type]
+    eval_struct = EVAL_STRUCTURE[eval_type]
 
     ncoi = None
     avg_eval = None
@@ -278,6 +281,19 @@ def applicant_detail(code):
                            ncoi=ncoi,
                            avg_eval=avg_eval)
 
+@app.route("/admin/applicant/<code>/download")
+@admin_required
+def download_applicant_pdf(code):
+    
+    doc_io = download_pdf(code, Participant(), Evaluation(), Interview(), Validation(), EVAL_STRUCTURE=EVAL_STRUCTURE)
+    print(doc_io)
+
+    return send_file(
+        doc_io,
+        as_attachment=True,
+        download_name=f'APPLICANT {code}_DETAILS.docx',
+        mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    )
 
 @app.route("/admin/evaluator/<token>")
 @admin_required
@@ -293,7 +309,7 @@ def evaluator_detail(token):
                                              interview_id=evaluator.interview_id).all()
     
     eval_type = Interview.query.filter_by(id=evaluator.interview_id).first().type
-    eval_struct = EVAL_STRUCUTURE[eval_type]
+    eval_struct = EVAL_STRUCTURE[eval_type]
     scores = []
     for eval_record in eval_records:
         overall = 0
@@ -438,7 +454,7 @@ def evaluator_dashboard():
 
     # print(evaluation.interview.type)
     eval_type = Interview.query.filter_by(id=iid).first().type
-    eval_struct = EVAL_STRUCUTURE[eval_type]
+    eval_struct = EVAL_STRUCTURE[eval_type]
     # For each applicant, get only the evaluation record for the current evaluator.
     my_scores = {}
     for a in applicants:
@@ -482,7 +498,7 @@ def evaluator_applicant_detail(code):
  
     # print(evaluation.interview.type)
     eval_type = Interview.query.filter_by(id=iid).first().type
-    eval_struct = EVAL_STRUCUTURE[eval_type]
+    eval_struct = EVAL_STRUCTURE[eval_type]
     if request.method == "POST":
         try:
             extra_data = {}

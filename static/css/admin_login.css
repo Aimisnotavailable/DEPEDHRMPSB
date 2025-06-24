@@ -161,7 +161,7 @@ header{
   z-index: 2;
   padding: 0.75rem;
   background: rgba(128,0,0,0.8);
-  color: var(--white);
+  color: var(--bg-light);
   border: none;
   border-radius: 4px;
   font-weight: bold;
@@ -193,7 +193,7 @@ header{
 }
 
 .admin-footer .footer-logos img {
-  height: 70px;  
+  height: 60px;  
   width: auto;
 }
 

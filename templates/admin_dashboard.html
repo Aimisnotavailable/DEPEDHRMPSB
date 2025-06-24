@@ -16,9 +16,11 @@
   />
 
   <!-- Main stylesheet -->
+
+  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}"/>
   <link
     rel="stylesheet"
-    href="{{ url_for('static', filename='css/admin_dashboard.css') }}"
+    href="{{ url_for('static', filename='./css/admin_dashboard.css') }}"
   />
 </head>
 <body>
@@ -84,8 +86,20 @@
             <option disabled selected>– select –</option>
             <option value="non-teaching">Non-Teaching</option>
             <option value="teaching">Teaching</option>
+            <option value="school-administrarion">School Administration</option>
+            <option value="relatead-teaching">Related Teaching</option>
             <option value="promotion">Promotion</option>
+
           </select>
+
+<!-- Add this after the interview_type select in your form -->
+<div id="sg_level_container" style="display: none;">
+    <label for="sg_level">Job Group/SG-Level</label>
+    <select id="sg_level" name="sg_level" required>
+        <option disabled selected>– select –</option>
+    </select>
+</div>
+
 
           <div class="form-actions">
             <button type="submit" class="btn-submit">Create Interview</button>
@@ -157,6 +171,82 @@
       </div>
     </div>
   </footer>
+<script>
+    // This will hold the loaded SG types data
+    let sgTypesData = null;
 
+    // Map interview types to JSON categories
+    const interviewTypeMap = {
+        'teaching': 'TEACHING_POSITIONS',
+        'non-teaching': 'NON_TEACHING',
+        'promotion': 'SCHOOL_ADMIN' ,
+        'school-administrarion': 'SCHOOL_ADMIN',
+        'relatead-teaching': 'RELATED_TEACHING'
+    };
+
+    // Function to load the sg-type.json file
+    async function loadSgTypes() {
+        try {
+            const response = await fetch("{{ url_for('static', filename='json/sg-type.json') }}");
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            sgTypesData = await response.json();
+            console.log('SG Types loaded successfully:', sgTypesData);
+        } catch (error) {
+            console.error('Error loading SG types:', error);
+            alert('Failed to load position data. Please check console for details.');
+        }
+    }
+
+    // Function to update SG level dropdown based on selected interview type
+    function updateSgLevels(interviewType) {
+        const sgContainer = document.getElementById('sg_level_container');
+        const sgSelect = document.getElementById('sg_level');
+        
+        // Clear existing options
+        sgSelect.innerHTML = '<option disabled selected value="">– select –</option>';
+        
+        if (interviewType && sgTypesData) {
+            const category = interviewTypeMap[interviewType];
+            const positions = sgTypesData[category];
+            
+            if (positions && positions.length > 0) {
+                sgContainer.style.display = 'block';
+                
+                // Add options for the selected interview type
+                positions.forEach(position => {
+                    const optionText = `${position.Position_Title} (SG ${position.Salary_Grade})`;
+                    const option = new Option(optionText, position.Salary_Grade);
+                    sgSelect.appendChild(option);
+                });
+            } else {
+                sgContainer.style.display = 'none';
+                console.warn(`No positions found for category: ${category}`);
+            }
+        } else {
+            sgContainer.style.display = 'none';
+        }
+    }
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Load the SG types data first
+        await loadSgTypes();
+        
+        // Get the interview type select element
+        const interviewTypeSelect = document.getElementById('interview_type');
+        
+        // Set up the event listener for interview type changes
+        interviewTypeSelect.addEventListener('change', function() {
+            updateSgLevels(this.value);
+        });
+        
+        // Trigger change event immediately if there's already a selected value
+        if (interviewTypeSelect.value) {
+            updateSgLevels(interviewTypeSelect.value);
+        }
+    });
+</script>
 </body>
 </html>

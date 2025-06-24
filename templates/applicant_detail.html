@@ -16,6 +16,9 @@
   >
 
   <!-- Page styles -->
+
+  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}"/>
+
   <link
     rel="stylesheet"
     href="{{ url_for('static', filename='css/applicant_detail.css') }}"
@@ -43,7 +46,12 @@
       class="btn-back"
     >← Back to Interview Details</a>
 
-    <h1>Applicant {{ applicant.code }} Details</h1>
+    </div>
+
+
+
+    <h1 class="title">Applicant {{ applicant.code }} Details</h1>
+    
 
     <table class="detail-table">
       <tbody>
@@ -69,16 +77,23 @@
       </tbody>
     </table>
 
-{% if scores %}
+<div class="evaluations">
+  {% if scores %}
     <h2>Evaluations</h2>
-    <ul>
+    <ul class="evaluation-list">
       {% for score in scores %}
         <li>Evaluator #{{ loop.index }} score: {{ score | round(2) }}</li>
       {% endfor %}
     </ul>
   {% endif %}
+</div>
 
   </div><!-- /.form-container -->
+  
+            <a
+        href="{{ url_for('download_applicant_pdf', code=applicant.code) }}"
+        class="btn-download"
+      ><i class="fas fa-download"></i>Download File</a>
 
   <!-- SITE FOOTER -->
   <footer class="admin-footer">

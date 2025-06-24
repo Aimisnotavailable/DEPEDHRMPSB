@@ -1,0 +1,974 @@
+{
+  "TEACHING_POSITIONS": [
+    {
+      "Position_Title": "Teacher 1",
+      "Salary_Grade": 11
+    }
+  ],
+  "SCHOOL_ADMIN": [
+    {
+      "Position_Title": "School Principal IV",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "School Principal III",
+      "Salary_Grade": 21
+    },
+    {
+      "Position_Title": "Assistant School Principal III",
+      "Salary_Grade": 20
+    },
+    {
+      "Position_Title": "School Principal II",
+      "Salary_Grade": 20
+    },
+    {
+      "Position_Title": "Special School Principal II",
+      "Salary_Grade": 20
+    },
+    {
+      "Position_Title": "Assistant School Principal II",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Head Teacher VI",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "School Principal I",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Special School Principal I",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Assistant School Principal I",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Assistant Special School Principal",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Head Teacher V",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Head Teacher IV",
+      "Salary_Grade": 17
+    },
+    {
+      "Position_Title": "Head Teacher III",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Head Teacher II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Head Teacher I",
+      "Salary_Grade": 14
+    }
+  ],
+  "RELATED_TEACHING": [
+    {
+      "Position_Title": "Chief Education Program Specialist",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Education Program Supervisor",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Public Schools District Supervisor",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Supervising Education Program Specialist",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Senior Education Program Specialist",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Senior Science Research Specialist",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Vocational Instruction Supervisor III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Vocational Instruction Supervisor II",
+      "Salary_Grade": 17
+    },
+    {
+      "Position_Title": "Education Program Specialist II",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Guidance Coordinator III",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Science Research Specialist II",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Science Research Technician IV",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Vocational Instruction Supervisor I",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Guidance Coordinator II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "School Farming Coordinator III",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Teacher Credentials Evaluator II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Guidance Coordinator I",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "School Farming Coordinator II",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "Guidance Counselor III",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "School Farming Coordinator I",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "Science Research Technician III",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "Teacher Credentials Evaluator I",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "Crafts Education Demonstrator II",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "Education Program Specialist I",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "Guidance Counselor II",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "Guidance Counselor I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Science Research Technician II",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Teaching-Aids Specialist",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Crafts Education Demonstrator 1",
+      "Salary_Grade": 10
+    },
+    {
+      "Position_Title": "Education Research Assistant II",
+      "Salary_Grade": 10
+    },
+    {
+      "Position_Title": "School Farm Demonstrator",
+      "Salary_Grade": 10
+    }
+  ],
+  "NON_TEACHING": [
+    {
+      "Position_Title": "Attorney V",
+      "Salary_Grade": 25
+    },
+    {
+      "Position_Title": "Chief Accountant",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Chief Administrative Officer",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Chief Education Supervisor",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Chief Health Program Officer",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Engineer V",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Information Technology Officer III",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Internal Auditor V",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Planning Officer V",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Project Development Officer V",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Teachers' Camp Superintendent",
+      "Salary_Grade": 24
+    },
+    {
+      "Position_Title": "Attorney IV",
+      "Salary_Grade": 23
+    },
+    {
+      "Position_Title": "Medical Officer IV",
+      "Salary_Grade": 23
+    },
+    {
+      "Position_Title": "Vocational School Administrator II",
+      "Salary_Grade": 23
+    },
+    {
+      "Position_Title": "Accountant IV",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Assistant Teacher's Camp Superintendent",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Department Legislative Liaison Specialist",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Engineer IV",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Information Technology Officer II",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Internal Auditor IV",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Planning Officer IV",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Project Development Officer IV",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Project Evaluation Officer IV",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Security Officer IV",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Supervising Administrative Officer",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Supervising Health Program Officer",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Vocational School Administrator I",
+      "Salary_Grade": 22
+    },
+    {
+      "Position_Title": "Attorney III",
+      "Salary_Grade": 21
+    },
+    {
+      "Position_Title": "Medical Officer III",
+      "Salary_Grade": 21
+    },
+    {
+      "Position_Title": "Dentist III",
+      "Salary_Grade": 20
+    },
+    {
+      "Position_Title": "Accountant III",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Architect III",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Engineer III",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Information Systems Analyst III",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Information Technology Officer I",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Administrative Officer V",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Attorney II",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Computer Programmer III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Guidance Services Specialist II",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Health Education and Promotion Officer III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Internal Auditor III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Librarian III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Medical Officer II",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Nutritionist-Dietitian III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Planning Officer III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Project Development Officer III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Senior Administrative Assistant V",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Special Investigator III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Statistican III",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Computer Maintenance Technologist III",
+      "Salary_Grade": 17
+    },
+    {
+      "Position_Title": "Dentist Il",
+      "Salary_Grade": 17
+    },
+    {
+      "Position_Title": "Information Systems Researcher Ill",
+      "Salary_Grade": 17
+    },
+    {
+      "Position_Title": "Accountant Il",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Architect Il",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Attorney I",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Engineer II",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Guidance Services Specialist I",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Information Systems Analyst II",
+      "Salary_Grade": 16
+    },
+    {
+      "Position_Title": "Administrative Officer IV",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Agriculturist II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "College Librarian Il",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Computer Programmer II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Creative Arts Specialist II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Human Resource Management Officer II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Internal Auditor II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Librarian II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Nurse II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Nutritionist-Dietitian II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Planning Officer II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Project Development Officer I1",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Publication Production Supervisor",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Registrar II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Security Officer II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Senior Administrative Assistant III",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Special Investigator II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Statistician II",
+      "Salary_Grade": 15
+    },
+    {
+      "Position_Title": "Administrative Officer III",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "Cashier II",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "Dentist I",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "Health Education and Promotion Officer II",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "Records Officer II",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "Senior Administrative Assistant II",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "Supply Officer II",
+      "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "College Librarian I",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "School Librarian III",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "Senior Administrative Assistant I",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "Vocational Placement Coordinator I",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "Accountant I",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "Administrative Assistant VI",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "Legal Assistant II",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "School Librarian II",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "Accounting Analyst",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Administrative Assistant V",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Administrative Officer II",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Agriculturist I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Aquaculturist I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Budget Officer I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Communications Equipment Operator IV",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Computer Maintenance Technologist I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Creative Arts Specialist I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Dormitory Manager II",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Fiscal Examiner I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Human Resource Management Officer I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Internal Auditor I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Librarian I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Nurse I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Nutritionist-Dietitian I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Planning Officer I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Project Development Officer I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Psychologist I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Registrar I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "School Librarian I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Social Welfare Officer I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Statistician I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Warehouseman III",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Administrative Officer I",
+      "Salary_Grade": 10
+    },
+    {
+      "Position_Title": "Cashier I",
+      "Salary_Grade": 10
+    },
+    {
+      "Position_Title": "Cinematographer I",
+      "Salary_Grade": 10
+    },
+    {
+      "Position_Title": "Computer File Librarian II",
+      "Salary_Grade": 10
+    },
+    {
+      "Position_Title": "Legal Assistant I",
+      "Salary_Grade": 10
+    },
+    {
+      "Position_Title": "Supply Officer I",
+      "Salary_Grade": 10
+    },
+    {
+      "Position_Title": "Administrative Assistant III",
+      "Salary_Grade": 9
+    },
+    {
+      "Position_Title": "Communications Equipment Operator III",
+      "Salary_Grade": 9
+    },
+    {
+      "Position_Title": "Dormitory Manager I",
+      "Salary_Grade": 9
+    },
+    {
+      "Position_Title": "Printing Foreman",
+      "Salary_Grade": 9
+    },
+    {
+      "Position_Title": "Science Research Assistant",
+      "Salary_Grade": 9
+    },
+    {
+      "Position_Title": "Science Research Technician I",
+      "Salary_Grade": 9
+    },
+    {
+      "Position_Title": "Senior Bookkeeper",
+      "Salary_Grade": 9
+    },
+    {
+      "Position_Title": "Administrative Assistant II",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Aquacultural Technician II",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Artist-Illustrator II",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Bookkeeper",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Computer File Librarian I",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Disbursing Officer II",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Draftsman II",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Internal Auditing Assistant",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Project Development Assistant",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Security Guard III",
+      "Salary_Grade": 8
+    },
+    {
+      "Position_Title": "Administrative Assistant I",
+      "Salary_Grade": 7
+    },
+    {
+      "Position_Title": "Copy Reader",
+      "Salary_Grade": 7
+    },
+    {
+      "Position_Title": "Accounting Clerk II",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Administrative Aide VI",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Clerk III",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Communications Equipment Operator II",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Disbursing Officer I",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Draftsman I",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Electronics and Communications Equipment Technician I",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Laboratory Technician I",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Mechanic II",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Mechanical Plant Operator II",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Photoengraver Il",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Proofreader II",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Typesetter Il",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Utility Foreman",
+      "Salary_Grade": 6
+    },
+    {
+      "Position_Title": "Administrative Aide V",
+      "Salary_Grade": 5
+    },
+    {
+      "Position_Title": "Handicraft Worker II",
+      "Salary_Grade": 5
+    },
+    {
+      "Position_Title": "Legal Aide",
+      "Salary_Grade": 5
+    },
+    {
+      "Position_Title": "Master Fisherman I",
+      "Salary_Grade": 5
+    },
+    {
+      "Position_Title": "Security Guard II",
+      "Salary_Grade": 5
+    },
+    {
+      "Position_Title": "Administrative Aide IV",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Clerk II",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Communications Equipment Operator I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Dental Aide",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Fiscal Clerk I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Heavy Equipment Operator I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Houseparent I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Marine Engineman I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Mechanic I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Mechanical Plant Operator I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Metal Worker I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Nursing Attendant I",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Statistician Aide",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Telegram Carrier",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Watchman Il",
+      "Salary_Grade": 4
+    },
+    {
+      "Position_Title": "Administrative Aide III",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Clerk I",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Cook I",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Coxswain",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Driver I",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Fisherman",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Handicraft Worker I",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Lineman I",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Security Guard I",
+      "Salary_Grade": 3
+    },
+    {
+      "Position_Title": "Administrative Aide II",
+      "Salary_Grade": 2
+    },
+    {
+      "Position_Title": "Construction and Maintenance Man",
+      "Salary_Grade": 2
+    },
+    {
+      "Position_Title": "Farm Worker I",
+      "Salary_Grade": 2
+    },
+    {
+      "Position_Title": "Guesthouse Caretaker",
+      "Salary_Grade": 2
+    },
+    {
+      "Position_Title": "Light Equipment Operator",
+      "Salary_Grade": 2
+    },
+    {
+      "Position_Title": "Nurse Maid I",
+      "Salary_Grade": 2
+    },
+    {
+      "Position_Title": "Reproduction Machine Operator I",
+      "Salary_Grade": 2
+    },
+    {
+      "Position_Title": "Watchman I",
+      "Salary_Grade": 2
+    },
+    {
+      "Position_Title": "Administrative Aide I",
+      "Salary_Grade": 1
+    },
+    {
+      "Position_Title": "Utility Worker I",
+      "Salary_Grade": 1
+    }
+  ]
+}

@@ -265,16 +265,90 @@ form button[type="submit"]:hover {
   color: var(--yellow);
 }
 
-
-
-/* —— RESPONSIVE —— */
-@media (max-width: 600px) {
+/* Extra-small phones (portrait <576px) */
+@media (max-width: 575.98px) {
   .content-container {
+    width: 100%;
+    margin: 0.5rem auto;
+    padding: 1rem;
+  }
+  .banner-text h1 {
+    font-size: 1.2rem;
+  }
+  .wizard-nav {
+    flex-direction: column;
+  }
+  .wizard-nav .wizard-btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Small phones & landscape phones (≥576px and <768px) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .content-container {
+    max-width: 480px;
     margin: 1rem auto;
+    padding: 1.25rem;
+  }
+  .banner-text h1 {
+    font-size: 1.4rem;
+  }
+}
+
+/* Tablets (≥768px and <992px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .content-container {
+    max-width: 640px;
+    margin: 1.5rem auto;
     padding: 1.5rem;
   }
-  .footer-content {
-    flex-direction: column;
+  .banner-top {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .banner-text {
+    flex: 1 1 100%;
     text-align: center;
+  }
+}
+
+/* Small laptops / desktops (≥992px and <1200px) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .content-container {
+    max-width: 800px;
+  }
+  .banner-text h1 {
+    font-size: 1.75rem;
+  }
+  .wizard-nav {
+    justify-content: space-between;
+  }
+}
+
+/* Large desktops (≥1200px and <1600px) */
+@media (min-width: 1200px) and (max-width: 1599.98px) {
+  .content-container {
+    max-width: 960px;
+  }
+  .banner-text h1 {
+    font-size: 2rem;
+  }
+  .wizard-nav .wizard-btn {
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+/* Extra-wide desktops (≥1600px) */
+@media (min-width: 1600px) {
+  .content-container {
+    max-width: 1140px;
+  }
+  .banner-text h1 {
+    font-size: 2.25rem;
+  }
+  .wizard-nav .wizard-btn {
+    font-size: 1.1rem;
   }
 }
