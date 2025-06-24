@@ -29,37 +29,97 @@ body {
   line-height: 1.5;
 }
 
-/* —— HEADER —— */
-header {
+/* —— SITE BANNER —— */
+.site-banner .banner-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--gap);
-  padding: 1rem var(--gap);
+  justify-content: center;
+  padding: 0.5rem 2rem;
   background: var(--maroon);
-  color: var(--white);
+  color: #fff;
+  
 }
-header img {
+.site-banner .banner-logo {
   height: 60px;
 }
-header h1 {
+.site-banner .banner-top h1 {
+  flex: 1;
+  text-align: center;
   font-size: 1.75rem;
   font-weight: 600;
 }
-.logout-btn {
-    white-space: nowrap;
+.site-banner .banner-logout {
+  background: var(--yellow);
+  color: var(--maroon);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.site-banner .banner-logout:hover {
+  background: #e5c100;
 }
 
-/* —— PAGE TITLE —— */
-h2 {
-  font-size: 1.5rem;
-  color: var(--maroon);
-  margin: var(--gap) auto var(--gap);
-  text-align: center;
-  padding-bottom: 0.25rem;
-  border-bottom: 2px solid var(--maroon);
-  max-width: max-content;
+/* 1. Make the .banner-text a middle flex‐column */
+.site-banner .banner-top {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; remove this so left & right items stay pinned */
+  justify-content: space-between;
 }
+
+.site-banner .banner-text {
+  flex: 1;                    /* take up all space between logo & logout */
+  display: flex;
+  flex-direction: column;     /* stack H1, H2, Ps vertically */
+  align-items: center;        /* center them horizontally */
+  gap: 0.25rem;               /* small spacing between lines */
+}
+
+/* 2. Tweak margins so they don’t collide */
+.site-banner .banner-text h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+.site-banner .banner-subtitle,
+.site-banner .sub-banner-dept,
+.site-banner .sub-banner-region {
+  margin: 0;
+  color: #fff;
+}
+
+.sub-banner {
+  padding: 0.75rem 10rem;
+  width: 100%;
+}
+.hr-section {
+  width: 100%;                   
+  background: rgba(128,0,0,0.9);
+  padding: 0.75rem 1rem;
+}
+
+.hr-section h2 {
+  margin: 0;                    
+  color: #fff;                   
+  text-align: center;
+  font-size: 1.25rem;           
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+
+.site-banner .sub-banner-dept {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.site-banner .sub-banner-region {
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-style: italic;
+}
+
 
 /* —— FROSTED-GLASS CONTENT WRAPPER —— */
 body > table,

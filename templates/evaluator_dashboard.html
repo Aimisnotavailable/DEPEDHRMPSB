@@ -9,16 +9,28 @@
   >
 </head>
 <body>
-  <header>
-
-    <img src="{{url_for('static', filename="images/deped_seal.png")}}"
-    rel="stylesheet"
-    class="Deped Logo"
-    >
-    <h1>Evaluator Dashboard</h1>
-  <a href="{{ url_for('logout') }}" class="btn logout-btn">Logout</a>
-  
-  </header>
+ <!-- SITE BANNER -->
+<header class="site-banner" role="banner">
+<div class="banner-top">
+  <img
+    src="{{ url_for('static', filename='images/deped_seal.png') }}"
+    alt="DepEd Logo"
+    class="banner-logo"
+  />
+  <!-- new centered text column -->
+  <div class="banner-text">
+    <h1>DEPARTMENT OF EDUCATION</h1>
+    <p class="sub-banner-region">Region I – Ilocos Region</p>
+    <p class="sub-banner-dept">Schools Division of Laoag City</p>
+  </div>
+  <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
+</div>
+</header>
+<section class="hr-section" aria-labelledby="hr-section-title">
+  <h2 id="hr-section-title">
+    HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
+  </h2>
+</section>
 
 
   <h2>Interview: {{ interview.id }} ({{ interview.type.capitalize() }})</h2>
