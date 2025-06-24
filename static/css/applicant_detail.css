@@ -29,62 +29,79 @@ body {
   line-height: 1.5;
 }
 
-/* —— SITE BANNER HEADER —— */
+/* —— SITE BANNER (Header) —— */
 .site-banner {
   background: var(--maroon);
-  color: var(--white);
+  color: #fff;
 }
-
-/* make banner-top a centered flexbox but position:relative for absolute children */
 .site-banner .banner-top {
-  position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;   /* centers the <h1> */
-  padding: 1rem 2rem;
+  justify-content: space-between;  /* Left and right items stay pinned */
+  padding: 0.5rem 2rem;
   background: var(--maroon);
+  color: #fff;
 }
-
-/* pin the logo absolutely to the left */
 .site-banner .banner-logo {
-  position: absolute;
-  left: 2rem;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 50px;
+  height: 60px;
 }
-
-/* your centered title */
-.site-banner .banner-top h1 {
+.site-banner .banner-text {
+  flex: 1;                    /* Take up all space between logo & logout */
+  display: flex;
+  flex-direction: column;     /* Stack headings and paragraphs vertically */
+  align-items: center;        /* Center them horizontally */
+  gap: 0.25rem;
+}
+.site-banner .banner-text h1 {
   margin: 0;
   font-size: 1.75rem;
   font-weight: 600;
   text-align: center;
 }
-
-/* —— BOTTOM STRIP —— */
-.site-banner .banner-bottom {
-  border-top: 1px solid rgba(255,255,255,0.3);
-  padding: 0.5rem 2rem;
-  background: rgba(0,0,0,0.1);
+/* Optional additional header text */
+.site-banner .sub-banner-region,
+.site-banner .sub-banner-dept,
+.site-banner .banner-subtitle {
+  margin: 0;
+  color: #fff;
 }
-
-.site-banner .contact-list {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  padding: 0;
-}
-.site-banner .contact-list a {
-  color: var(--white);
+.site-banner .banner-logout {
+  background: var(--yellow);
+  color: var(--maroon);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
   text-decoration: none;
-  transition: color 0.2s;
+  font-weight: 500;
+  transition: background 0.2s;
 }
-.site-banner .contact-list a:hover {
-  color: var(--yellow);
+.site-banner .banner-logout:hover {
+  background: #e5c100;
 }
 
+/* —— HR SECTION —— */
+.hr-section {
+  width: 100%;
+  background: rgba(128, 0, 0, 0.9);
+  padding: 0.75rem 1rem;
+}
+.hr-section h2 {
+  margin: 0;
+  color: #fff;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
+}
+.site-banner .sub-banner-dept {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.site-banner .sub-banner-region {
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-style: italic;
+}
 
 /* —— MAIN PANEL (FROSTED-GLASS) —— */
 .form-container {
@@ -125,7 +142,9 @@ body {
   font-weight: 500;
   transition: background 0.2s;
 }
-.btn-back:hover { background: #e5c100; }
+.btn-back:hover { 
+  background: #e5c100; 
+}
 
 /* —— DETAIL TABLE —— */
 
@@ -255,7 +274,9 @@ body {
 
 /* —— RESPONSIVE —— */
 @media (max-width: 768px) {
-  .form-container { padding: 0.5rem; }
+  .form-container { 
+    padding: 0.5rem; 
+  }
   .form-header {
     flex-direction: column;
     align-items: flex-start;

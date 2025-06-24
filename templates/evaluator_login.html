@@ -4,10 +4,13 @@
 <head>
   <meta charset="utf-8">
   <title>Evaluator Login</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <!-- Icons & Font -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Icons & Fonts -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- External CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/evaluator_login.css') }}">
   <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}"/>
 </head>
@@ -15,18 +18,30 @@
 <body>
 
   <!-- SITE BANNER -->
-  <header class="site-banner" role="banner">
-    <div class="banner-top">
-      <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Seal" class="banner-logo">
-      <div class="banner-title">Department of Education</div>
-    </div>
-  </header>
+<header class="site-banner" role="banner">
+<div class="banner-top">
+  <img
+    src="{{ url_for('static', filename='images/deped_seal.png') }}"
+    alt="DepEd Logo"
+    class="banner-logo"
+  />
+  <!-- new centered text column -->
+  <div class="banner-text">
+    <h1>DEPARTMENT OF EDUCATION</h1>
+    <p class="sub-banner-region">Region I – Ilocos Region</p>
+    <p class="sub-banner-dept">Schools Division of Laoag City</p>
+</header>
+<section class="hr-section" aria-labelledby="hr-section-title">
+  <h2 id="hr-section-title">
+    HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
+  </h2>
+</section>
 
   <!-- LOGIN FORM -->
   <main class="login-page">
     <div class="login-box">
       <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Seal" class="logo-small">
-      <h2>Evaluator Login</h2>
+      <h2>HRMPSB</h2>
 
       {% with msgs = get_flashed_messages(category_filter=['error']) %}
       {% for m in msgs %}
