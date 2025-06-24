@@ -25,6 +25,20 @@ EVAL_STRUCUTURE = {
                         "fitness" : 1,
                         "leadership" : 1,
                         "communication" : 1
+                    },
+                    "Behavior1 Interview" : {
+                        "aptitude" : 1,
+                        "characteristics" : 1,
+                        "fitness" : 1,
+                        "leadership" : 1,
+                        "communication" : 1
+                    },                    
+                      "Behavior2 Interview" : {
+                        "aptitude" : 1,
+                        "characteristics" : 1,
+                        "fitness" : 1,
+                        "leadership" : 1,
+                        "communication" : 1
                     }}
 }
 
@@ -475,7 +489,7 @@ def evaluator_applicant_detail(code):
             for key in eval_struct.keys():
                 extra_data[key] = {}
                 for field in eval_struct[key].keys():
-                    extra_data[key][field] = float(request.form.get(field, 0))
+                    extra_data[key][field] = float(request.form.get(f'{key}_{field}', 0))
         except ValueError:
             flash("Please enter valid numeric values.", "error")
             return redirect(url_for("evaluator_applicant_detail", code=code))
@@ -499,9 +513,10 @@ def evaluator_applicant_detail(code):
                 participant_code=code,
                 extra_data=extra_data_str
             )
+            
             db.session.add(evaluation)
             flash("Your evaluation has been submitted.", "success")
-        
+        print(extra_data_str)
         db.session.commit()
         return redirect(url_for("evaluator_applicant_detail", code=code))
     

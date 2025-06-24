@@ -251,7 +251,8 @@ footer.site-footer {
   width: 100%;
   background: var(--maroon);
   color: var(--white);
-  padding: 0.5rem 1.5rem;
+  padding: 1.5rem 1.5rem;
+  justify-content: space-between;
 }
 
 .site-footer .footer-inner {
