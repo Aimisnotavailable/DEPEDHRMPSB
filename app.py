@@ -20,7 +20,11 @@ app.config["SECRET_KEY"] = "super-secret-key"  # Change for production!
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///interviews.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
-
+# TO-DO
+# WEIGHT PROMOTION /12 * 5
+# CHANGE TO TEACHER 1 and Higher Teaching
+# SG LEVEL
+# 
 EVAL_STRUCTURE = {
     "teaching" : {"Behavior Interview" : {
                         "aptitude" : 1,
@@ -47,21 +51,13 @@ EVAL_STRUCTURE = {
                         "communication" : 1
                     },
                     },
-    "promotion" : {       
-                    "Written Examination" : {
-                        "focus and detail" : 1,
-                        "organization" : 1,
-                        "content" : 1,
-                        "word choice" : 1,
-                        "sentence, structure, grammar mechanics, and spelling" : 1,
-                    },
-                    "Behavior Interview" : {
-                        "aptitude" : 1,
-                        "characteristics" : 1,
-                        "fitness" : 1,
-                        "leadership" : 1,
-                        "communication" : 1
-                    },
+        "promotion" : {       
+                        "BEI" : {
+                            "Alignment with the NCOIs" : 3,
+                            "Clarity and Coherence" : 3,
+                            "Active listening" : 3,
+                            "Confidence" : 3,
+                        },
                     },
     "non teaching" : {
                     "" :{
@@ -132,7 +128,7 @@ APPLICANT_STRUCTURE = {
     "teaching" : {
         "lpt_rating" : {"WEIGHT" : 10, "MAX_SCORE" : 100, "LABEL" : "LPT/PBET/LEPT Rating"},
         "cot" : {"WEIGHT" : 35, "MAX_SCORE" : 30, "LABEL" : "COT"},
-        "trf_rating" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "TRF"}
+        "trf_rating" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "TRF"}
     },
     "related teaching" : {
         "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
@@ -143,7 +139,7 @@ APPLICANT_STRUCTURE = {
     "promotion" : {
         "performance" : {"WEIGHT" : 30, "MAX_SCORE" : 30, "LABEL" : "PERFORMANCE"},
         "ppst_cois" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PPST COIS"},
-        "ppst_ncois" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "PPST NCOIS"},
+        "ppst_ncois" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "PPST NCOIS"},
     },
     "non teaching" : {
         "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
