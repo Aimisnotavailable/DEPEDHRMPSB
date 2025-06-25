@@ -1,52 +1,41 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Admin Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Icons & Fonts -->
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    rel="stylesheet"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Main stylesheet -->
 
-  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}"/>
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='./css/admin_dashboard.css') }}"
-  />
+  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='./css/admin_dashboard.css') }}" />
 </head>
+
 <body>
 
   <!-- SITE BANNER -->
-<header class="site-banner" role="banner">
-<div class="banner-top">
-  <img
-    src="{{ url_for('static', filename='images/deped_seal.png') }}"
-    alt="DepEd Logo"
-    class="banner-logo"
-  />
-  <!-- new centered text column -->
-  <div class="banner-text">
-    <h1>DEPARTMENT OF EDUCATION</h1>
-    <p class="sub-banner-region">Region I – Ilocos Region</p>
-    <p class="sub-banner-dept">Schools Division of Laoag City</p>
-  </div>
-  <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
-</div>
-</header>
-<section class="hr-section" aria-labelledby="hr-section-title">
-  <h2 id="hr-section-title">
-    HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
-  </h2>
-</section>
+  <header class="site-banner" role="banner">
+    <div class="banner-top">
+      <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo" class="banner-logo" />
+      <!-- new centered text column -->
+      <div class="banner-text">
+        <h1>DEPARTMENT OF EDUCATION</h1>
+        <p class="sub-banner-region">Region I – Ilocos Region</p>
+        <p class="sub-banner-dept">Schools Division of Laoag City</p>
+      </div>
+      <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
+    </div>
+  </header>
+  <section class="hr-section" aria-labelledby="hr-section-title">
+    <h2 id="hr-section-title">
+      HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
+    </h2>
+  </section>
 
 
   <!-- MAIN CONTAINER BOX -->
@@ -84,21 +73,21 @@
           <label for="interview_type">Interview Type</label>
           <select id="interview_type" name="interview_type" required>
             <option disabled selected>– select –</option>
-            <option value="non-teaching">Non-Teaching</option>
+            <option value="non teaching">Non-Teaching</option>
             <option value="teaching">Teaching</option>
-            <option value="school-administrarion">School Administration</option>
-            <option value="relatead-teaching">Related Teaching</option>
+            <option value="school administration">School Administration</option>
+            <option value="related teaching">Related Teaching</option>
             <option value="promotion">Promotion</option>
 
           </select>
 
-<!-- Add this after the interview_type select in your form -->
-<div id="sg_level_container" style="display: none;">
-    <label for="sg_level">Job Group/SG-Level</label>
-    <select id="sg_level" name="sg_level" required>
-        <option disabled selected>– select –</option>
-    </select>
-</div>
+          <!-- Add this after the interview_type select in your form -->
+          <div id="sg_level_container" style="display: none;">
+            <label for="sg_level">Job Group/SG-Level</label>
+            <select id="sg_level" name="sg_level" required>
+              <option disabled selected>– select –</option>
+            </select>
+          </div>
 
 
           <div class="form-actions">
@@ -132,11 +121,7 @@
               <td>{{ iv.evaluator_tokens|length }}</td>
               <td>{{ iv.participants|length }}</td>
               <td>
-                <a
-                  href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
-                  class="btn-submit"
-                  >View</a
-                >
+                <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn-submit">View</a>
               </td>
             </tr>
             {% endfor %}
@@ -151,102 +136,93 @@
   <footer class="admin-footer" role="contentinfo">
     <div class="footer-content">
       <div class="footer-logos">
-        <img
-          src="{{ url_for('static', filename='images/deped_logo.png') }}"
-          alt="DepEd Logo"
-        />
+        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
       </div>
       <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph"
-          ><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a
-        >
-        <a
-          href="https://www.facebook.com/depedtayolaoagcity"
-          target="_blank"
-          ><i class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a
-        >
-        <a href="https://www.depedlaoagcity.com" target="_blank"
-          ><i class="fas fa-globe"></i>depedlaoagcity.com</a
-        >
+        <a href="mailto:laoag.city@deped.gov.ph"><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a>
+        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank"><i
+            class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a>
+        <a href="https://www.depedlaoagcity.com" target="_blank"><i class="fas fa-globe"></i>depedlaoagcity.com</a>
       </div>
     </div>
   </footer>
-<script>
+  <script>
     // This will hold the loaded SG types data
     let sgTypesData = null;
 
     // Map interview types to JSON categories
     const interviewTypeMap = {
-        'teaching': 'TEACHING_POSITIONS',
-        'non-teaching': 'NON_TEACHING',
-        'promotion': 'SCHOOL_ADMIN' ,
-        'school-administrarion': 'SCHOOL_ADMIN',
-        'relatead-teaching': 'RELATED_TEACHING'
+      'teaching': 'TEACHING_POSITIONS',
+      'non teaching': 'NON_TEACHING',
+      'promotion': 'SCHOOL_ADMIN',
+      'school administration': 'SCHOOL_ADMIN',
+      'related teaching': 'RELATED_TEACHING'
     };
 
     // Function to load the sg-type.json file
     async function loadSgTypes() {
-        try {
-            const response = await fetch("{{ url_for('static', filename='json/sg-type.json') }}");
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            sgTypesData = await response.json();
-            console.log('SG Types loaded successfully:', sgTypesData);
-        } catch (error) {
-            console.error('Error loading SG types:', error);
-            alert('Failed to load position data. Please check console for details.');
+      try {
+        const response = await fetch("{{ url_for('static', filename='json/sg-type.json') }}");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        sgTypesData = await response.json();
+        console.log('SG Types loaded successfully:', sgTypesData);
+      } catch (error) {
+        console.error('Error loading SG types:', error);
+        alert('Failed to load position data. Please check console for details.');
+      }
     }
 
     // Function to update SG level dropdown based on selected interview type
     function updateSgLevels(interviewType) {
-        const sgContainer = document.getElementById('sg_level_container');
-        const sgSelect = document.getElementById('sg_level');
-        
-        // Clear existing options
-        sgSelect.innerHTML = '<option disabled selected value="">– select –</option>';
-        
-        if (interviewType && sgTypesData) {
-            const category = interviewTypeMap[interviewType];
-            const positions = sgTypesData[category];
-            
-            if (positions && positions.length > 0) {
-                sgContainer.style.display = 'block';
-                
-                // Add options for the selected interview type
-                positions.forEach(position => {
-                    const optionText = `${position.Position_Title} (SG ${position.Salary_Grade})`;
-                    const option = new Option(optionText, position.Salary_Grade);
-                    sgSelect.appendChild(option);
-                });
-            } else {
-                sgContainer.style.display = 'none';
-                console.warn(`No positions found for category: ${category}`);
-            }
+      const sgContainer = document.getElementById('sg_level_container');
+      const sgSelect = document.getElementById('sg_level');
+
+      // Clear existing options
+      sgSelect.innerHTML = '<option disabled selected value="">– select –</option>';
+
+      if (interviewType && sgTypesData) {
+        const category = interviewTypeMap[interviewType];
+        const positions = sgTypesData[category];
+
+        if (positions && positions.length > 0) {
+          sgContainer.style.display = 'block';
+
+          // Add options for the selected interview type
+          positions.forEach(position => {
+            const optionText = `${position.Position_Title} (SG ${position.Salary_Grade})`;
+            const option = new Option(optionText, position.Salary_Grade);
+            sgSelect.appendChild(option);
+          });
         } else {
-            sgContainer.style.display = 'none';
+          sgContainer.style.display = 'none';
+          console.warn(`No positions found for category: ${category}`);
         }
+      } else {
+        sgContainer.style.display = 'none';
+      }
     }
 
     // Initialize the page
-    document.addEventListener('DOMContentLoaded', async function() {
-        // Load the SG types data first
-        await loadSgTypes();
-        
-        // Get the interview type select element
-        const interviewTypeSelect = document.getElementById('interview_type');
-        
-        // Set up the event listener for interview type changes
-        interviewTypeSelect.addEventListener('change', function() {
-            updateSgLevels(this.value);
-        });
-        
-        // Trigger change event immediately if there's already a selected value
-        if (interviewTypeSelect.value) {
-            updateSgLevels(interviewTypeSelect.value);
-        }
+    document.addEventListener('DOMContentLoaded', async function () {
+      // Load the SG types data first
+      await loadSgTypes();
+
+      // Get the interview type select element
+      const interviewTypeSelect = document.getElementById('interview_type');
+
+      // Set up the event listener for interview type changes
+      interviewTypeSelect.addEventListener('change', function () {
+        updateSgLevels(this.value);
+      });
+
+      // Trigger change event immediately if there's already a selected value
+      if (interviewTypeSelect.value) {
+        updateSgLevels(interviewTypeSelect.value);
+      }
     });
-</script>
+  </script>
 </body>
+
 </html>

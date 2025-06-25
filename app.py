@@ -46,16 +46,7 @@ EVAL_STRUCTURE = {
                     "communication" : 1
                 },
                 },
-    "related teaching" : {"Behavior Interview" : {
-                        "aptitude" : 1,
-                        "characteristics" : 1,
-                        "fitness" : 1,
-                        "leadership" : 1,
-                        "communication" : 1
-                    },
-                    },
-
-    "promotion" : {
+    "related teaching" : {
                     "Written Examination" : {
                         "focus and detail" : 2,
                         "organization" : 2,
@@ -72,6 +63,14 @@ EVAL_STRUCTURE = {
                         "communication" : 1
                     },
                     },
+    "promotion" : {"Behavior Interview" : {
+                    "aptitude" : 1,
+                    "characteristics" : 1,
+                    "fitness" : 1,
+                    "leadership" : 1,
+                    "communication" : 1
+                },
+                },
 }
 
 WEIGHT_STRUCTURE = {
@@ -80,11 +79,16 @@ WEIGHT_STRUCTURE = {
         "experience" : 10,
         "training" : 10,
     },
-    "non-teaching" : {
+    "non teaching" : {
         "education" : 10,
         "experience" : 10,
         "training" : 10,
-    }
+    },
+    "related teaching" : {
+        "education" : 10,
+        "experience" : 10,
+        "training" : 10,
+    },
 }
 
 APPLICANT_STRUCTURE = {
@@ -92,6 +96,12 @@ APPLICANT_STRUCTURE = {
         "lpt_rating" : {"WEIGHT" : 10, "MAX_SCORE" : 100, "LABEL" : "LPT/PBET/LEPT Rating"},
         "cot" : {"WEIGHT" : 35, "MAX_SCORE" : 30, "LABEL" : "COT"},
         "trf_rating" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "TRF"}
+    },
+    "related teaching" : {
+        "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
+        "outstanding_accomplishment" : {"WEIGHT" : 5, "MAX_SCORE" : 5, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+        "application_of_education" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "APPLICATION OF EDUCATION"},
+        "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"},
     }
 }
 
@@ -296,7 +306,7 @@ def applicant_detail(code):
         for key in eval_struct.keys():
             for field in eval_struct[key].keys():
                 overall = round(overall + extra_data_json[key][field], 2)
-            scores.append(overall)
+        scores.append(overall)
 
 
 
@@ -342,7 +352,7 @@ def evaluator_detail(token):
         for key in eval_struct.keys():
             for field in eval_struct[key].keys():
                 overall = round(overall + extra_data_json[key][field], 2)
-            scores.append(overall)
+        scores.append(overall)
 
     return render_template("evaluator_detail.html",
                            evaluator=evaluator,
