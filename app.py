@@ -22,14 +22,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 EVAL_STRUCTURE = {
-    "non-teaching" : {"Behavior Interview" : {
-                    "aptitude" : 1,
-                    "characteristics" : 1,
-                    "fitness" : 1,
-                    "leadership" : 1,
-                    "communication" : 1
-                },
-                },
     "teaching" : {"Behavior Interview" : {
                         "aptitude" : 1,
                         "characteristics" : 1,
@@ -38,14 +30,6 @@ EVAL_STRUCTURE = {
                         "communication" : 1
                     },
                     },
-    "school administration" : {"Behavior Interview" : {
-                    "aptitude" : 1,
-                    "characteristics" : 1,
-                    "fitness" : 1,
-                    "leadership" : 1,
-                    "communication" : 1
-                },
-                },
     "related teaching" : {
                     "Written Examination" : {
                         "focus and detail" : 2,
@@ -63,15 +47,53 @@ EVAL_STRUCTURE = {
                         "communication" : 1
                     },
                     },
-    "promotion" : {"Behavior Interview" : {
-                    "aptitude" : 1,
-                    "characteristics" : 1,
-                    "fitness" : 1,
-                    "leadership" : 1,
-                    "communication" : 1
-                },
-                },
-}
+    "promotion" : {       
+                    "Written Examination" : {
+                        "focus and detail" : 1,
+                        "organization" : 1,
+                        "content" : 1,
+                        "word choice" : 1,
+                        "sentence, structure, grammar mechanics, and spelling" : 1,
+                    },
+                    "Behavior Interview" : {
+                        "aptitude" : 1,
+                        "characteristics" : 1,
+                        "fitness" : 1,
+                        "leadership" : 1,
+                        "communication" : 1
+                    },
+                    },
+    "non teaching" : {
+                    "" :{
+                        "written exam" : 5,
+                        "practice set" : 10
+                    },
+                    "Behavior Interview" : {
+                        "aptitude" : 1,
+                        "characteristics" : 1,
+                        "fitness" : 1,
+                        "leadership" : 1,
+                        "communication" : 1
+                    },
+                    },
+    "school administration" : {
+                    "Written Examination" : {
+                        "focus and detail" : 1,
+                        "organization" : 1,
+                        "content" : 1,
+                        "word choice" : 1,
+                        "sentence, structure, grammar mechanics, and spelling" : 1,
+                    },
+                    "Behavior Interview" : {
+                        "aptitude" : 2,
+                        "characteristics" : 2,
+                        "fitness" : 2,
+                        "leadership" : 2,
+                        "communication" : 2
+                    },
+                    }
+}                 
+
 
 WEIGHT_STRUCTURE = {
     "teaching" : {
@@ -89,6 +111,21 @@ WEIGHT_STRUCTURE = {
         "experience" : 10,
         "training" : 10,
     },
+    "promotion" : {
+        "education" : 10,
+        "experience" : 10,
+        "training" : 10,
+    },  
+    "non-teaching" : {
+        "education" : 5,
+        "experience" : 5,
+        "training" : 20,
+    },
+    "school administration" : {
+        "education" : 10,
+        "experience" : 10,
+        "training" : 10,
+    },
 }
 
 APPLICANT_STRUCTURE = {
@@ -102,7 +139,25 @@ APPLICANT_STRUCTURE = {
         "outstanding_accomplishment" : {"WEIGHT" : 5, "MAX_SCORE" : 5, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
         "application_of_education" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "APPLICATION OF EDUCATION"},
         "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"},
-    }
+    },
+    "promotion" : {
+        "performance" : {"WEIGHT" : 30, "MAX_SCORE" : 30, "LABEL" : "PERFORMANCE"},
+        "ppst_cois" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PPST COIS"},
+        "ppst_ncois" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "PPST NCOIS"},
+    },
+    "non teaching" : {
+        "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
+        "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+        "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
+        "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"},
+    },
+    "school administration" : {
+        "performance" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PERFORMANCE"},
+        "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+        "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
+        "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"},
+    },
+
 }
 
 # ------------------------------------------------------------------------------
