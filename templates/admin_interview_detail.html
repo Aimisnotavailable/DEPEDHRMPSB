@@ -42,6 +42,7 @@
   <h1>Interview {{ interview.id }} Details</h1>
   <p>
     <strong>Type:</strong> {{ interview.type.capitalize() }}<br>
+    <strong>Salary Grade:</strong> {{ interview.sg_level }}<br>
     <strong>Baselines:</strong> <br> Education: {{ ed_labels[interview.base_edu|string] }} <br>
     Experience: {{ ex_labels[interview.base_exp|string] }} <br>
     Training: {{ tr_labels[interview.base_trn|string] }} <br>

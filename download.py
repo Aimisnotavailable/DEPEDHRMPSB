@@ -5,7 +5,7 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 import io
 import json
 
-def download_pdf(code, participant, evaluation, interview, validation, EVAL_STRUCTURE):
+def download_pdf(code, participant, evaluation, interview, EVAL_STRUCTURE):
     # Fetch applicant and related data
     applicant = participant.query.get_or_404(code)
     extra_data = None
@@ -15,10 +15,6 @@ def download_pdf(code, participant, evaluation, interview, validation, EVAL_STRU
         except Exception:
             extra_data = applicant.extra_data
 
-    validations = validation.query.filter_by(
-        interview_id=applicant.interview_id,
-        participant_code=applicant.code
-    ).all()
 
     eval_records = evaluation.query.filter_by(
         interview_id=applicant.interview_id,

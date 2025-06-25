@@ -22,6 +22,14 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 EVAL_STRUCTURE = {
+    "non-teaching" : {"Behavior Interview" : {
+                    "aptitude" : 1,
+                    "characteristics" : 1,
+                    "fitness" : 1,
+                    "leadership" : 1,
+                    "communication" : 1
+                },
+                },
     "teaching" : {"Behavior Interview" : {
                         "aptitude" : 1,
                         "characteristics" : 1,
@@ -29,24 +37,50 @@ EVAL_STRUCTURE = {
                         "leadership" : 1,
                         "communication" : 1
                     },
-                    "Behavior1 Interview" : {
+                    },
+    "school administration" : {"Behavior Interview" : {
+                    "aptitude" : 1,
+                    "characteristics" : 1,
+                    "fitness" : 1,
+                    "leadership" : 1,
+                    "communication" : 1
+                },
+                },
+    "related teaching" : {"Behavior Interview" : {
                         "aptitude" : 1,
                         "characteristics" : 1,
                         "fitness" : 1,
                         "leadership" : 1,
                         "communication" : 1
-                    },                    
-                      "Behavior2 Interview" : {
+                    },
+                    },
+
+    "promotion" : {
+                    "Written Examination" : {
+                        "focus and detail" : 2,
+                        "organization" : 2,
+                        "content" : 2,
+                        "word choice" : 2,
+                        "sentence, structure, grammar mechanics, and spelling" : 2,
+                        "work sample test" : 5
+                    },
+                    "Behavior Interview" : {
                         "aptitude" : 1,
                         "characteristics" : 1,
                         "fitness" : 1,
                         "leadership" : 1,
                         "communication" : 1
-                    }}
+                    },
+                    },
 }
 
 WEIGHT_STRUCTURE = {
     "teaching" : {
+        "education" : 10,
+        "experience" : 10,
+        "training" : 10,
+    },
+    "non-teaching" : {
         "education" : 10,
         "experience" : 10,
         "training" : 10,
@@ -71,8 +105,9 @@ class Interview(db.Model):
     base_edu = db.Column(db.Integer, nullable=False)
     base_exp = db.Column(db.Integer, nullable=False)
     base_trn = db.Column(db.Integer, nullable=False)
-    type     = db.Column(db.Enum("teaching", "promotion", "non-teaching", name="interview_type"),
+    type     = db.Column(db.Enum("non teaching", "teaching", "school administration", "related teaching", "promotion", name="interview_type"),
                          nullable=False, default="non-teaching")
+    sg_level = db.Column(db.String(100))
     # Relationships via backref: evaluator_tokens, participants
 
 class EvaluatorToken(db.Model):
@@ -113,15 +148,6 @@ class Evaluation(db.Model):
     # This relationship allows the evaluation to access the associated Interview
     # with which it is linked via interview_id.
     interview = db.relationship("Interview", backref="evaluations")
-
-
-class Validation(db.Model):
-    __tablename__ = "validations"
-    id                = db.Column(db.Integer, primary_key=True)
-    interview_id      = db.Column(db.String(8), db.ForeignKey("interviews.id"), nullable=False)
-    evaluator_token   = db.Column(db.String(8), db.ForeignKey("evaluator_tokens.token"), nullable=False)
-    participant_code  = db.Column(db.String(8), db.ForeignKey("participants.code"),  nullable=False)
-    comment           = db.Column(db.Text, nullable=True)
 
 # ------------------------------------------------------------------------------
 # AUTHENTICATION HELPER
@@ -169,6 +195,7 @@ def admin_dashboard():
     ex_labels = th.parse_table("table", "experience")
     tr_labels = th.parse_table("table", "training")
     interviews = Interview.query.all()
+
     return render_template("admin_dashboard.html",
                            interviews=interviews,
                            ed_labels=ed_labels,
@@ -180,18 +207,20 @@ def admin_dashboard():
 def create_interview():
     if request.method == "POST":
         iid = str(uuid.uuid4())[:8].upper()
-        interview_type = request.form.get("interview_type", "non-teaching").lower()
-        if interview_type not in ["teaching", "promotion", "non-teaching"]:
-            interview_type = "non-teaching"
+        interview_type = request.form.get("interview_type", "non teaching").lower()
+        sg_level = request.form.get("sg_level")
+        print("HEHE", interview_type)
         iv = Interview(
             id=iid,
             base_edu=int(request.form["baseline_education"]),
             base_exp=int(request.form["baseline_experience"]),
             base_trn=int(request.form["baseline_training"]),
-            type=interview_type
+            type=interview_type,
+            sg_level=sg_level
         )
         db.session.add(iv)
         db.session.commit()
+
         flash(f"Interview {iid} created", "success")
         return redirect(url_for("admin_dashboard"))
     return render_template("create_interview.html")
@@ -208,13 +237,8 @@ def admin_interview_detail(iid):
     ex_labels = th.parse_table("table", "experience")
     tr_labels = th.parse_table("table", "training")
 
-    validations = Validation.query.filter_by(interview_id=iid).all()
-    val_map = {}
-    for v in validations:
-        val_map.setdefault(v.participant_code, []).append(v)
-
     applicant_structure = APPLICANT_STRUCTURE[iv.type]
-    print(applicant_structure)
+
     return render_template("admin_interview_detail.html",
                            interview=iv,
                            applicants=applicants,
@@ -222,8 +246,7 @@ def admin_interview_detail(iid):
                            eval_tokens=eval_tokens,
                            ed_labels=ed_labels,
                            ex_labels=ex_labels,
-                           tr_labels=tr_labels,
-                           val_map=val_map)
+                           tr_labels=tr_labels)
 
 @app.route("/admin/applicant/<code>")
 @admin_required
@@ -236,11 +259,6 @@ def applicant_detail(code):
         except Exception:
             extra_data = applicant.extra_data
 
-    validations = Validation.query.filter_by(
-        interview_id=applicant.interview_id,
-        participant_code=applicant.code
-    ).all()
-
     eval_records = Evaluation.query.filter_by(
          interview_id=applicant.interview_id,
          participant_code=applicant.code
@@ -251,41 +269,51 @@ def applicant_detail(code):
     eval_type = Interview.query.filter_by(id=applicant.interview_id).first().type
     eval_struct = EVAL_STRUCTURE[eval_type]
 
-    ncoi = None
     avg_eval = None
     scores = []
-    if applicant.interview.type == "teaching" and eval_records:
-        
-        for eval_record in eval_records:
-            overall = 0
-            extra_data_json = json.loads(eval_record.extra_data)
-            for key in eval_struct.keys():
-                for field in eval_struct[key].keys():
-                    overall = round(overall + extra_data_json[key][field], 2)
-                scores.append(overall)
+    applicant_structure = APPLICANT_STRUCTURE[applicant.interview.type]
+    evaluation_scores = {}
+    total_score = applicant.score_edu + applicant.score_exp + applicant.score_trn
 
-        total_eval = sum(score
-                        for score in scores)
-        avg_eval = total_eval / len(eval_records)
-        print(scores)
-        try:
-            admin_trf = float(json.loads(applicant.extra_data).get("trf_rating", 0))
-        except Exception:
-            admin_trf = 0
-        ncoi = round(admin_trf + avg_eval, 2)
+    app_json = json.loads(applicant.extra_data)
+    for field in app_json.keys():
+        total_score += app_json[field]
+
+    if eval_records:
+        for key in eval_struct.keys():
+            total = 0
+            for eval_record in eval_records:
+                temp_json = json.loads(eval_record.extra_data)
+                for val in temp_json[key].values():
+                    total += val
+            avg_eval = round(total / len(eval_records), 2)
+            evaluation_scores[key] = avg_eval
+            total_score += avg_eval
+
+    for eval_record in eval_records:
+        overall = 0
+        extra_data_json = json.loads(eval_record.extra_data)
+        for key in eval_struct.keys():
+            for field in eval_struct[key].keys():
+                overall = round(overall + extra_data_json[key][field], 2)
+            scores.append(overall)
+
+
 
     return render_template("applicant_detail.html",
                            applicant=applicant,
+                           applicant_structure=applicant_structure,
                            extra_data=extra_data,
+                           evaluation_scores=evaluation_scores,
+                           total_score=total_score,
                            scores=scores,
-                           ncoi=ncoi,
                            avg_eval=avg_eval)
 
 @app.route("/admin/applicant/<code>/download")
 @admin_required
 def download_applicant_pdf(code):
     
-    doc_io = download_pdf(code, Participant(), Evaluation(), Interview(), Validation(), EVAL_STRUCTURE=EVAL_STRUCTURE)
+    doc_io = download_pdf(code, Participant(), Evaluation(), Interview(), EVAL_STRUCTURE=EVAL_STRUCTURE)
     print(doc_io)
 
     return send_file(
@@ -304,9 +332,6 @@ def evaluator_detail(token):
          interview_id=evaluator.interview_id,
          evaluator_token=token
     ).all()
-    # Also load validations if needed.
-    validations = Validation.query.filter_by(evaluator_token=token,
-                                             interview_id=evaluator.interview_id).all()
     
     eval_type = Interview.query.filter_by(id=evaluator.interview_id).first().type
     eval_struct = EVAL_STRUCTURE[eval_type]
@@ -322,8 +347,7 @@ def evaluator_detail(token):
     return render_template("evaluator_detail.html",
                            evaluator=evaluator,
                            eval_records=eval_records,
-                           scores=scores,
-                           validations=validations)
+                           scores=scores)
 
 @app.route("/admin/add_applicant", methods=["POST"])
 @admin_required
@@ -338,8 +362,7 @@ def add_applicant():
         code = str(uuid.uuid4())[:8].upper()
     else:
         code = code.strip().upper()
-
-
+    
     weight_stucture = WEIGHT_STRUCTURE[interview_obj.type]
     name    = request.form["name"].strip()
     address = request.form["address"].strip()
@@ -386,18 +409,16 @@ def add_applicant():
 
     # For teaching interviews, the admin now inputs the TRF rating (max 20)
     applicant_structure = APPLICANT_STRUCTURE[interview_obj.type]
-    if interview_obj.type == "teaching":
-        try:
-            lpt_rating = (float(request.form.get('lpt_rating', 0)) /  applicant_structure['lpt_rating']['MAX_SCORE']) * applicant_structure['lpt_rating']['WEIGHT']
-            coi = (float(request.form.get('cot', 0)) / applicant_structure['cot']['MAX_SCORE']) * applicant_structure['cot']['WEIGHT']
-            trf_rating = (float(request.form.get("trf_rating", 0)))
-        except ValueError:
-            flash("TRF rating must be numeric.", "error")
-            return redirect(url_for("admin_interview_detail", iid=iid))
-        # Store the TRF in extra_data as JSON
-
-        extra = {"lpt_rating" : lpt_rating, "COI" : coi ,"trf_rating": trf_rating}
-        p.extra_data = json.dumps(extra)
+    
+    calculated_score = {}
+    try:
+        for field in applicant_structure.keys():
+            calculated_score[field] = round((float(request.form.get(field, 0)) /  applicant_structure[field]['MAX_SCORE']) * applicant_structure[field]['WEIGHT'], 2)
+    except ValueError:  
+        flash("TRF rating must be numeric.", "error")
+        return redirect(url_for("admin_interview_detail", iid=iid))
+    # Store the TRF in extra_data as JSON
+    p.extra_data = json.dumps(calculated_score)
 
     db.session.add(p)
     db.session.commit()
@@ -483,6 +504,7 @@ def evaluator_dashboard():
 def evaluator_applicant_detail(code):
     if "evaluator_token" not in session:
         return redirect(url_for("evaluator_login"))
+    
     iid = session["interview_id"]
     tk = session["evaluator_token"]
     applicant = Participant.query.get_or_404(code)
@@ -495,8 +517,7 @@ def evaluator_applicant_detail(code):
         evaluator_token=tk,
         participant_code=code
     ).first()
- 
-    # print(evaluation.interview.type)
+
     eval_type = Interview.query.filter_by(id=iid).first().type
     eval_struct = EVAL_STRUCTURE[eval_type]
     if request.method == "POST":
@@ -509,7 +530,6 @@ def evaluator_applicant_detail(code):
         except ValueError:
             flash("Please enter valid numeric values.", "error")
             return redirect(url_for("evaluator_applicant_detail", code=code))
-            
         # Validate that each score is between 0 and 1
 
         for key in eval_struct.keys():
@@ -518,7 +538,7 @@ def evaluator_applicant_detail(code):
                     flash("Each criteria must be between 0 and 1.", "error")
                     return redirect(url_for("evaluator_applicant_detail", code=code))
 
-        extra_data_str = json.dumps(extra_data)               
+        extra_data_str = json.dumps(extra_data)            
         if evaluation:
             evaluation.extra_data = extra_data_str
             flash("Your evaluation has been updated.", "success")
@@ -529,12 +549,11 @@ def evaluator_applicant_detail(code):
                 participant_code=code,
                 extra_data=extra_data_str
             )
-            
             db.session.add(evaluation)
             flash("Your evaluation has been submitted.", "success")
-        print(extra_data_str)
+
         db.session.commit()
-        return redirect(url_for("evaluator_applicant_detail", code=code))
+        return redirect(url_for("evaluator_dashboard"))
     
     if evaluation and evaluation.extra_data:
         try:
@@ -551,7 +570,6 @@ def evaluator_applicant_detail(code):
         for key in eval_struct.keys():
             for field in eval_struct[key].keys():
                 overall = round(overall + extra_data_json[key][field], 2)
-
     return render_template(
         "evaluator_applicant_detail.html",
         applicant=applicant,

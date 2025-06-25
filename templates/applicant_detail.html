@@ -76,14 +76,13 @@
         <tr><th>Score Education</th><td>{{ applicant.score_edu }}</td></tr>
         <tr><th>Score Experience</th><td>{{ applicant.score_exp }}</td></tr>
         <tr><th>Score Training</th><td>{{ applicant.score_trn }}</td></tr>
-        {% if applicant.interview.type == 'teaching' and extra_data %}
-          <tr><th>LPT/PBET/LEPT Raw Score</th><td>{{ extra_data.lpt_rating }}</td></tr>
-          <tr><th>COI</th><td>{{ extra_data.COI }}</td></tr>
-          <tr><th>TRF</th><td>{{ extra_data.trf_rating }}</td></tr>
-          {% if ncoi is not none %}
-            <tr><th>NCOI</th><td>{{ ncoi }}</td></tr>
-          {% endif %}
-        {% endif %}
+        {% for field in extra_data.keys() %}
+          <tr><th>{{ applicant_structure[field]['LABEL'] }}</th><td>{{ extra_data[field] }}</td></tr>
+        {% endfor %}
+        {% for field in evaluation_scores.keys() %}
+          <tr><th>{{ field }}</th><td>{{ evaluation_scores[field] }}</td></tr>
+        {% endfor %}
+        <tr><th>Total Score </th><td>{{ total_score }}</td></tr>
       </tbody>
     </table>
 

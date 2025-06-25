@@ -5,31 +5,27 @@
   <meta charset="utf-8">
   <title>Applicant {{ applicant.code }} - Your Evaluation</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/evaluator_applicant_detail.css') }}" />
-  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}"/>
+  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}" />
 </head>
 
 <body>
 
-<header class="site-banner" role="banner">
-<div class="banner-top">
-  <img
-    src="{{ url_for('static', filename='images/deped_seal.png') }}"
-    alt="DepEd Logo"
-    class="banner-logo"
-  />
-  <!-- new centered text column -->
-  <div class="banner-text">
-    <h1>DEPARTMENT OF EDUCATION</h1>
-    <p class="sub-banner-region">Region I – Ilocos Region</p>
-    <p class="sub-banner-dept">Schools Division of Laoag City</p>
-  </div>
-</div>
-</header>
-<section class="hr-section" aria-labelledby="hr-section-title">
-  <h2 id="hr-section-title">
-    HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
-  </h2>
-</section>
+  <header class="site-banner" role="banner">
+    <div class="banner-top">
+      <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo" class="banner-logo" />
+      <!-- new centered text column -->
+      <div class="banner-text">
+        <h1>DEPARTMENT OF EDUCATION</h1>
+        <p class="sub-banner-region">Region I – Ilocos Region</p>
+        <p class="sub-banner-dept">Schools Division of Laoag City</p>
+      </div>
+    </div>
+  </header>
+  <section class="hr-section" aria-labelledby="hr-section-title">
+    <h2 id="hr-section-title">
+      HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
+    </h2>
+  </section>
 
   <div class="content-container">
     <form method="post">
@@ -38,60 +34,48 @@
       <h1>Applicant {{ applicant.code }} Evaluation</h1>
       <h2>{{ applicant.name }}</h2>
 
-      <form method="post">
-        {# If an evaluation exists with extra_data, parse it as JSON; otherwise use an empty dict #}
-        {% if evaluation and evaluation.extra_data %}
-        {% set existing_data = existing_data %}
-        {% else %}
-        {% set existing_data = {} %}
-        {% endif %}
+        <form method="post" id="evalForm" action="{{ url_for('evaluator_applicant_detail', code=applicant.code) }}">
+          {% if evaluation and evaluation.extra_data %}
+          {% set existing_data = existing_data %}
+          {% else %}
+          {% set existing_data = {} %}
+          {% endif %}
 
-<form method="post" id="evalForm">
-  {% if evaluation and evaluation.extra_data %}
-    {% set existing_data = existing_data %}
-  {% else %}
-    {% set existing_data = {} %}
-  {% endif %}
+          <div id="wizard">
+            <!-- each fieldset becomes one “step” -->
+            {% for section, fields in eval_struct.items() %}
+            <fieldset class="step" data-step="{{ loop.index0 }}">
+              <legend>{{ section|capitalize }}</legend>
+              {% for field, max_val in fields.items() %}
+              <label for="{{ section }}__{{ field }}">
+                {{ field|replace("_", " ")|capitalize }} (0–{{ max_val }})
+              </label>
+                <input
+                  id="{{ field }}"
+                  name="{{ section }}_{{ field }}"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  max="{{ max_val }}"
+                  required
+                  value="{{ existing_data.get(section, {}).get(field, '') }}"
+                > 
+              {% endfor %}
+            </fieldset>
+            {% endfor %}
+          </div>
 
-  <div id="wizard">
-    <!-- each fieldset becomes one “step” -->
-    {% for section, fields in eval_struct.items() %}
-    <fieldset class="step" data-step="{{ loop.index0 }}">
-      <legend>{{ section|capitalize }}</legend>
-
-      {% for field, max_val in fields.items() %}
-      <label for="{{ section }}__{{ field }}">
-        {{ field|replace("_", " ")|capitalize }} (0–{{ max_val }})
-      </label>
-      <input
-        id="{{ section }}__{{ field }}"
-        name="{{ field }}"
-        type="number"
-        step="0.01"
-        min="0"
-        max="{{ max_val }}"
-        required
-        value="{% if existing_data.get(section) and existing_data[section].get(field) is not none %}
-                 {{ existing_data[section][field] }}
-               {% endif %}">
-      {% endfor %}
-    </fieldset>
-    {% endfor %}
-  </div>
-
-  <!-- navigation buttons -->
-  <div class="wizard-nav">
-    <button type="button" class="wizard-btn" id="prevBtn">← Back</button>
-    <button type="button" class="wizard-btn primary" id="nextBtn">Next →</button>
-    <button type="submit" class="wizard-btn primary" id="submitBtn">Save Evaluation</button>
-  </div>
-</form>
-
+          <!-- navigation buttons -->
+          <div class="wizard-nav">
+            <button type="button" class="wizard-btn" id="prevBtn">← Back</button>
+            <button type="button" class="wizard-btn primary" id="nextBtn">Next →</button>
+            <button type="submit" class="wizard-btn primary" id="submitBtn">Save Evaluation</button>
+          </div>
+        </form>
 
         {% if overall is not none %}
         <p>Your evaluation score: <strong>{{ overall }}</strong> (max 25)</p>
         {% endif %}
-      </form>
   </div>
 
   <footer class="admin-footer" role="contentinfo">
@@ -117,27 +101,27 @@
   </footer>
 
   <script>
-  (function() {
-    const steps   = document.querySelectorAll('.step');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const submit  = document.getElementById('submitBtn');
-    let idx = 0;
+    (function () {
+      const steps = document.querySelectorAll('.step');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const submit = document.getElementById('submitBtn');
+      let idx = 0;
 
-    function showStep(n) {
-      steps.forEach((s,i) => s.classList.toggle('active', i === n));
-      prevBtn.style.display   = n > 0            ? '' : 'none';
-      nextBtn.style.display   = n < steps.length-1 ? '' : 'none';
-      submit.style.display    = n === steps.length-1 ? '' : 'none';
-    }
+      function showStep(n) {
+        steps.forEach((s, i) => s.classList.toggle('active', i === n));
+        prevBtn.style.display = n > 0 ? '' : 'none';
+        nextBtn.style.display = n < steps.length - 1 ? '' : 'none';
+        submit.style.display = n === steps.length - 1 ? '' : 'none';
+      }
 
-    prevBtn.addEventListener('click', () => { idx = Math.max(0, idx-1); showStep(idx); });
-    nextBtn.addEventListener('click', () => { idx = Math.min(steps.length-1, idx+1); showStep(idx); });
+      prevBtn.addEventListener('click', () => { idx = Math.max(0, idx - 1); showStep(idx); });
+      nextBtn.addEventListener('click', () => { idx = Math.min(steps.length - 1, idx + 1); showStep(idx); });
 
-    // initialize wizard
-    showStep(idx);
-  })();
-</script>
+      // initialize wizard
+      showStep(idx);
+    })();
+  </script>
 
 </body>
 
