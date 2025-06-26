@@ -1,170 +1,179 @@
+# download.py
+import io, json
 from docx import Document
-from docx.shared import Inches
+from docx.shared import Inches, Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
-from docx.enum.table import WD_TABLE_ALIGNMENT
-import io
-import json
 
-def download_pdf(code, participant, evaluation, interview, EVAL_STRUCTURE):
-    # Fetch applicant and related data
+def download_pdf(
+    code,
+    participant,
+    evaluation,
+    interview,
+    validation,
+    EVAL_STRUCTURE,
+    header_image_path: str = "./static/images/header_docx.png",
+    logo_paths: list = None
+):
+    # 1) Load applicant + extra_data
     applicant = participant.query.get_or_404(code)
-    extra_data = None
-    if applicant.extra_data:
-        try:
-            extra_data = json.loads(applicant.extra_data)
-        except Exception:
-            extra_data = applicant.extra_data
+    try:
+        extra_data = json.loads(applicant.extra_data or "{}")
+    except:
+        extra_data = {}
 
-
+    # 2) Fetch evaluation records
     eval_records = evaluation.query.filter_by(
         interview_id=applicant.interview_id,
         participant_code=applicant.code
     ).all()
 
-    # Determine evaluation type and structure
-    eval_type = interview.query.filter_by(id=applicant.interview_id).first().type
+    # 3) Determine eval type & compute NCOI if teaching
+    eval_type   = interview.query.get(applicant.interview_id).type
     eval_struct = EVAL_STRUCTURE[eval_type]
-    ncoi = None
-    avg_eval = None
-    scores = []
+    scores, ncoi = [], None
 
-    # Handle teaching interviews (compute NCOI)
     if eval_type == "teaching" and eval_records:
-        for eval_record in eval_records:
-            overall = 0
-            extra_data_json = json.loads(eval_record.extra_data)
-            for key in eval_struct.keys():
-                for field in eval_struct[key].keys():
-                    overall = round(overall + extra_data_json[key][field], 2)
-            scores.append(overall)
-        
-        total_eval = sum(score for score in scores)
-        avg_eval = total_eval / len(eval_records)
-        
+        for rec in eval_records:
+            ed = json.loads(rec.extra_data or "{}")
+            total = 0
+            for crit, fields in eval_struct.items():
+                for f in fields:
+                    total += ed.get(crit, {}).get(f, 0)
+            scores.append(round(total, 2))
+        avg = sum(scores) / len(scores) if scores else 0
         try:
-            admin_trf = float(json.loads(applicant.extra_data).get("trf_rating", 0))
-        except Exception:
-            admin_trf = 0
-        
-        ncoi = round(admin_trf + avg_eval, 2)
+            trf = float(extra_data.get("trf_rating", 0))
+        except:
+            trf = 0
+        ncoi = round(trf + avg, 2)
 
-    # Create Word document
-    doc = Document()
+    # default logo paths if none provided
+    if logo_paths is None:
+        logo_paths = [
+            "./static/images/deped_seal.png",
+            "./static/images/deped_logo.png",
+            "./static/images/tagalog_deped.png",
+        ]
 
-    # Add header
-    header_paragraph = doc.add_paragraph()
-    header_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    run = header_paragraph.add_run("SCHOOLS DIVISION OF LAOAG CITY")
-    run.bold = True
-    run.font.size = Inches(0.2)
-    
-    doc.add_paragraph()  # Add space
+    # 4) Build the document
+    doc     = Document()
+    section = doc.sections[0]
 
-    # Add title
+    # compute usable width inside margins
+    avail_w = (
+        section.page_width
+        - section.left_margin
+        - section.right_margin
+    )
+
+    # ---- HEADER: full-width banner image ----
+    hdr = section.header.add_paragraph().add_run()
+    hdr.width = avail_w
+    hdr.add_picture(header_image_path, width=avail_w)
+
+    # ---- BODY: Title + Applicant Details ----
     title = doc.add_heading(f'Applicant {applicant.code} Details', level=1)
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    # Create applicant details table
-    table = doc.add_table(rows=1, cols=2)
-    table.alignment = WD_TABLE_ALIGNMENT.CENTER
-    table.style = 'Table Grid'
-    hdr_cells = table.rows[0].cells
-    hdr_cells[0].text = 'Field'
-    hdr_cells[1].text = 'Value'
+    tbl = doc.add_table(rows=1, cols=2)
+    tbl.style = 'Table Grid'
+    hdr_cells = tbl.rows[0].cells
+    hdr_cells[0].text, hdr_cells[1].text = 'Field', 'Information'
     for cell in hdr_cells:
-        for paragraph in cell.paragraphs:
-            for run in paragraph.runs:
-                run.bold = True
+        for p in cell.paragraphs:
+            for r in p.runs:
+                r.bold = True
 
-    # Applicant data rows
     data_rows = [
         ('Name', applicant.name or ''),
         ('Address', applicant.address or ''),
         ('Birthday', str(applicant.birthday) if applicant.birthday else ''),
         ('Age', str(applicant.age) if applicant.age else ''),
         ('Sex', applicant.sex or ''),
-        ('Raw Education', str(applicant.raw_edu) if applicant.raw_edu else ''),
-        ('Raw Experience', str(applicant.raw_exp) if applicant.raw_exp else ''),
-        ('Raw Training', str(applicant.raw_trn) if applicant.raw_trn else ''),
-        ('Score Education', str(applicant.score_edu) if applicant.score_edu else ''),
-        ('Score Experience', str(applicant.score_exp) if applicant.score_exp else ''),
-        ('Score Training', str(applicant.score_trn) if applicant.score_trn else ''),
+        ('Raw Education', str(applicant.raw_edu) or ''),
+        ('Raw Experience', str(applicant.raw_exp) or ''),
+        ('Raw Training', str(applicant.raw_trn) or ''),
+        ('Score Education', str(applicant.score_edu) or ''),
+        ('Score Experience', str(applicant.score_exp) or ''),
+        ('Score Training', str(applicant.score_trn) or '')
     ]
-
-    # Add teaching-specific data
-    if eval_type == 'teaching' and extra_data:
-        data_rows.extend([
-            ('LPT/PBET/LEPT Raw Score', str(extra_data.get('lpt_rating', '')) if extra_data.get('lpt_rating') else ''),
-            ('COI', str(extra_data.get('COI', '')) if extra_data.get('COI') else ''),
-            ('TRF', str(extra_data.get('trf_rating', '')) if extra_data.get('trf_rating') else ''),
-        ])
+    if eval_type == 'teaching':
+        data_rows += [
+            ('LPT/PBET/LEPT Raw Score', str(extra_data.get('lpt_rating', ''))),
+            ('COI',                    str(extra_data.get('COI', ''))),
+            ('TRF',                    str(extra_data.get('trf_rating', '')))
+        ]
         if ncoi is not None:
             data_rows.append(('NCOI', str(ncoi)))
 
-    # Add rows to applicant table
-    for field, value in data_rows:
-        row_cells = table.add_row().cells
-        row_cells[0].text = field
-        row_cells[1].text = value
-
-    # Add evaluation section
-    doc.add_paragraph()  # Add space
-    if eval_type == 'teaching' and scores:
-        doc.add_heading('Evaluations', level=2)
-        for i, score in enumerate(scores, 1):
-            doc.add_paragraph(f'Evaluator #{i} score: {round(score, 2)}', style='List Bullet')
-    elif eval_type != 'teaching' and eval_records:
-        doc.add_heading('Evaluation Criteria', level=2)
-        eval_table = doc.add_table(rows=1, cols=4)
-        eval_table.alignment = WD_TABLE_ALIGNMENT.CENTER
-        eval_table.style = 'Table Grid'
-        hdr_cells = eval_table.rows[0].cells
-        hdr_cells[0].text = 'Criteria'
-        hdr_cells[1].text = 'Weight'
-        hdr_cells[2].text = 'Qualification'
-        hdr_cells[3].text = 'Score'
-        for cell in hdr_cells:
-            for paragraph in cell.paragraphs:
-                for run in paragraph.runs:
-                    run.bold = True
-
-        # Map criteria to applicant fields for qualifications
-        qualification_map = {
-            'Education': applicant.raw_edu,
-            'Experience': applicant.raw_exp,
-            'Training': applicant.raw_trn
-        }
-
-        # Assume one evaluation record for non-teaching
-        eval_record = eval_records[0]
-        extra_data_json = json.loads(eval_record.extra_data) if eval_record.extra_data else {}
-
-        for criterion in eval_struct.keys():
-            row_cells = eval_table.add_row().cells
-            row_cells[0].text = criterion
-            weight = eval_struct[criterion].get('weight', '')
-            row_cells[1].text = str(weight)
-            qualification = str(qualification_map.get(criterion, extra_data_json.get(criterion, {}).get('qualification', 'N/A')))
-            row_cells[2].text = qualification
-            score = extra_data_json.get(criterion, 0) if isinstance(extra_data_json.get(criterion), (int, float)) else 0
-            row_cells[3].text = str(round(score, 2))
-
-    # Add attestation statement
-    doc.add_paragraph()  # Add space
-    attestation = doc.add_paragraph(
+    for fld, val in data_rows:
+        row = tbl.add_row().cells
+        row[0].text, row[1].text = fld, val
+    
+     # ---- ATTESTATION ----
+    doc.add_paragraph()
+    att = doc.add_paragraph(
         "I hereby attest to the conduct of the application and assessment process "
         "in accordance with the applicable guidelines."
     )
-    attestation.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    att.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    # Add footer
+    # ---- THREE LOGOS INLINE (no table) ----
+    doc.add_paragraph()  # spacer
+    logos_para = doc.add_paragraph()
+    logos_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    logo_w = Inches(1.1)  # smaller width for each logo
+
+    for path in logo_paths:
+        run = logos_para.add_run()
+        run.add_picture(path, width=logo_w)
+        logos_para.add_run('  ')  # space between logos
+
+    # ---- Evaluations / Criteria ----
     doc.add_paragraph()
-    footer_paragraph = doc.add_paragraph()
-    footer_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    footer_run = footer_paragraph.add_run("laoag.city@deped.gov.ph | facebook.com/depedtayolaoagcity | depedlaoagcity.com")
-    footer_run.font.size = Inches(0.12)
+    if eval_type == 'teaching' and scores:
+        doc.add_heading('Evaluations', level=2)
+        for i, sc in enumerate(scores, 1):
+            doc.add_paragraph(f'Evaluator #{i} score: {sc}', style='List Bullet')
+    elif eval_records:
+        doc.add_heading('Evaluation Criteria', level=2)
+        et = doc.add_table(rows=1, cols=4)
+        et.style = 'Table Grid'
+        hdr = et.rows[0].cells
+        hdr[0].text, hdr[1].text, hdr[2].text, hdr[3].text = (
+            'Criteria', 'Weight', 'Qualification', 'Score'
+        )
+        for cell in hdr:
+            for p in cell.paragraphs:
+                for r in p.runs:
+                    r.bold = True
 
-    # Save document to memory
+        qual_map = {
+            'Education':  applicant.raw_edu,
+            'Experience': applicant.raw_exp,
+            'Training':   applicant.raw_trn
+        }
+        ev0 = json.loads(eval_records[0].extra_data or "{}")
+        for crit, cfg in eval_struct.items():
+            row = et.add_row().cells
+            row[0].text = crit
+            row[1].text = str(cfg.get('weight', ''))
+            row[2].text = str(
+                qual_map.get(crit, ev0.get(crit, {}).get('qualification', 'N/A'))
+            )
+            row[3].text = str(round(ev0.get(crit, 0), 2))
+
+
+    # ---- FOOTER ----
+    footer = section.footer
+    fp     = footer.add_paragraph()
+    fp.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    fr     = fp.add_run(
+        "laoag.city@deped.gov.ph | facebook.com/depedtayolaoagcity | depedlaoagcity.com"
+    )
+    fr.font.size = Pt(9)
+
+    # 5) Save to memory and return
     doc_io = io.BytesIO()
     doc.save(doc_io)
     doc_io.seek(0)
