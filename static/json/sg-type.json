@@ -69,6 +69,42 @@
     {
       "Position_Title": "Head Teacher I",
       "Salary_Grade": 14
+    },
+    {
+      "Position_Title": "Master Teacher III",
+      "Salary_Grade": 20
+    },
+    {
+      "Position_Title": "Master Teacher II",
+      "Salary_Grade": 19
+    },
+    {
+      "Position_Title": "Master Teacher I",
+      "Salary_Grade": 18
+    },
+    {
+      "Position_Title": "Science Teacher III",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "Science Teacher II",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "Science Teacher I",
+      "Salary_Grade": 11
+    },
+    {
+      "Position_Title": "Teacher III",
+      "Salary_Grade": 13
+    },
+    {
+      "Position_Title": "Teacher II",
+      "Salary_Grade": 12
+    },
+    {
+      "Position_Title": "Teacher I",
+      "Salary_Grade": 11
     }
   ],
   "RELATED_TEACHING": [
