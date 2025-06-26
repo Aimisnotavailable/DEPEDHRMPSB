@@ -10,7 +10,6 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     rel="stylesheet"
   >
-  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}"/>
   <link
     rel="stylesheet"
     href="{{ url_for('static', filename='css/admin_login.css') }}"
@@ -21,24 +20,30 @@
 <!-- SITE BANNER -->
 <header class="site-banner" role="banner">
   <div class="banner-top">
-    <img
-      src="{{ url_for('static', filename='images/deped_seal.png') }}"
-      alt="DepEd Logo"
-      class="banner-logo"
-    />
-    <!-- new centered text column -->
+    <!-- Left group: logo and text -->
+    <div class="banner-left-group">
+      <img
+        src="{{ url_for('static', filename='images/deped_seal.png') }}"
+        alt="DepEd Logo"
+        class="banner-logo"
+      />
+      <div class="banner-left-text">
+        <p class="sub-banner-dept">Schools Division of Laoag City</p>
+        <p class="sub-banner-region">Region I – Ilocos Region</p>
+      </div>
+    </div>
+
+    <!-- Centered title -->
     <div class="banner-text">
       <h1>DEPARTMENT OF EDUCATION</h1>
-      <p class="sub-banner-region">Region I – Ilocos Region</p>
-      <p class="sub-banner-dept">Schools Division of Laoag City</p>
+      <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
     </div>
+
+
   </div>
-  </header>
-  <section class="hr-section" aria-labelledby="hr-section-title">
-    <h2 id="hr-section-title">
-      HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
-    </h2>
-  </section>
+</header>
+
+
   <!-- LOGIN FORM -->
   <div class="login-page">
     <div class="login-box">

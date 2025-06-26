@@ -8,10 +8,12 @@
   --bg-light: #FAFAFA;
   --text:     #333;
   --border:   #CCC;
-  --white:    #fff;
+  --white: #fff;
   --font:     'Montserrat', Arial, sans-serif;
   --radius:   8px;
   --gap:      1rem;
+  --header-height: 76px;
+  --footer-height: 60px
 }
 
 /* —— RESET & BASE —— */
@@ -23,32 +25,72 @@
   padding: 0;
 }
 body {
+  padding-top:    100px;
+  padding-bottom: var(--footer-height);
   font-family: var(--font);
   background: var(--bg-light);
   color: var(--text);
   line-height: 1.5;
 }
 
-/* —— SITE BANNER —— */
-.site-banner .banner-top {
+
+.banner-top {
+  position: fixed;
+  top:      0;
+  left:     0;
+  width:    100%;
+  height:   var(--header-height);
+  z-index:  1000;
+  background: var(--maroon);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 0.5rem 2rem;
-  background: var(--maroon);
-  color: #fff;
-  
+  gap: 1rem;
+  color: var(--bg-light);
 }
-.site-banner .banner-logo {
+
+.banner-left-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.banner-logo {
   height: 60px;
 }
-.site-banner .banner-top h1 {
-  flex: 1;
-  text-align: center;
-  font-size: 1.75rem;
-  font-weight: 600;
+
+.banner-left-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 0.9rem;
+  line-height: 1.2;
 }
-.site-banner .banner-logout {
+
+.banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.banner-text h1 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.banner-subtitle {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #fff;
+  margin-top: 0.25rem;
+}
+
+.banner-logout {
+  position: absolute;
+  right: 2rem;
   background: var(--yellow);
   color: var(--maroon);
   padding: 0.5rem 1rem;
@@ -57,16 +99,29 @@ body {
   font-weight: 500;
   transition: background 0.2s;
 }
-.site-banner .banner-logout:hover {
-  background: #e5c100;
+
+.banner-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
 }
 
-/* 1. Make the .banner-text a middle flex‐column */
-.site-banner .banner-top {
-  display: flex;
-  align-items: center;
-  /* justify-content: center; remove this so left & right items stay pinned */
-  justify-content: space-between;
+
+/* Keep all other existing banner styles the same */
+.site-banner .banner-text h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}q
+.site-banner .banner-subtitle,
+.site-banner .sub-banner-dept,
+.site-banner .sub-banner-region {
+  margin: 0;
+  color: #fff;
 }
 
 .site-banner .banner-text {
@@ -120,6 +175,9 @@ body {
   font-style: italic;
 }
 
+h2{
+  text-align: center;
+}
 
 /* —— FROSTED-GLASS CONTENT WRAPPER —— */
 body > table,
@@ -175,6 +233,53 @@ tbody tr:nth-child(even) {
 .btn:focus {
   outline: 3px solid var(--maroon);
   outline-offset: 2px;
+}
+
+/* —— SITE FOOTER —— */
+.admin-footer {
+  background: var(--maroon);
+  color: #fff;
+  max-width: 100%;
+  padding: 0.5rem 2rem;
+    position: fixed;
+  bottom:   0;
+  left:     0;
+  width:    100%;
+  height:   var(--footer-height);
+  z-index:  1000;
+}
+.admin-footer .footer-content {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.admin-footer .footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-footer .footer-logos img {
+  height: 50px;  
+  width: auto;
+} 
+
+.admin-footer .footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+.admin-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.admin-footer .footer-links a:hover {
+  color: var(--yellow);
 }
 
 /* —— RESPONSIVE —— */
