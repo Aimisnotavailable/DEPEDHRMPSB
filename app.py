@@ -20,79 +20,80 @@ app.config["SECRET_KEY"] = "super-secret-key"  # Change for production!
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///interviews.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
 # TO-DO
-# WEIGHT PROMOTION /12 * 5
 # CHANGE TO TEACHER 1 and Higher Teaching
 # SG LEVEL
 # 
+
 EVAL_STRUCTURE = {
-    "teaching" : {"Behavior Interview" : {
+    "teacher 1" : {"Behavior Interview" : {"CATEGORY" : {
                         "aptitude" : 1,
                         "characteristics" : 1,
                         "fitness" : 1,
                         "leadership" : 1,
                         "communication" : 1
-                    },
+                    }, "TOTAL" : 5, "WEIGHT" : 5},
                     },
     "related teaching" : {
-                    "Written Examination" : {
+                    "Written Examination" : {"CATEGORY" : {
                         "focus and detail" : 2,
                         "organization" : 2,
                         "content" : 2,
                         "word choice" : 2,
                         "sentence, structure, grammar mechanics, and spelling" : 2,
                         "work sample test" : 5
-                    },
-                    "Behavior Interview" : {
+                    }, "TOTAL" : 15, "WEIGHT" : 15},
+                    "Behavior Interview" : {"CATEGORY" : {
                         "aptitude" : 1,
                         "characteristics" : 1,
                         "fitness" : 1,
                         "leadership" : 1,
                         "communication" : 1
+                    }, "TOTAL" : 5, "WEIGHT" : 5},
                     },
-                    },
-        "promotion" : {       
-                        "BEI" : {
+        "higher teaching" : {       
+                        "BEI" : {"CATEGORY" : {
                             "Alignment with the NCOIs" : 3,
                             "Clarity and Coherence" : 3,
                             "Active listening" : 3,
                             "Confidence" : 3,
-                        },
+                        }, "TOTAL" : 12, "WEIGHT" : 5},
                     },
     "non teaching" : {
-                    "" :{
+                    "Exam" :{"CATEGORY" : {
                         "written exam" : 5,
                         "practice set" : 10
-                    },
-                    "Behavior Interview" : {
+                    }, "TOTAL" : 15, "WEIGHT" : 15},
+                    "Behavior Interview" : {"CATEGORY" : {
                         "aptitude" : 1,
                         "characteristics" : 1,
                         "fitness" : 1,
                         "leadership" : 1,
                         "communication" : 1
-                    },
+                    }, "TOTAL" : 5, "WEIGHT" : 5},
                     },
     "school administration" : {
-                    "Written Examination" : {
+                    "Written Examination" : {"CATEGORY" : {
                         "focus and detail" : 1,
                         "organization" : 1,
                         "content" : 1,
                         "word choice" : 1,
                         "sentence, structure, grammar mechanics, and spelling" : 1,
-                    },
-                    "Behavior Interview" : {
+                    }, "TOTAL" : 5, "WEIGHT" : 5},
+                    "Behavior Interview" : {"CATEGPORY" : {
                         "aptitude" : 2,
                         "characteristics" : 2,
                         "fitness" : 2,
                         "leadership" : 2,
                         "communication" : 2
-                    },
+                    }, "TOTAL" : 10, "WEIGHT" : 10},
                     }
 }                 
 
 
 WEIGHT_STRUCTURE = {
-    "teaching" : {
+    "teacher 1" : {
         "education" : 10,
         "experience" : 10,
         "training" : 10,
@@ -107,7 +108,7 @@ WEIGHT_STRUCTURE = {
         "experience" : 10,
         "training" : 10,
     },
-    "promotion" : {
+    "higher teaching" : {
         "education" : 10,
         "experience" : 10,
         "training" : 10,
@@ -125,7 +126,7 @@ WEIGHT_STRUCTURE = {
 }
 
 APPLICANT_STRUCTURE = {
-    "teaching" : {
+    "teacher 1" : {
         "lpt_rating" : {"WEIGHT" : 10, "MAX_SCORE" : 100, "LABEL" : "LPT/PBET/LEPT Rating"},
         "cot" : {"WEIGHT" : 35, "MAX_SCORE" : 30, "LABEL" : "COT"},
         "trf_rating" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "TRF"}
@@ -136,7 +137,7 @@ APPLICANT_STRUCTURE = {
         "application_of_education" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "APPLICATION OF EDUCATION"},
         "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"},
     },
-    "promotion" : {
+    "higher teaching" : {
         "performance" : {"WEIGHT" : 30, "MAX_SCORE" : 30, "LABEL" : "PERFORMANCE"},
         "ppst_cois" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PPST COIS"},
         "ppst_ncois" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "PPST NCOIS"},
@@ -166,7 +167,7 @@ class Interview(db.Model):
     base_edu = db.Column(db.Integer, nullable=False)
     base_exp = db.Column(db.Integer, nullable=False)
     base_trn = db.Column(db.Integer, nullable=False)
-    type     = db.Column(db.Enum("non teaching", "teaching", "school administration", "related teaching", "promotion", name="interview_type"),
+    type     = db.Column(db.Enum("non teaching", "teacher 1", "school administration", "related teaching", "higher teaching", name="interview_type"),
                          nullable=False, default="non-teaching")
     sg_level = db.Column(db.String(100))
     # Relationships via backref: evaluator_tokens, participants
@@ -325,8 +326,6 @@ def applicant_detail(code):
          participant_code=applicant.code
     ).all()
 
-    # For teaching interviews, compute NCOI as:
-    #   NCOI = Admin's TRF (max 20) + Average of evaluators' five criteria scores (max 5)
     eval_type = Interview.query.filter_by(id=applicant.interview_id).first().type
     eval_struct = EVAL_STRUCTURE[eval_type]
 
@@ -347,7 +346,7 @@ def applicant_detail(code):
                 temp_json = json.loads(eval_record.extra_data)
                 for val in temp_json[key].values():
                     total += val
-            avg_eval = round(total / len(eval_records), 2)
+            avg_eval = round(((total / eval_struct[key]['TOTAL']) * eval_struct[key]['WEIGHT']) / len(eval_records), 2)
             evaluation_scores[key] = avg_eval
             total_score += avg_eval
 
@@ -355,7 +354,7 @@ def applicant_detail(code):
         overall = 0
         extra_data_json = json.loads(eval_record.extra_data)
         for key in eval_struct.keys():
-            for field in eval_struct[key].keys():
+            for field in eval_struct[key]['CATEGORY'].keys():
                 overall = round(overall + extra_data_json[key][field], 2)
         scores.append(overall)
 
@@ -584,7 +583,7 @@ def evaluator_applicant_detail(code):
     if request.method == "POST":
         try:
             extra_data = {}
-            for key in eval_struct.keys():
+            for key in eval_struct['CATEGORY'].keys():
                 extra_data[key] = {}
                 for field in eval_struct[key].keys():
                     extra_data[key][field] = float(request.form.get(f'{key}_{field}', 0))
@@ -594,7 +593,7 @@ def evaluator_applicant_detail(code):
         # Validate that each score is between 0 and 1
 
         for key in eval_struct.keys():
-            for field in eval_struct[key].keys():   
+            for field in eval_struct[key]['CATEGORY'].keys():   
                 if extra_data[key][field] <= 0 or extra_data[key][field] > eval_struct[key][field]:
                     flash("Each criteria must be between 0 and 1.", "error")
                     return redirect(url_for("evaluator_applicant_detail", code=code))
@@ -629,8 +628,9 @@ def evaluator_applicant_detail(code):
         extra_data_json = json.loads(evaluation.extra_data)
         overall = 0
         for key in eval_struct.keys():
-            for field in eval_struct[key].keys():
+            for field in eval_struct[key]['CATEGORY'].keys():
                 overall = round(overall + extra_data_json[key][field], 2)
+
     return render_template(
         "evaluator_applicant_detail.html",
         applicant=applicant,

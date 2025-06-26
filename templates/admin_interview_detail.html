@@ -162,7 +162,7 @@
           {% endfor %}
         </select>
         {% for k, v in applicant_structure.items() %}
-        <label>{{ v['LABEL'] }}</label>
+        <label>{{ v['LABEL'] }} (MAX SCORE : {{ v['MAX_SCORE'] }} WEIGHT : {{ v['WEIGHT'] }})</label>
         <input type="number" name="{{ k }}" step="0.01" min="0" max="{{ v['MAX_SCORE'] }}" required>
         {% endfor %}
 

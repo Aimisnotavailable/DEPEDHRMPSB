@@ -74,10 +74,10 @@
           <select id="interview_type" name="interview_type" required>
             <option disabled selected>– select –</option>
             <option value="non teaching">Non-Teaching</option>
-            <option value="teaching">Teaching</option>
+            <option value="teacher 1">Teacher 1</option>
             <option value="school administration">School Administration</option>
             <option value="related teaching">Related Teaching</option>
-            <option value="promotion">Promotion</option>
+            <option value="higher teaching">Higher Teaching</option>
 
           </select>
 
@@ -152,9 +152,9 @@
 
     // Map interview types to JSON categories
     const interviewTypeMap = {
-      'teaching': 'TEACHING_POSITIONS',
+      'teacher 1': 'TEACHING_POSITIONS',
       'non teaching': 'NON_TEACHING',
-      'promotion': 'SCHOOL_ADMIN',
+      'higher teaching': 'SCHOOL_ADMIN',
       'school administration': 'SCHOOL_ADMIN',
       'related teaching': 'RELATED_TEACHING'
     };
