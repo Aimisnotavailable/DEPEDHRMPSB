@@ -9,7 +9,6 @@ def download_pdf(
     participant,
     evaluation,
     interview,
-    validation,
     EVAL_STRUCTURE,
     header_image_path: str = "./static/images/header_docx.png",
     logo_paths: list = None
