@@ -10,27 +10,38 @@
 
 <body>
 
-  <header class="site-banner" role="banner">
-    <div class="banner-top">
-      <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo" class="banner-logo" />
-      <!-- new centered text column -->
-      <div class="banner-text">
-        <h1>DEPARTMENT OF EDUCATION</h1>
+ <!-- SITE BANNER -->
+<header class="site-banner" role="banner">
+  <div class="banner-top">
+    <!-- Left group: logo and text -->
+    <div class="banner-left-group">
+      <img
+        src="{{ url_for('static', filename='images/deped_seal.png') }}"
+        alt="DepEd Logo"
+        class="banner-logo"
+      />
+      <div class="banner-left-text">
+          <p class="sub-banner-dept">Schools Division of Laoag City</p>
         <p class="sub-banner-region">Region I – Ilocos Region</p>
-        <p class="sub-banner-dept">Schools Division of Laoag City</p>
       </div>
     </div>
-  </header>
-  <section class="hr-section" aria-labelledby="hr-section-title">
-    <h2 id="hr-section-title">
-      HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
-    </h2>
-  </section>
+
+    <!-- Centered title -->
+    <div class="banner-text">
+      <h1>DEPARTMENT OF EDUCATION</h1>
+      <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+    </div>
+
+
+  </div>
+</header>
 
   <div class="content-container">
     <form method="post">
 
-      <a href="{{ url_for('evaluator_dashboard') }}" class="btn">← Back to Dashboard</a>
+      <div class="form-container">
+      <a href="{{ url_for('evaluator_dashboard') }}" class="btn">← Dashboard</a>
+</div>
       <h1>Applicant {{ applicant.code }} Evaluation</h1>
       <h2>{{ applicant.name }}</h2>
 
@@ -78,24 +89,26 @@
         {% endif %}
   </div>
 
-  <footer class="admin-footer" role="contentinfo">
+    <footer class="admin-footer" role="contentinfo">
     <div class="footer-content">
       <div class="footer-logos">
-        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
+        <img
+          src="{{ url_for('static', filename='images/deped_logo.png') }}"
+          alt="DepEd Logo"
+        />
       </div>
       <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph">
-          <i class="fas fa-envelope"></i>
-          laoag.city@deped.gov.ph
-        </a>
-        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank">
-          <i class="fab fa-facebook-square"></i>
-          facebook.com/depedtayolaoagcity
-        </a>
-        <a href="https://www.depedlaoagcity.com" target="_blank">
-          <i class="fas fa-globe"></i>
-          depedlaoagcity.com
-        </a>
+        <a href="mailto:laoag.city@deped.gov.ph"
+          ><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a
+        >
+        <a
+          href="https://www.facebook.com/depedtayolaoagcity"
+          target="_blank"
+          ><i class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a
+        >
+        <a href="https://www.depedlaoagcity.com" target="_blank"
+          ><i class="fas fa-globe"></i>depedlaoagcity.com</a
+        >
       </div>
     </div>
   </footer>
@@ -118,11 +131,10 @@
       prevBtn.addEventListener('click', () => { idx = Math.max(0, idx - 1); showStep(idx); });
       nextBtn.addEventListener('click', () => { idx = Math.min(steps.length - 1, idx + 1); showStep(idx); });
 
-      // initialize wizard
-      showStep(idx);
-    })();
-  </script>
-
+    // initialize wizard
+    showStep(idx);
+  })();
+</script>
 </body>
 
 </html>

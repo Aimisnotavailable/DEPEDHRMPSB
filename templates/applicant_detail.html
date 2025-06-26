@@ -27,27 +27,30 @@
 <body>
 
   <!-- SITE BANNER -->
-  <header class="site-banner" role="banner">
-    <div class="banner-top">
+<header class="site-banner" role="banner">
+  <div class="banner-top">
+    <!-- Left group: logo and text -->
+    <div class="banner-left-group">
       <img
         src="{{ url_for('static', filename='images/deped_seal.png') }}"
         alt="DepEd Logo"
         class="banner-logo"
       />
-      <!-- new centered text column -->
-      <div class="banner-text">
-        <h1>DEPARTMENT OF EDUCATION</h1>
-        <p class="sub-banner-region">Region I – Ilocos Region</p>
+      <div class="banner-left-text">
         <p class="sub-banner-dept">Schools Division of Laoag City</p>
+        <p class="sub-banner-region">Region I – Ilocos Region</p>
       </div>
-      <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
     </div>
-  </header>
-  <section class="hr-section" aria-labelledby="hr-section-title">
-    <h2 id="hr-section-title">
-      HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
-    </h2>
-  </section>
+
+    <!-- Centered title -->
+    <div class="banner-text">
+      <h1>DEPARTMENT OF EDUCATION</h1>
+      <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+    </div>
+  </div>
+</header>
+
+
 
   <!-- MAIN CONTENT PANEL -->
   <div class="form-container">
@@ -105,33 +108,30 @@
       ><i class="fas fa-download"></i>Download File</a>
 
   <!-- SITE FOOTER -->
-  <footer class="admin-footer">
+ <footer class="admin-footer" role="contentinfo">
     <div class="footer-content">
       <div class="footer-logos">
         <img
           src="{{ url_for('static', filename='images/deped_logo.png') }}"
           alt="DepEd Logo"
-        >
+        />
       </div>
       <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph">
-          <i class="fas fa-envelope"></i>
-          laoag.city@deped.gov.ph
-        </a>
+        <a href="mailto:laoag.city@deped.gov.ph"
+          ><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a
+        >
         <a
           href="https://www.facebook.com/depedtayolaoagcity"
           target="_blank"
+          ><i class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a
         >
-          <i class="fab fa-facebook-square"></i>
-          facebook.com/depedtayolaoagcity
-        </a>
-        <a href="https://www.depedlaoagcity.com" target="_blank">
-          <i class="fas fa-globe"></i>
-          depedlaoagcity.com
-        </a>
+        <a href="https://www.depedlaoagcity.com" target="_blank"
+          ><i class="fas fa-globe"></i>depedlaoagcity.com</a
+        >
       </div>
     </div>
   </footer>
+
 
 </body>
 </html>

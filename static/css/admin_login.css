@@ -7,6 +7,7 @@
   --yellow:   #FFD700;
   --bg-light: #FAFAFA;
   --text:     #333;
+  --white: #fff;
   --border:   #CCC;
   --font:     'Montserrat', Arial, sans-serif;
   --radius:   8px;
@@ -21,6 +22,11 @@
   margin: 0;
   padding: 0;
 }
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
 body {
   font-family: var(--font);
   background: var(--bg-light);
@@ -28,51 +34,76 @@ body {
   line-height: 1.5;
 }
 
+
 /* —— ADMIN HEADER —— */
 /* —— SITE BANNER —— */
-.site-banner .banner-top {
+.banner-top {
   display: flex;
   align-items: center;
-  justify-content: center; /* Changed from space-between to center */
+  justify-content: space-between;
   padding: 0.5rem 2rem;
   background: var(--maroon);
   color: #fff;
-  text-align: center; /* Added for text centering */
+  position: relative;
+  gap: 1rem;
 }
 
-.site-banner .banner-logo {
+.banner-left-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.banner-logo {
   height: 60px;
-  position: absolute; /* Position logos absolutely */
-  left: 2rem; /* Position left logo */
 }
 
-.site-banner .banner-logout {
-  position: absolute; /* Position logout button absolutely */
-  right: 2rem; /* Position right */
-  background: var(--yellow);
-  color: var(--maroon);
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius);
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s;
+.banner-left-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 0.9rem;
+  line-height: 1.2;
 }
 
-.site-banner .banner-text {
+.banner-text {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center content horizontally */
-  gap: 0.25rem;
-  position: relative; /* Needed for z-index */
-  z-index: 1; /* Ensure text appears above absolutely positioned elements */
+  align-items: center;
+  text-align: center;
 }
+
+.banner-text h1 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.banner-subtitle {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #fff;
+  margin-top: 0.25rem;
+}
+
+
+.banner-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+}
+
 
 /* Keep all other existing banner styles the same */
 .site-banner .banner-text h1 {
   margin: 0;
   font-size: 1.75rem;
-}
+}q
 .site-banner .banner-subtitle,
 .site-banner .sub-banner-dept,
 .site-banner .sub-banner-region {
@@ -134,12 +165,13 @@ body {
 /* —— LOGIN WRAPPER —— */
 .login-page {
   position: relative;
-  min-height: 100vh;
+  height: 100vh; /* changed from min-height */
   display: flex;
-  align-items: center;
+  align-items: center; /* fixed typo */
   justify-content: center;
   padding: 2rem 1rem;
   background: url('images/emblem-blur.jpg') center/cover no-repeat fixed;
+  overflow: hidden;
 }
 
 .login-page::before {
@@ -153,12 +185,14 @@ body {
 
 /* —— LOGIN BOX —— */
 .login-box {
-  position: relative;
+  position: fixed;
+  top: 100px; /* adjust this value to move it closer or farther from the header */
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
   width: 100%;
-  max-width: 460px;
-  margin: auto;
-  padding: 4rem 2.5rem;
+  max-width: 340px; /* keep it compact */
+  padding: 3rem 2rem;
   background: rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.4);
   border-radius: 15px;
@@ -166,6 +200,7 @@ body {
   backdrop-filter: blur(8px);
   text-align: center;
 }
+
 
 .login-box::after {
   content: "";
@@ -223,7 +258,7 @@ body {
   z-index: 2;
   padding: 0.75rem;
   background: rgba(128,0,0,0.8);
-  color: var(--bg-light);
+  color: var(--white);
   border: none;
   border-radius: 4px;
   font-weight: bold;
@@ -234,13 +269,45 @@ body {
   background: rgba(128,0,0,1);
 }
 
+/* —— FIX HEADER AND FOOTER —— */
+.site-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.admin-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+/* —— ADJUST LOGIN PAGE HEIGHT —— */
+.login-page {
+  margin-top: 80px;    /* adjust based on your banner height */
+  margin-bottom: 60px; /* adjust based on your footer height */
+  height: calc(100vh - 140px); /* full height minus header and footer */
+}
+
 /* —— SITE FOOTER —— */
 .admin-footer {
   background: var(--maroon);
   color: #fff;
   max-width: 100%;
-  padding: 1.5rem 2rem;
+  padding: 0.5rem 2rem;
+    position: fixed;
+  bottom:   0;
+  left:     0;
+  width:    100%;
+  height:   var(--footer-height);
+  z-index:  1000;
 }
+
+
 .admin-footer .footer-content {
   max-width: 1800px;
   margin: 0 auto;
@@ -255,9 +322,9 @@ body {
 }
 
 .admin-footer .footer-logos img {
-  height: 60px;  
+  height: 50px;  
   width: auto;
-}
+} 
 
 .admin-footer .footer-links {
   display: flex;
@@ -274,6 +341,7 @@ body {
 .admin-footer .footer-links a:hover {
   color: var(--yellow);
 }
+
 
 /* —— RESPONSIVE BREAKPOINTS —— */
 
