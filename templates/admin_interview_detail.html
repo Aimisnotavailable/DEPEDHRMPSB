@@ -38,8 +38,6 @@
 
   <!-- CONTENT -->
   <main class="content-container" role="main">
-
-  <a href="{{ url_for('admin_dashboard') }}" class="btn">← Back to Dashboard</a>
   <h1>Interview {{ interview.id }} Details</h1>
   <p>
     <strong>Type:</strong> {{ interview.type.capitalize() }}<br>
@@ -54,6 +52,7 @@
       <a href="#evaluators">Evaluators</a>
       <a href="#add-applicant">Add Applicant</a>
       <a href="#add-token">Generate Tokens</a>
+             <a href="{{ url_for('admin_dashboard') }}" class="btn">← Dashboard</a>
     </div>
 
     <!-- APPLICANTS -->
