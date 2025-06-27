@@ -10,9 +10,9 @@ def download_pdf(applicant_data, interview_data, eval_score, total_score, app_st
     exp_data = TableHandler().parse_table('table', 'experience')
     trn_data = TableHandler().parse_table('table', 'training')
 
-    doc = DocxTemplate(f'{DOC_PATH}\RATING-SHEET.docx')
+    doc = DocxTemplate(f'{DOC_PATH}\{str(interview_data.type)}_RATING-SHEET.docx')
     context = {
-            'ad' : {'code' : applicant_data.code, 'name' : str(applicant_data.name).upper(),},
+            'ad' : {'code' : applicant_data.code, 'name' : str(applicant_data.name).upper(), 'contact_number' : str(applicant_data.contact_number)},
             'id' : {'type' : str(interview_data.type).upper(), 'title' : str(interview_data.position_title).upper(), 'sg_level' : interview_data.sg_level},
             's' : {'edu' : applicant_data.score_edu, 'exp' : applicant_data.score_exp, 'trn' : applicant_data.score_trn, 'ed' : json.loads(applicant_data.extra_data), 'ev' : eval_score, 'ts' : total_score},
             'lbl' : {'edu' : edu_data[str(applicant_data.raw_edu)], 'exp' : exp_data[str(applicant_data.raw_exp)], 'trn' : trn_data[str(applicant_data.raw_trn)],},

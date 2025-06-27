@@ -46,6 +46,27 @@
       <section class="card panel-create" aria-labelledby="create-heading">
         <h2 id="create-heading">Create Interview</h2>
         <form method="post" action="{{ url_for('create_interview') }}">
+
+          <label for="interview_type">Interview Type</label>
+          <select id="interview_type" name="interview_type" required>
+            <option disabled selected>– select –</option>
+            <option value="non teaching">Non-Teaching</option>
+            <option value="teacher 1">Teacher 1</option>
+            <option value="school administration">School Administration</option>
+            <option value="related teaching">Related Teaching</option>
+            <option value="higher teaching">Higher Teaching</option>
+
+          </select>
+
+          <!-- Add this after the interview_type select in your form -->
+          <div id="sg_level_container" style="display: none;">
+            <label for="sg_level">Job Group/SG-Level</label>
+            <select id="sg_level" name="sg_level" required>
+              <option disabled selected>– select –</option>
+            </select>
+          </div>
+
+
           <label for="baseline_education">Baseline Education</label>
           <select id="baseline_education" name="baseline_education" required>
             <option disabled selected>– select –</option>
@@ -69,27 +90,6 @@
             <option value="{{ k }}">{{ v }}</option>
             {% endfor %}
           </select>
-
-          <label for="interview_type">Interview Type</label>
-          <select id="interview_type" name="interview_type" required>
-            <option disabled selected>– select –</option>
-            <option value="non teaching">Non-Teaching</option>
-            <option value="teacher 1">Teacher 1</option>
-            <option value="school administration">School Administration</option>
-            <option value="related teaching">Related Teaching</option>
-            <option value="higher teaching">Higher Teaching</option>
-
-          </select>
-
-          <!-- Add this after the interview_type select in your form -->
-          <div id="sg_level_container" style="display: none;">
-            <label for="sg_level">Job Group/SG-Level</label>
-            <select id="sg_level" name="sg_level" required>
-              <option disabled selected>– select –</option>
-            </select>
-          </div>
-
-
           <div class="form-actions">
             <button type="submit" class="btn-submit">Create Interview</button>
           </div>

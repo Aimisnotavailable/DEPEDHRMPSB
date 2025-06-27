@@ -185,6 +185,8 @@ class Applicant(db.Model):
     interview     = db.relationship("Interview", backref="applicants")
     name          = db.Column(db.String(128), nullable=False)
     address       = db.Column(db.String(256), nullable=False)
+    contact_number = db.Column(db.String(256), nullable=False)
+    email_addr    = db.Column(db.String(256), nullable=False)
     birthday      = db.Column(db.Date, nullable=False)
     age           = db.Column(db.Integer, nullable=False)
     sex           = db.Column(db.String(16), nullable=False)
@@ -456,6 +458,8 @@ def add_applicant():
     weight_stucture = WEIGHT_STRUCTURE[interview_obj.type]
     name    = request.form["name"].strip()
     address = request.form["address"].strip()
+    contact_number = request.form["contact_number"].strip()
+    email_addr = request.form["email_address"].strip()
     bstr    = request.form["birthday"].strip()  # Expected format: YYYY-MM-DD
     bd      = datetime.strptime(bstr, "%Y-%m-%d").date()
     age     = int(request.form["age"])
@@ -486,6 +490,8 @@ def add_applicant():
         interview_id=iid,
         name=name,
         address=address,
+        contact_number=contact_number,
+        email_addr=email_addr,
         birthday=bd,
         age=age,
         sex=sex,
