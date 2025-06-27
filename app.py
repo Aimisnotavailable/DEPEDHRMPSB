@@ -12,8 +12,7 @@ from scripts.criteriatable import CriteriaTable
 from scripts.incrementstable import IncrementsTable
 from scripts.table_handler import TableHandler
 
-from download import download_pdf
-
+from scripts.download_handler import download_pdf
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "super-secret-key"  # Change for production!
@@ -22,9 +21,8 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 # TO-DO
-# CHANGE TO TEACHER 1 and Higher Teaching
 # SG LEVEL
-# 
+# contact number email
 
 EVAL_STRUCTURE = {
     "teacher 1" : {"Behavior Interview" : {"CATEGORY" : {
@@ -52,14 +50,14 @@ EVAL_STRUCTURE = {
                         "communication" : 1
                     }, "TOTAL" : 5, "WEIGHT" : 5},
                     },
-        "higher teaching" : {       
-                        "BEI" : {"CATEGORY" : {
-                            "Alignment with the NCOIs" : 3,
-                            "Clarity and Coherence" : 3,
-                            "Active listening" : 3,
-                            "Confidence" : 3,
-                        }, "TOTAL" : 12, "WEIGHT" : 5},
-                    },
+    "higher teaching" : {       
+                    "BEI" : {"CATEGORY" : {
+                        "Alignment with the NCOIs" : 3,
+                        "Clarity and Coherence" : 3,
+                        "Active listening" : 3,
+                        "Confidence" : 3,
+                    }, "TOTAL" : 12, "WEIGHT" : 5},
+                },
     "non teaching" : {
                     "Exam" :{"CATEGORY" : {
                         "written exam" : 5,
@@ -169,8 +167,9 @@ class Interview(db.Model):
     base_trn = db.Column(db.Integer, nullable=False)
     type     = db.Column(db.Enum("non teaching", "teacher 1", "school administration", "related teaching", "higher teaching", name="interview_type"),
                          nullable=False, default="non-teaching")
+    position_title = db.Column(db.String(100))
     sg_level = db.Column(db.String(100))
-    # Relationships via backref: evaluator_tokens, participants
+    # Relationships via backref: evaluator_tokens, applicants
 
 class EvaluatorToken(db.Model):
     __tablename__ = "evaluator_tokens"
@@ -179,11 +178,11 @@ class EvaluatorToken(db.Model):
     registered   = db.Column(db.Boolean, default=False, nullable=False)
     interview    = db.relationship("Interview", backref="evaluator_tokens")
 
-class Participant(db.Model):
-    __tablename__ = "participants"
+class Applicant(db.Model):
+    __tablename__ = "applicants"
     code          = db.Column(db.String(8), primary_key=True)
     interview_id  = db.Column(db.String(8), db.ForeignKey("interviews.id"), nullable=False)
-    interview     = db.relationship("Interview", backref="participants")
+    interview     = db.relationship("Interview", backref="applicants")
     name          = db.Column(db.String(128), nullable=False)
     address       = db.Column(db.String(256), nullable=False)
     birthday      = db.Column(db.Date, nullable=False)
@@ -204,7 +203,7 @@ class Evaluation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     interview_id = db.Column(db.String(8), db.ForeignKey("interviews.id"), nullable=False)
     evaluator_token = db.Column(db.String(8), db.ForeignKey("evaluator_tokens.token"), nullable=False)
-    participant_code = db.Column(db.String(8), db.ForeignKey("participants.code"), nullable=False)
+    applicant_code = db.Column(db.String(8), db.ForeignKey("applicants.code"), nullable=False)
     extra_data = db.Column(db.Text, nullable=True)
 
     # This relationship allows the evaluation to access the associated Interview
@@ -270,15 +269,16 @@ def create_interview():
     if request.method == "POST":
         iid = str(uuid.uuid4())[:8].upper()
         interview_type = request.form.get("interview_type", "non teaching").lower()
-        sg_level = request.form.get("sg_level")
-        print("HEHE", interview_type)
+        position_data = str(request.form.get("sg_level")).split(';')
+        
         iv = Interview(
             id=iid,
             base_edu=int(request.form["baseline_education"]),
             base_exp=int(request.form["baseline_experience"]),
             base_trn=int(request.form["baseline_training"]),
             type=interview_type,
-            sg_level=sg_level
+            position_title=position_data[0],
+            sg_level=position_data[1]
         )
         db.session.add(iv)
         db.session.commit()
@@ -291,7 +291,7 @@ def create_interview():
 @admin_required
 def admin_interview_detail(iid):
     iv = Interview.query.get_or_404(iid)
-    applicants = iv.participants
+    applicants = iv.applicants
     eval_tokens = iv.evaluator_tokens
 
     th = TableHandler()
@@ -313,7 +313,7 @@ def admin_interview_detail(iid):
 @app.route("/admin/applicant/<code>")
 @admin_required
 def applicant_detail(code):
-    applicant = Participant.query.get_or_404(code)
+    applicant = Applicant.query.get_or_404(code)
     extra_data = None
     if applicant.extra_data:
         try:
@@ -323,14 +323,15 @@ def applicant_detail(code):
 
     eval_records = Evaluation.query.filter_by(
          interview_id=applicant.interview_id,
-         participant_code=applicant.code
+         applicant_code=applicant.code
     ).all()
 
     eval_type = Interview.query.filter_by(id=applicant.interview_id).first().type
     eval_struct = EVAL_STRUCTURE[eval_type]
 
-    avg_eval = None
+    
     scores = []
+    avg_eval = None
     applicant_structure = APPLICANT_STRUCTURE[applicant.interview.type]
     evaluation_scores = {}
     total_score = applicant.score_edu + applicant.score_exp + applicant.score_trn
@@ -372,16 +373,44 @@ def applicant_detail(code):
 @app.route("/admin/applicant/<code>/download")
 @admin_required
 def download_applicant_pdf(code):
-    
-    doc_io = download_pdf(code, Participant(), Evaluation(), Interview(), EVAL_STRUCTURE=EVAL_STRUCTURE)
-    print(doc_io)
+    applicant_data = Applicant.query.get_or_404(code)
+    interview_data = Interview.query.get(applicant_data.interview_id)
+    app_struct = APPLICANT_STRUCTURE[interview_data.type]
+    eval_struct = EVAL_STRUCTURE[interview_data.type]
+    weight_struct = WEIGHT_STRUCTURE[interview_data.type]
 
-    return send_file(
-        doc_io,
-        as_attachment=True,
-        download_name=f'APPLICANT {code}_DETAILS.docx',
-        mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    )
+    eval_records = Evaluation.query.filter_by(
+        interview_id=applicant_data.interview_id,
+        applicant_code=applicant_data.code
+    ).all()
+    total_score = applicant_data.score_edu + applicant_data.score_exp + applicant_data.score_trn
+
+    app_json = json.loads(applicant_data.extra_data)
+    eval_score = 0
+    for field in app_json.keys():
+        total_score += app_json[field]
+
+    if eval_records:
+        for key in eval_struct.keys():
+            total = 0
+            for eval_record in eval_records:
+                temp_json = json.loads(eval_record.extra_data)
+                for val in temp_json[key].values():
+                    total += val
+            eval_score = round(((total / eval_struct[key]['TOTAL']) * eval_struct[key]['WEIGHT']) / len(eval_records), 2)
+            total_score += eval_score
+
+    download_pdf(applicant_data, interview_data, eval_score, total_score, app_struct, eval_struct, weight_struct)
+    pass
+    # doc_io = download_pdf(code, Applicant(), Evaluation(), Interview(), EVAL_STRUCTURE=EVAL_STRUCTURE, APP_STRUCTURE=APPLICANT_STRUCTURE)
+    # print(doc_io)
+
+    # return send_file(
+    #     doc_io,
+    #     as_attachment=True,
+    #     download_name=f'APPLICANT {code}_DETAILS.docx',
+    #     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    # )
 
 @app.route("/admin/evaluator/<token>")
 @admin_required
@@ -396,11 +425,12 @@ def evaluator_detail(token):
     eval_type = Interview.query.filter_by(id=evaluator.interview_id).first().type
     eval_struct = EVAL_STRUCTURE[eval_type]
     scores = []
+
     for eval_record in eval_records:
         overall = 0
         extra_data_json = json.loads(eval_record.extra_data)
         for key in eval_struct.keys():
-            for field in eval_struct[key].keys():
+            for field in eval_struct[key]['CATEGORY'].keys():
                 overall = round(overall + extra_data_json[key][field], 2)
         scores.append(overall)
 
@@ -451,7 +481,7 @@ def add_applicant():
     s_exp = (incs.get_score(delta_exp, TableHandler().parse_table("increments", "experience")) // inc_exp) * inc_exp
     s_trn = (incs.get_score(delta_trn, TableHandler().parse_table("increments", "training")) // inc_trn) * inc_trn
 
-    p = Participant(
+    p = Applicant(
         code=code,
         interview_id=iid,
         name=name,
@@ -531,7 +561,7 @@ def evaluator_dashboard():
     iid = session["interview_id"]
     tk = session["evaluator_token"]
     iv = Interview.query.get(iid)
-    applicants = iv.participants
+    applicants = iv.applicants
 
     # print(evaluation.interview.type)
     eval_type = Interview.query.filter_by(id=iid).first().type
@@ -542,13 +572,13 @@ def evaluator_dashboard():
         eval_rec = Evaluation.query.filter_by(
             interview_id=iid,
             evaluator_token=tk,
-            participant_code=a.code
+            applicant_code=a.code
         ).first()
         if eval_rec:
             extra_data_json = json.loads(eval_rec.extra_data)
             overall = 0
             for key in eval_struct.keys():
-                for field in eval_struct[key].keys():
+                for field in eval_struct[key]['CATEGORY'].keys():
                     overall = round(overall + extra_data_json[key][field], 2)
             my_scores[a.code] = round(overall, 2)
         else:
@@ -567,7 +597,7 @@ def evaluator_applicant_detail(code):
     
     iid = session["interview_id"]
     tk = session["evaluator_token"]
-    applicant = Participant.query.get_or_404(code)
+    applicant = applicant.query.get_or_404(code)
     if applicant.interview_id != iid:
         flash("Invalid applicant for this interview.", "error")
         return redirect(url_for("evaluator_dashboard"))
@@ -575,7 +605,7 @@ def evaluator_applicant_detail(code):
     evaluation = Evaluation.query.filter_by(
         interview_id=iid,
         evaluator_token=tk,
-        participant_code=code
+        applicant_code=code
     ).first()
 
     eval_type = Interview.query.filter_by(id=iid).first().type
@@ -583,9 +613,9 @@ def evaluator_applicant_detail(code):
     if request.method == "POST":
         try:
             extra_data = {}
-            for key in eval_struct['CATEGORY'].keys():
+            for key in eval_struct.keys():
                 extra_data[key] = {}
-                for field in eval_struct[key].keys():
+                for field in eval_struct[key]['CATEGORY'].keys():
                     extra_data[key][field] = float(request.form.get(f'{key}_{field}', 0))
         except ValueError:
             flash("Please enter valid numeric values.", "error")
@@ -593,8 +623,8 @@ def evaluator_applicant_detail(code):
         # Validate that each score is between 0 and 1
 
         for key in eval_struct.keys():
-            for field in eval_struct[key]['CATEGORY'].keys():   
-                if extra_data[key][field] <= 0 or extra_data[key][field] > eval_struct[key][field]:
+            for field in eval_struct[key]['CATEGORY'].keys():
+                if extra_data[key][field] <= 0 or extra_data[key][field] > eval_struct[key]['CATEGORY'][field]:
                     flash("Each criteria must be between 0 and 1.", "error")
                     return redirect(url_for("evaluator_applicant_detail", code=code))
 
@@ -606,7 +636,7 @@ def evaluator_applicant_detail(code):
             evaluation = Evaluation(
                 interview_id=iid,
                 evaluator_token=tk,
-                participant_code=code,
+                applicant_code=code,
                 extra_data=extra_data_str
             )
             db.session.add(evaluation)
@@ -630,7 +660,6 @@ def evaluator_applicant_detail(code):
         for key in eval_struct.keys():
             for field in eval_struct[key]['CATEGORY'].keys():
                 overall = round(overall + extra_data_json[key][field], 2)
-
     return render_template(
         "evaluator_applicant_detail.html",
         applicant=applicant,
