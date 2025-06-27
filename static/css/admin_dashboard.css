@@ -206,6 +206,44 @@ body {
   padding-bottom: 0.25rem;
 }
 
+.tab-nav {
+  position: fixed;
+  top:    var(--header-height); 
+  bottom: var(--footer-height);  
+  left: 0;
+  width: var(--sidebar-width);
+  height: 90vh;
+  background: rgba(255, 255, 255, 0.95);
+  border-right: 2px solid var(--border);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--header-height) + var(--hr-height) + 1rem) 1rem 1rem 1rem;
+  backdrop-filter: blur(10px);
+}
+
+    .tab-nav a {
+      display: block;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--maroon);
+      text-decoration: none;
+      font-weight: 500;
+      border-radius: var(--radius);
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .tab-nav a:hover,
+    .tab-nav a.active {
+      background: var(--yellow);
+      color: var(--maroon);
+      border-color: var(--maroon);
+      transform: translateX(2px);
+    }
+
 /* —— FORM ELEMENTS —— */
 label {
   display: block;
@@ -333,3 +371,14 @@ select {
     width: 100%;
   }
 }
+
+    /* Smooth scrolling for anchor links */
+    html {
+      scroll-behavior: smooth;
+       scroll-padding-top: var(--header-height);
+    }
+
+    /* Offset for anchor links to account for fixed elements */
+    section {
+      scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 20px);
+    }

@@ -19,31 +19,41 @@
 <body>
 
   <!-- SITE BANNER -->
-  <header class="site-banner" role="banner">
-    <div class="banner-top">
-      <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo" class="banner-logo" />
-      <!-- new centered text column -->
-      <div class="banner-text">
-        <h1>DEPARTMENT OF EDUCATION</h1>
-        <p class="sub-banner-region">Region I – Ilocos Region</p>
+<header class="site-banner" role="banner">
+  <div class="banner-top">
+    <!-- Left group: logo and text -->
+    <div class="banner-left-group">
+      <img
+        src="{{ url_for('static', filename='images/deped_seal.png') }}"
+        alt="DepEd Logo"
+        class="banner-logo"
+      />
+      <div class="banner-left-text">
         <p class="sub-banner-dept">Schools Division of Laoag City</p>
+        <p class="sub-banner-region">Region I – Ilocos Region</p>
       </div>
-      <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
     </div>
-  </header>
-  <section class="hr-section" aria-labelledby="hr-section-title">
-    <h2 id="hr-section-title">
-      HUMAN RESOURCE MERIT PROMOTION AND SELECTION BOARD
-    </h2>
-  </section>
 
+    <!-- Centered title -->
+    <div class="banner-text">
+      <h1>DEPARTMENT OF EDUCATION</h1>
+      <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+    </div>
+            <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
+  </div>
+</header>
 
   <!-- MAIN CONTAINER BOX -->
   <main class="form-container" role="main">
 
+      <div class="tab-nav">
+      <a href="#create_interview">Create Interview</a>
+      <a href="#existing_interview">Existing Interview</a>
+    </div>
+
     <div class="dashboard-box">
       <!-- Create Interview Panel -->
-      <section class="card panel-create" aria-labelledby="create-heading">
+      <section class="card panel-create" aria-labelledby="create-heading" id="create_interview">
         <h2 id="create-heading">Create Interview</h2>
         <form method="post" action="{{ url_for('create_interview') }}">
 
@@ -55,7 +65,6 @@
             <option value="school administration">School Administration</option>
             <option value="related teaching">Related Teaching</option>
             <option value="higher teaching">Higher Teaching</option>
-
           </select>
 
           <!-- Add this after the interview_type select in your form -->
@@ -97,7 +106,7 @@
       </section>
 
       <!-- Existing Interviews Panel -->
-      <section class="card panel-list" aria-labelledby="list-heading">
+      <section class="card panel-list" aria-labelledby="list-heading" id="existing_interview">
         <h2 id="list-heading">Existing Interviews</h2>
         <table class="qual-table">
           <thead>
