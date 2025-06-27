@@ -402,17 +402,16 @@ def download_applicant_pdf(code):
             eval_score = round(((total / eval_struct[key]['TOTAL']) * eval_struct[key]['WEIGHT']) / len(eval_records), 2)
             total_score += eval_score
 
-    download_pdf(applicant_data, interview_data, eval_score, total_score, app_struct, eval_struct, weight_struct)
-    pass
+    doc_io = download_pdf(applicant_data, interview_data, eval_score, total_score, app_struct, eval_struct, weight_struct)
     # doc_io = download_pdf(code, Applicant(), Evaluation(), Interview(), EVAL_STRUCTURE=EVAL_STRUCTURE, APP_STRUCTURE=APPLICANT_STRUCTURE)
     # print(doc_io)
 
-    # return send_file(
-    #     doc_io,
-    #     as_attachment=True,
-    #     download_name=f'APPLICANT {code}_DETAILS.docx',
-    #     mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    # )
+    return send_file(
+        doc_io,
+        as_attachment=True,
+        download_name=f'APPLICANT {code}_DETAILS.docx',
+        mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    )
 
 @app.route("/admin/evaluator/<token>")
 @admin_required

@@ -19,14 +19,14 @@ def download_pdf(applicant_data, interview_data, eval_score, total_score, app_st
             'as' : {'labels' : [key for key in app_struct.keys()]}
     }
 
+    # doc.render(context)
+    # doc.save(f'{applicant_data.code}_{interview_data.type}.docx')
     doc.render(context)
-    doc.save("final_output.docx")
-    # tpl.render(context)
 
-    # # 2. Write into a BytesIO buffer
-    # buf = BytesIO()
-    # tpl.save(buf)       # DocxTemplate.save() accepts a file-like object
-    # buf.seek(0)         # rewind to the start
+    # 2. Write into a BytesIO buffer
+    buf = BytesIO()
+    doc.save(buf)       # DocxTemplate.save() accepts a file-like object
+    buf.seek(0)         # rewind to the start
 
-    # # 3. send_file from that buffer
-    # return buf
+    # 3. send_file from that buffer
+    return buf
