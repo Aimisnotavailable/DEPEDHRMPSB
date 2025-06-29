@@ -6,13 +6,15 @@ from enum import Enum
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
+from sqlalchemy import func, desc
 
 from scripts.criteriatable import CriteriaTable
 from scripts.incrementstable import IncrementsTable
 from scripts.table_handler import TableHandler
 
 from scripts.download_handler import download_pdf
+
+from datetime import datetime
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "super-secret-key"  # Change for production!
@@ -162,6 +164,7 @@ APPLICANT_STRUCTURE = {
 class Interview(db.Model):
     __tablename__ = "interviews"
     id       = db.Column(db.String(8), primary_key=True)
+    date     = db.Column(db.Date, nullable=False)
     base_edu = db.Column(db.Integer, nullable=False)
     base_exp = db.Column(db.Integer, nullable=False)
     base_trn = db.Column(db.Integer, nullable=False)
@@ -257,7 +260,7 @@ def admin_dashboard():
     ed_labels = th.parse_table("table", "education")
     ex_labels = th.parse_table("table", "experience")
     tr_labels = th.parse_table("table", "training")
-    interviews = Interview.query.all()
+    interviews = Interview.query.order_by(Interview.date).all()
 
     return render_template("admin_dashboard.html",
                            interviews=interviews,
@@ -269,15 +272,18 @@ def admin_dashboard():
 @admin_required
 def create_interview():
     if request.method == "POST":
+        
         iid = str(uuid.uuid4())[:8].upper()
         interview_type = request.form.get("interview_type", "non teaching").lower()
         position_data = str(request.form.get("sg_level")).split(';')
-        
+        now = datetime.now()
+        date = datetime.strptime(now.strftime("%Y-%m-%d"), "%Y-%m-%d").date()
         iv = Interview(
             id=iid,
             base_edu=int(request.form["baseline_education"]),
             base_exp=int(request.form["baseline_experience"]),
             base_trn=int(request.form["baseline_training"]),
+            date=date,
             type=interview_type,
             position_title=position_data[0],
             sg_level=position_data[1]
@@ -288,6 +294,44 @@ def create_interview():
         flash(f"Interview {iid} created", "success")
         return redirect(url_for("admin_dashboard"))
     return render_template("create_interview.html")
+
+@app.route("/admin/update_interview/<iid>", methods=["GET", "POST"])
+@admin_required
+def update_interview(iid):
+    th = TableHandler()
+    ed_labels = th.parse_table("table", "education")
+    ex_labels = th.parse_table("table", "experience")
+    tr_labels = th.parse_table("table", "training")
+    interview = Interview.query.filter_by(
+         id=iid,
+    ).all()[0]
+
+    if request.method == "POST":
+        
+        interview.base_edu = int(request.form.get("baseline_education", 1))
+        interview.base_exp=int(request.form.get("baseline_experience", 1))
+        interview.base_trn=int(request.form.get("baseline_training", 1))
+        
+        db.session.commit()
+
+        flash(f"Interview {iid} created", "success")
+        return redirect(url_for("admin_dashboard"))
+    
+    return render_template("update_interview.html", iid=iid,
+                           interview=interview,
+                           ed_labels=ed_labels,
+                           ex_labels=ex_labels,
+                           tr_labels=tr_labels)
+
+@app.route("/admin/delete_interview/<iid>")
+@admin_required
+def delete_interview(iid):
+    interview = Interview.query.filter_by(
+        id=iid,
+        ).all()[0]
+    db.session.delete(interview)
+    db.session.commit()
+    return redirect(url_for("admin_dashboard"))
 
 @app.route("/admin/interview/<iid>")
 @admin_required
@@ -520,6 +564,89 @@ def add_applicant():
     flash(f"Added applicant {code}", "success")
     return redirect(url_for("admin_interview_detail", iid=iid))
 
+
+@app.route("/admin/update_applicant/<code>", methods=["GET", "POST"])
+@admin_required
+def update_applicant(code):
+    applicant = Applicant.query.filter_by(
+         code = code
+    ).all()[0]
+    interview = applicant.interview
+    th = TableHandler()
+    ed_labels = th.parse_table("table", "education")
+    ex_labels = th.parse_table("table", "experience")
+    tr_labels = th.parse_table("table", "training")
+
+    applicant_structure = APPLICANT_STRUCTURE[interview.type]
+    weight_stucture = WEIGHT_STRUCTURE[interview.type]
+    if request.method == 'POST':
+        applicant.name    = request.form["name"].strip()
+        applicant.address = request.form["address"].strip()
+        applicant.contact_number = request.form["contact_number"].strip()
+        applicant.email_addr = request.form["email_address"].strip()
+        bstr    = request.form["birthday"].strip()  # Expected format: YYYY-MM-DD
+        applicant.birthday      = datetime.strptime(bstr, "%Y-%m-%d").date()
+        applicant.age     = int(request.form["age"])
+        applicant.sex     = request.form["sex"].strip()
+
+        raw_edu_temp = int(request.form["education"])
+        raw_exp_temp = int(request.form["experience"])
+        raw_trn_temp = int(request.form["training"])
+
+        applicant.raw_edu = raw_edu_temp
+        applicant.raw_exp = raw_exp_temp
+        applicant.raw_trn = raw_trn_temp
+        # Compute base scores using CriteriaTable and IncrementsTable
+        crit = CriteriaTable()
+        incs = IncrementsTable()
+
+        delta_edu = crit.get_score(raw_edu_temp, interview.base_edu)
+        delta_exp = crit.get_score(raw_exp_temp, interview.base_exp)
+        delta_trn = crit.get_score(raw_trn_temp, interview.base_trn)
+
+
+        inc_edu = (weight_stucture['education'] // 5)
+        inc_exp = (weight_stucture['experience'] // 5)
+        inc_trn = (weight_stucture['training'] // 5)
+
+        applicant.score_edu = (incs.get_score(delta_edu, TableHandler().parse_table("increments", "education")) // inc_edu) * inc_edu
+        applicant.score_exp = (incs.get_score(delta_exp, TableHandler().parse_table("increments", "experience")) // inc_exp) * inc_exp
+        applicant.score_trn = (incs.get_score(delta_trn, TableHandler().parse_table("increments", "training")) // inc_trn) * inc_trn
+
+        calculated_score = {}
+        try:
+            for field in applicant_structure.keys():
+                calculated_score[field] = round((float(request.form.get(field, 0)) /  applicant_structure[field]['MAX_SCORE']) * applicant_structure[field]['WEIGHT'], 2)
+        except ValueError:  
+            flash("TRF rating must be numeric.", "error")
+            return redirect(url_for("admin_interview_detail", iid=interview.id))
+        # Store the TRF in extra_data as JSON
+        applicant.extra_data = json.dumps(calculated_score)
+
+        db.session.commit()
+        return redirect(url_for("admin_interview_detail", iid=interview.id))
+
+
+    return render_template("update_applicant.html",
+                           interview=interview,
+                           applicant=applicant,
+                           applicant_structure=applicant_structure,
+                           ed_labels=ed_labels,
+                           ex_labels=ex_labels,
+                           tr_labels=tr_labels,
+                           extra_data_json=json.loads(applicant.extra_data))
+
+
+@app.route("/admin/delete_applicant/<code>", methods=["GET", "POST"])
+@admin_required
+def delete_applicant(code):
+    applicant = Applicant.query.filter_by(
+        code=code,
+    ).all()[0]
+    iid_temp = applicant.interview.id
+    db.session.delete(applicant)
+    db.session.commit()
+    return redirect(url_for("admin_interview_detail", iid=iid_temp))
 
 @app.route("/admin/generate_evaluator_tokens", methods=["POST"])
 @admin_required

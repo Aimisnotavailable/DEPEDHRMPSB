@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Interview {{ interview.id }} Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='./css/admin_interview_detail.css') }}">
+</head>
+
+<body>
+    <!-- SITE BANNER -->
+    <header class="site-banner" role="banner">
+        <div class="banner-top">
+            <!-- Left group: logo and text -->
+            <div class="banner-left-group">
+                <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo"
+                    class="banner-logo" />
+                <div class="banner-left-text">
+                    <p class="sub-banner-dept">Schools Division of Laoag City</p>
+                    <p class="sub-banner-region">Region I – Ilocos Region</p>
+                </div>
+            </div>
+
+            <!-- Centered title -->
+            <div class="banner-text">
+                <h1>DEPARTMENT OF EDUCATION</h1>
+                <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content-container" role="main">
+        <h1>Applicant {{ applicant.code }} Details</h1>
+        <p>
+            <strong>Type:</strong> {{ interview.type.capitalize() }}<br>
+            <strong>Salary Grade:</strong> {{ interview.sg_level.capitalize() }}<br>
+            <strong>Baselines:</strong> <br> Education: {{ ed_labels[interview.base_edu|string] }} <br>
+            Experience: {{ ex_labels[interview.base_exp|string] }} <br>
+            Training: {{ tr_labels[interview.base_trn|string] }} <br>
+        </p>
+
+        <!-- Add Applicant Section -->
+        <section id="update-applicant">
+            <h2>Update Applicant</h2>
+            <form method="post" action="{{ url_for('update_applicant', code=applicant.code) }}">
+                <label>Name
+                    <input name="name" required value="{{ applicant.name }}">
+                </label>
+                <label>Address
+                    <input name="address" required value="{{ applicant.address }}">
+                </label>
+                <label>Contact Number
+                    <input name="contact_number" required value="{{ applicant.contact_number }}">
+                </label>
+                <label>Email Address
+                    <input name="email_address" required value="{{ applicant.email_addr }}">
+                </label>
+                <label>Birthday
+                    <input type="date" name="birthday" required value="{{ applicant.birthday }}">
+                </label>
+                <label>Age
+                    <input type="number" name="age" min="0" required value="{{ applicant.age }}">
+                </label>
+                <label>Sex</label>
+                <select name="sex" required>
+                    <option disabled selected>– select –</option>
+                    <option value="Male" {% if applicant.sex=='Male' %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if applicant.sex=='Female' %}selected{% endif %}>Female</option>
+                </select>
+                <label>Raw Education</label>
+                <select name="education" required>
+                    <option disabled selected>– select –</option>
+                    {% for k, v in ed_labels.items() %}
+                    <option value="{{ k }}" {% if k == applicant.raw_edu ~ '' %}selected{% endif %} >{{ v }}</option>
+                    {% endfor %}
+                </select>
+                <label>Raw Experience</label>
+                <select name="experience" required>
+                    <option disabled selected>– select –</option>
+                    {% for k, v in ex_labels.items() %}
+                    <option value="{{ k }}" {% if k == applicant.raw_exp ~ '' %}selected{% endif %} >{{ v }}</option>
+                    {% endfor %}
+                </select>
+                <label>Raw Training</label>
+                <select name="training" required>
+                    <option disabled selected>– select –</option>
+                    {% for k, v in tr_labels.items() %}
+                    <option value="{{ k }}" {% if k == applicant.raw_trn ~ '' %}selected{% endif %} >{{ v }}</option>
+                    {% endfor %}
+                </select>
+                {% for k, v in applicant_structure.items() %}
+                <label>{{ v['LABEL'] }} (MAX SCORE : {{ v['MAX_SCORE'] }} WEIGHT : {{ v['WEIGHT'] }})</label>
+                <input type="number" name="{{ k }}" step="0.01" min="0" max="{{ v['MAX_SCORE'] }}" required value="{{ (extra_data_json.get(k, {}) / v.get('WEIGHT', 1) * v['MAX_SCORE']) | round(2)}}">
+                {% endfor %}
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Update</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- SITE FOOTER -->
+        <footer class="admin-footer" role="contentinfo">
+            <div class="footer-content">
+                <div class="footer-logos">
+                    <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
+                </div>
+                <div class="footer-links">
+                    <a href="mailto:laoag.city@deped.gov.ph"><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a>
+                    <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank"><i
+                            class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a>
+                    <a href="https://www.depedlaoagcity.com" target="_blank"><i
+                            class="fas fa-globe"></i>depedlaoagcity.com</a>
+                </div>
+            </div>
+        </footer>
+
+</body>
+
+</html>

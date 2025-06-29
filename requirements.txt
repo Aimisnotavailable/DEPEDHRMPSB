@@ -1,2 +1,4 @@
 flask
 docxtpl
+flask_sqlalchemy
+sqlalchemy

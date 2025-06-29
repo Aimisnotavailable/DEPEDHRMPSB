@@ -1,0 +1,54 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* show + transition container */
+.modal-overlay.active {
+  display: flex;
+}
+
+/* modal box with slide-down effect */
+.modal {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 5px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transform: translateY(-30px);
+  transition: transform 0.3s ease-out;
+}
+
+/* trigger the slide-in when parent becomes active */
+.modal-overlay.active .modal {
+  transform: translateY(0);
+}
+
+/* button layout */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.modal-buttons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#cancelBtn {
+  background: #ccc;
+}
+

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Icons & Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
+
+    <!-- Main stylesheet -->
+
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='./css/admin_dashboard.css') }}" />
+</head>
+
+<body>
+
+    <!-- SITE BANNER -->
+    <header class="site-banner" role="banner">
+        <div class="banner-top">
+            <!-- Left group: logo and text -->
+            <div class="banner-left-group">
+                <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo"
+                    class="banner-logo" />
+                <div class="banner-left-text">
+                    <p class="sub-banner-dept">Schools Division of Laoag City</p>
+                    <p class="sub-banner-region">Region I – Ilocos Region</p>
+                </div>
+            </div>
+
+            <!-- Centered title -->
+            <div class="banner-text">
+                <h1>DEPARTMENT OF EDUCATION</h1>
+                <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+            </div>
+            <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER BOX -->
+    <main class="form-container" role="main">
+
+        <div class="dashboard-box">
+            <!-- Create Interview Panel -->
+            <section class="card panel-create" aria-labelledby="create-heading" id="create_interview">
+                <h2 id="create-heading">Update Interview ID : {{ interview.id }} 
+                    <br> Type: {{ interview.type }} <br>
+                    Position Title : {{ interview.position_title }} {{ interview.sg_level }}</h2>
+
+                <form method="post" action="{{ url_for('update_interview', iid=interview.id) }}">
+
+                    <label for="baseline_education">Baseline Education (Current Value : {{ed_labels[interview.base_exp ~ '']}}) </label>
+                    <select id="baseline_education" name="baseline_education" required>
+                        <option disabled selected>– select –</option>
+                        {% for k, v in ed_labels.items() %}
+                            {% if k == interview.base_edu ~ '' %}
+                            <option value="{{ k }}" selected>{{ v }}</option>
+                            {% else %}
+                            <option value="{{ k }}">{{ v }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                    <label for="baseline_experience">Baseline Experience (Current Value : {{ex_labels[interview.base_exp ~ '']}}) </label>
+                    <select id="baseline_experience" name="baseline_experience" required>
+                        <option disabled selected>– select –</option>
+                        {% for k, v in ex_labels.items() %}
+                            {% if k == interview.base_exp ~ '' %}
+                            <option value="{{ k }}" selected>{{ v }}</option>
+                            {% else %}
+                            <option value="{{ k }}">{{ v }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                    <label for="baseline_training">Baseline Training (Current Value : {{tr_labels[interview.base_trn ~ '']}})</label>
+                    <select id="baseline_training" name="baseline_training" required>
+                        <option disabled selected>– select –</option>
+                        {% for k, v in tr_labels.items() %}
+                            {% if k == interview.base_trn ~ '' %}
+                            <option value="{{ k }}" selected>{{ v }}</option>
+                            {% else %}
+                            <option value="{{ k }}">{{ v }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit">Update Interview</button>
+                    </div>
+                </form>
+            </section>
+    </main>
+
+    <!-- SITE FOOTER -->
+    <footer class="admin-footer" role="contentinfo">
+        <div class="footer-content">
+            <div class="footer-logos">
+                <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
+            </div>
+            <div class="footer-links">
+                <a href="mailto:laoag.city@deped.gov.ph"><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a>
+                <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank"><i
+                        class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a>
+                <a href="https://www.depedlaoagcity.com" target="_blank"><i
+                        class="fas fa-globe"></i>depedlaoagcity.com</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
