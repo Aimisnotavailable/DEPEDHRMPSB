@@ -39,8 +39,9 @@
       <h1>DEPARTMENT OF EDUCATION</h1>
       <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
     </div>
-            <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
+    <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
   </div>
+  <!-- Add toggle button for mobile navigation -->
 </header>
 
   <!-- MAIN CONTAINER BOX -->
@@ -132,9 +133,11 @@
               <td>{{ iv.evaluator_tokens|length }}</td>
               <td>{{ iv.applicants|length }}</td>
               <td>
+                <div class="btn-group"></div>
                 <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn-submit btn-submit--view">View</a>
                 <a href="{{ url_for('update_interview', iid=iv.id) }}" class="btn-submit btn-submit--update">Update</a>
                 <a href="{{ url_for('delete_interview', iid=iv.id) }}" class="btn-submit btn-submit--delete">Delete</a>
+                </div>
               </td>
             </tr>
             {% endfor %}

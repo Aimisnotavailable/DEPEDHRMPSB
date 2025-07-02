@@ -160,60 +160,124 @@ APPLICANT_STRUCTURE = {
 # ------------------------------------------------------------------------------
 # MODELS
 # ------------------------------------------------------------------------------
-
 class Interview(db.Model):
     __tablename__ = "interviews"
-    id       = db.Column(db.String(8), primary_key=True)
-    date     = db.Column(db.Date, nullable=False)
-    base_edu = db.Column(db.Integer, nullable=False)
-    base_exp = db.Column(db.Integer, nullable=False)
-    base_trn = db.Column(db.Integer, nullable=False)
-    type     = db.Column(db.Enum("non teaching", "teacher 1", "school administration", "related teaching", "higher teaching", name="interview_type"),
-                         nullable=False, default="non-teaching")
-    position_title = db.Column(db.String(100))
-    sg_level = db.Column(db.String(100))
-    # Relationships via backref: evaluator_tokens, applicants
+
+    id              = db.Column(db.String(8), primary_key=True)
+    date            = db.Column(db.Date, nullable=False)
+    base_edu        = db.Column(db.Integer, nullable=False)
+    base_exp        = db.Column(db.Integer, nullable=False)
+    base_trn        = db.Column(db.Integer, nullable=False)
+    type            = db.Column(
+                        db.Enum(
+                          "non teaching",
+                          "teacher 1",
+                          "school administration",
+                          "related teaching",
+                          "higher teaching",
+                          name="interview_type"
+                        ),
+                        nullable=False,
+                        default="non teaching"
+                      )
+    position_title  = db.Column(db.String(100))
+    sg_level        = db.Column(db.String(100))
+
+    # ORM cascades + passive_deletes so we don't have to loop & delete children manually
+    evaluator_tokens = db.relationship(
+        "EvaluatorToken",
+        back_populates="interview",
+        cascade="all, delete-orphan",
+        passive_deletes=True
+    )
+    applicants = db.relationship(
+        "Applicant",
+        back_populates="interview",
+        cascade="all, delete-orphan",
+        passive_deletes=True
+    )
+    evaluations = db.relationship(
+        "Evaluation",
+        back_populates="interview",
+        cascade="all, delete-orphan",
+        passive_deletes=True
+    )
+
 
 class EvaluatorToken(db.Model):
     __tablename__ = "evaluator_tokens"
+
     token        = db.Column(db.String(8), primary_key=True)
-    interview_id = db.Column(db.String(8), db.ForeignKey("interviews.id"), nullable=False)
+    interview_id = db.Column(
+                      db.String(8),
+                      db.ForeignKey("interviews.id", ondelete="CASCADE"),
+                      nullable=False
+                    )
     registered   = db.Column(db.Boolean, default=False, nullable=False)
-    interview    = db.relationship("Interview", backref="evaluator_tokens")
+
+    # link back to parent
+    interview    = db.relationship(
+                      "Interview",
+                      back_populates="evaluator_tokens"
+                    )
+
 
 class Applicant(db.Model):
     __tablename__ = "applicants"
-    code          = db.Column(db.String(8), primary_key=True)
-    interview_id  = db.Column(db.String(8), db.ForeignKey("interviews.id"), nullable=False)
-    interview     = db.relationship("Interview", backref="applicants")
-    name          = db.Column(db.String(128), nullable=False)
-    address       = db.Column(db.String(256), nullable=False)
+
+    code           = db.Column(db.String(8), primary_key=True)
+    interview_id   = db.Column(
+                       db.String(8),
+                       db.ForeignKey("interviews.id", ondelete="CASCADE"),
+                       nullable=False
+                     )
+    name           = db.Column(db.String(128), nullable=False)
+    address        = db.Column(db.String(256), nullable=False)
     contact_number = db.Column(db.String(256), nullable=False)
-    email_addr    = db.Column(db.String(256), nullable=False)
-    birthday      = db.Column(db.Date, nullable=False)
-    age           = db.Column(db.Integer, nullable=False)
-    sex           = db.Column(db.String(16), nullable=False)
-    raw_edu       = db.Column(db.Integer, nullable=False)
-    raw_exp       = db.Column(db.Integer, nullable=False)
-    raw_trn       = db.Column(db.Integer, nullable=False)
-    score_edu     = db.Column(db.Integer, nullable=False)
-    score_exp     = db.Column(db.Integer, nullable=False)
-    score_trn     = db.Column(db.Integer, nullable=False)
-    extra_data    = db.Column(db.Text, nullable=True)
-    # extra_data for teaching interviews stores:
-    #   { "lpt_rating": <raw>, "COI": <computed> }
+    email_addr     = db.Column(db.String(256), nullable=False)
+    birthday       = db.Column(db.Date, nullable=False)
+    age            = db.Column(db.Integer, nullable=False)
+    sex            = db.Column(db.String(16), nullable=False)
+    raw_edu        = db.Column(db.Integer, nullable=False)
+    raw_exp        = db.Column(db.Integer, nullable=False)
+    raw_trn        = db.Column(db.Integer, nullable=False)
+    score_edu      = db.Column(db.Integer, nullable=False)
+    score_exp      = db.Column(db.Integer, nullable=False)
+    score_trn      = db.Column(db.Integer, nullable=False)
+    extra_data     = db.Column(db.Text, nullable=True)
+
+    interview      = db.relationship(
+                       "Interview",
+                       back_populates="applicants"
+                     )
+
 
 class Evaluation(db.Model):
     __tablename__ = "evaluations"
-    id = db.Column(db.Integer, primary_key=True)
-    interview_id = db.Column(db.String(8), db.ForeignKey("interviews.id"), nullable=False)
-    evaluator_token = db.Column(db.String(8), db.ForeignKey("evaluator_tokens.token"), nullable=False)
-    applicant_code = db.Column(db.String(8), db.ForeignKey("applicants.code"), nullable=False)
-    extra_data = db.Column(db.Text, nullable=True)
 
-    # This relationship allows the evaluation to access the associated Interview
-    # with which it is linked via interview_id.
-    interview = db.relationship("Interview", backref="evaluations")
+    id               = db.Column(db.Integer, primary_key=True)
+    interview_id     = db.Column(
+                         db.String(8),
+                         db.ForeignKey("interviews.id", ondelete="CASCADE"),
+                         nullable=False
+                       )
+    evaluator_token  = db.Column(
+                         db.String(8),
+                         db.ForeignKey("evaluator_tokens.token", ondelete="CASCADE"),
+                         nullable=False
+                       )
+    applicant_code   = db.Column(
+                         db.String(8),
+                         db.ForeignKey("applicants.code", ondelete="CASCADE"),
+                         nullable=False
+                       )
+    extra_data       = db.Column(db.Text, nullable=True)
+
+    interview        = db.relationship(
+                         "Interview",
+                         back_populates="evaluations"
+                       )
+    # (optionally, add relationships to EvaluatorToken & Applicant if you need them)
 
 # ------------------------------------------------------------------------------
 # AUTHENTICATION HELPER
@@ -329,6 +393,7 @@ def delete_interview(iid):
     interview = Interview.query.filter_by(
         id=iid,
         ).all()[0]
+    
     db.session.delete(interview)
     db.session.commit()
     return redirect(url_for("admin_dashboard"))
@@ -729,7 +794,7 @@ def evaluator_applicant_detail(code):
     
     iid = session["interview_id"]
     tk = session["evaluator_token"]
-    applicant = applicant.query.get_or_404(code)
+    applicant = Applicant.query.get_or_404(code)
     if applicant.interview_id != iid:
         flash("Invalid applicant for this interview.", "error")
         return redirect(url_for("evaluator_dashboard"))
