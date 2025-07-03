@@ -1,139 +1,165 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Applicant {{ applicant.code }} Details</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Icons & Font -->
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    rel="stylesheet"
-  >
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Page styles -->
 
-  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}"/>
+  <link rel="icon" type="image/png" href="{{url_for('static', filename='./images/deped_seal.png')}}" />
 
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='css/applicant_detail.css') }}"
-  >
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/applicant_detail.css') }}">
 </head>
+
 <body>
 
   <!-- SITE BANNER -->
-<header class="site-banner" role="banner">
-  <div class="banner-top">
-    <!-- Left group: logo and text -->
-    <div class="banner-left-group">
-      <img
-        src="{{ url_for('static', filename='images/deped_seal.png') }}"
-        alt="DepEd Logo"
-        class="banner-logo"
-      />
-      <div class="banner-left-text">
-        <p class="sub-banner-dept">Schools Division of Laoag City</p>
-        <p class="sub-banner-region">Region I – Ilocos Region</p>
+  <header class="site-banner" role="banner">
+    <div class="banner-top">
+      <!-- Left group: logo and text -->
+      <div class="banner-left-group">
+        <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo" class="banner-logo" />
+        <div class="banner-left-text">
+          <p class="sub-banner-dept">Schools Division of Laoag City</p>
+          <p class="sub-banner-region">Region I – Ilocos Region</p>
+        </div>
+      </div>
+
+      <!-- Centered title -->
+      <div class="banner-text">
+        <h1>DEPARTMENT OF EDUCATION</h1>
+        <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
       </div>
     </div>
-
-    <!-- Centered title -->
-    <div class="banner-text">
-      <h1>DEPARTMENT OF EDUCATION</h1>
-      <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
-    </div>
-  </div>
-</header>
-
+  </header>
 
 
   <!-- MAIN CONTENT PANEL -->
   <div class="form-container">
-    <a
-      href="{{ url_for('admin_interview_detail', iid=applicant.interview_id) }}"
-      class="btn-back"
-    >← Back to Interview Details</a>
+    <a href="{{ url_for('admin_interview_detail', iid=applicant.interview_id) }}" class="btn-back">← Back to Interview
+      Details</a>
 
-    </div>
+  </div>
+
+  <h1 class="title">Applicant {{ applicant.code }} Details</h1>
 
 
+  <table class="detail-table">
+    <tbody>
+      <tr>
+        <th>Name</th>
+        <td>{{ applicant.name }}</td>
+      </tr>
+      <tr>
+        <th>Address</th>
+        <td>{{ applicant.address }}</td>
+      </tr>
+      <tr>
+        <th>Contact Number</th>
+        <td>{{ applicant.contact_number }}</td>
+      </tr>
+      <tr>
+        <th>Email Address</th>
+        <td>{{ applicant.email_addr }}</td>
+      </tr>
+      <tr>
+        <th>Birthday</th>
+        <td>{{ applicant.birthday }}</td>
+      </tr>
+      <tr>
+        <th>Age</th>
+        <td>{{ applicant.age }}</td>
+      </tr>
+      <tr>
+        <th>Sex</th>
+        <td>{{ applicant.sex }}</td>
+      </tr>
+      <tr>
+        <th>Raw Education</th>
+        <td>{{ applicant.raw_edu }}</td>
+      </tr>
+      <tr>
+        <th>Raw Experience</th>
+        <td>{{ applicant.raw_exp }}</td>
+      </tr>
+      <tr>
+        <th>Raw Training</th>
+        <td>{{ applicant.raw_trn }}</td>
+      </tr>
+      <tr>
+        <th>Score Education</th>
+        <td>{{ applicant.score_edu }}</td>
+      </tr>
+      <tr>
+        <th>Score Experience</th>
+        <td>{{ applicant.score_exp }}</td>
+      </tr>
+      <tr>
+        <th>Score Training</th>
+        <td>{{ applicant.score_trn }}</td>
+      </tr>
+      {% for field in extra_data.keys() %}
+      <tr>
+        <th>{{ applicant_structure[field]['LABEL'] }}</th>
+        <td>{{ extra_data[field] }}</td>
+      </tr>
+      {% endfor %}
+      {% for field in evaluation_scores.keys() %}
+      <tr>
+        <th>{{ field }}</th>
+        <td>{{ evaluation_scores[field] }}</td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <th>Total Score </th>
+        <td>{{ total_score }}</td>
+      </tr>
+    </tbody>
+  </table>
 
-    <h1 class="title">Applicant {{ applicant.code }} Details</h1>
-    
-
-    <table class="detail-table">
-      <tbody>
-        <tr><th>Name</th><td>{{ applicant.name }}</td></tr>
-        <tr><th>Address</th><td>{{ applicant.address }}</td></tr>
-        <tr><th>Contact Number</th><td>{{ applicant.contact_number }}</td></tr>
-        <tr><th>Email Address</th><td>{{ applicant.email_addr }}</td></tr>
-        <tr><th>Birthday</th><td>{{ applicant.birthday }}</td></tr>
-        <tr><th>Age</th><td>{{ applicant.age }}</td></tr>
-        <tr><th>Sex</th><td>{{ applicant.sex }}</td></tr>
-        <tr><th>Raw Education</th><td>{{ applicant.raw_edu }}</td></tr>
-        <tr><th>Raw Experience</th><td>{{ applicant.raw_exp }}</td></tr>
-        <tr><th>Raw Training</th><td>{{ applicant.raw_trn }}</td></tr>
-        <tr><th>Score Education</th><td>{{ applicant.score_edu }}</td></tr>
-        <tr><th>Score Experience</th><td>{{ applicant.score_exp }}</td></tr>
-        <tr><th>Score Training</th><td>{{ applicant.score_trn }}</td></tr>
-        {% for field in extra_data.keys() %}
-          <tr><th>{{ applicant_structure[field]['LABEL'] }}</th><td>{{ extra_data[field] }}</td></tr>
-        {% endfor %}
-        {% for field in evaluation_scores.keys() %}
-          <tr><th>{{ field }}</th><td>{{ evaluation_scores[field] }}</td></tr>
-        {% endfor %}
-        <tr><th>Total Score </th><td>{{ total_score }}</td></tr>
-      </tbody>
-    </table>
-
-<div class="evaluations">
-  {% if scores %}
+  <div class="evaluations">
+    {% if scores %}
     <h2>Evaluations</h2>
     <ul class="evaluation-list">
       {% for score in scores %}
-        <li>Evaluator #{{ loop.index }} score: {{ score | round(2) }}</li>
+      <li>Evaluator #{{ loop.index }} score: {{ score | round(2) }}</li>
       {% endfor %}
     </ul>
-  {% endif %}
-</div>
+    {% endif %}
+  </div>
 
   </div><!-- /.form-container -->
-  
-            <a
-        href="{{ url_for('download_applicant_pdf', code=applicant.code) }}"
-        class="btn-download"
-      ><i class="fas fa-download"></i>Download File</a>
+  <a href="{{ url_for('download_applicant_pdf', code=applicant.code) }}" class="btn-download"><i
+      class="fas fa-download"></i>Download File</a>
+  </div><!-- /.form-container -->
+  <a href="{{ url_for('update_applicant', code=applicant.code) }}" class="btn-download"><i
+      class="fas fa-download"></i>Update</a>
+
+  <a href="{{ url_for('delete_applicant', code=applicant.code) }}" class="btn-download"><i
+      class="fas fa-download"></i>Delete</a>
 
   <!-- SITE FOOTER -->
- <footer class="admin-footer" role="contentinfo">
+  <footer class="admin-footer" role="contentinfo">
     <div class="footer-content">
       <div class="footer-logos">
-        <img
-          src="{{ url_for('static', filename='images/deped_logo.png') }}"
-          alt="DepEd Logo"
-        />
+        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
       </div>
       <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph"
-          ><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a
-        >
-        <a
-          href="https://www.facebook.com/depedtayolaoagcity"
-          target="_blank"
-          ><i class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a
-        >
-        <a href="https://www.depedlaoagcity.com" target="_blank"
-          ><i class="fas fa-globe"></i>depedlaoagcity.com</a
-        >
+        <a href="mailto:laoag.city@deped.gov.ph"><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a>
+        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank"><i
+            class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a>
+        <a href="https://www.depedlaoagcity.com" target="_blank"><i class="fas fa-globe"></i>depedlaoagcity.com</a>
       </div>
     </div>
   </footer>
 
 
 </body>
+
 </html>

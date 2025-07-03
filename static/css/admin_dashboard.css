@@ -3,16 +3,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
 
 :root {
-  --maroon:   #800000;
-  --yellow:   #FFD700;
-  --bg-light: #FAFAFA;
-  --text:     #333;
-  --border:   #CCC;
-  --font:     'Montserrat', Arial, sans-serif;
-  --radius:   8px;
-  --gap:      1rem;
-  --header-height: 76px;
-  --footer-height: 60px
+  --maroon:         #800000;
+  --yellow:         #FFD700;
+  --red:            #c62828;
+  --blue:           #0277bd;
+  --bg-light:       #FAFAFA;
+  --text:           #333;
+  --border:         #CCC;
+  --font:           'Montserrat', Arial, sans-serif;
+  --radius:         8px;
+  --gap:            1rem;
+  --header-height:  76px;
+  --footer-height:  60px;
+  /* ================================================
+     ADJUSTABLE SIZING VARIABLES (if you like):
+     --container-max-width: controls main content
+     --button-gap: controls spacing between buttons
+     (you can redefine these in :root)
+     ================================================ */
+  --container-max-width: 1400px;
+  --button-gap:         1rem;
 }
 
 /* —— RESET & BASE —— */
@@ -23,6 +33,7 @@
   margin: 0;
   padding: 0;
 }
+
 body {
   padding-top:    var(--header-height);
   padding-bottom: var(--footer-height);
@@ -32,7 +43,7 @@ body {
   line-height: 1.5;
 }
 
-
+/* —— SITE BANNER —— */
 .banner-top {
   position: fixed;
   top:      0;
@@ -68,11 +79,14 @@ body {
 }
 
 .banner-text {
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  z-index: 1;
 }
 
 .banner-text h1 {
@@ -99,65 +113,23 @@ body {
   transition: background 0.2s;
 }
 
-.banner-text {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  z-index: 1;
-}
-
-
-/* Keep all other existing banner styles the same */
-.site-banner .banner-text h1 {
-  margin: 0;
-  font-size: 1.75rem;
-}q
-.site-banner .banner-subtitle,
-.site-banner .sub-banner-dept,
-.site-banner .sub-banner-region {
-  margin: 0;
-  color: #fff;
-}
-
-.site-banner .banner-text {
-  flex: 1;                    /* take up all space between logo & logout */
-  display: flex;
-  flex-direction: column;     /* stack H1, H2, Ps vertically */
-  align-items: center;        /* center them horizontally */
-  gap: 0.25rem;               /* small spacing between lines */
-}
-
-/* 2. Tweak margins so they don’t collide */
-.site-banner .banner-text h1 {
-  margin: 0;
-  font-size: 1.75rem;
-}
-.site-banner .banner-subtitle,
-.site-banner .sub-banner-dept,
-.site-banner .sub-banner-region {
-  margin: 0;
-  color: #fff;
-}
-
+/* Sub-banner & HR section */
 .sub-banner {
   padding: 0.75rem 10rem;
   width: 100%;
 }
+
 .hr-section {
-  width: 100%;                   
+  width: 100%;
   background: rgba(128,0,0,0.9);
   padding: 0.75rem 1rem;
 }
 
 .hr-section h2 {
-  margin: 0;                    
-  color: #fff;                   
+  margin: 0;
+  color: #fff;
   text-align: center;
-  font-size: 1.25rem;           
+  font-size: 1.25rem;
   font-weight: 500;
   letter-spacing: 0.05em;
   line-height: 1.3;
@@ -177,26 +149,42 @@ body {
 /* —— MAIN CONTAINER BOX —— */
 .form-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   padding: 2rem 1rem;
   background: var(--bg-light);
-  
+
+  /* ================================================
+     ADJUST MAIN CONTENT WIDTH HERE:
+     Increase or decrease max-width to fit more content.
+     ================================================= */
+  width: 100%;
+  max-width: var(--container-max-width);  /* ← adjust this value */
+  margin: 0 auto;
 }
+
+/* If you ever use a .dashboard-box wrapper, you can also adjust it here: */
 .dashboard-box {
   width: 100%;
-  max-width: 800px;
+  max-width: var(--container-max-width);  /* ← adjust this value */
+  margin: 0 auto;
   background: #fff;
   border-radius: var(--radius);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   overflow: hidden;
 }
+
+/* Cards inside .dashboard-box */
 .dashboard-box .card {
   padding: var(--gap);
   border-bottom: 1px solid #eee;
 }
+
 .dashboard-box .card:last-child {
   border-bottom: none;
 }
+
+/* Card headings */
 .card h2 {
   margin-bottom: var(--gap);
   font-size: 1.25rem;
@@ -206,12 +194,13 @@ body {
   padding-bottom: 0.25rem;
 }
 
+/* —— NAVIGATION TABS —— */
 .tab-nav {
   position: fixed;
-  top:    var(--header-height); 
-  bottom: var(--footer-height);  
-  left: 0;
-  width: var(--sidebar-width);
+  top:    var(--header-height);
+  bottom: var(--footer-height);
+  left:   0;
+  width:  var(--sidebar-width);
   height: 90vh;
   background: rgba(255, 255, 255, 0.95);
   border-right: 2px solid var(--border);
@@ -220,41 +209,40 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: calc(var(--header-height) + var(--hr-height) + 1rem) 1rem 1rem 1rem;
+  padding: calc(var(--header-height) + var(--hr-height) + 1rem) 1rem 1rem;
   backdrop-filter: blur(10px);
 }
 
-    .tab-nav a {
-      display: block;
-      padding: 1rem;
-      margin-bottom: 0.5rem;
-      color: var(--maroon);
-      text-decoration: none;
-      font-weight: 500;
-      border-radius: var(--radius);
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
-    }
+.tab-nav a {
+  display: block;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--maroon);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
 
-    .tab-nav a:hover,
-    .tab-nav a.active {
-      background: var(--yellow);
-      color: var(--maroon);
-      border-color: var(--maroon);
-      transform: translateX(2px);
-    }
+.tab-nav a:hover,
+.tab-nav a.active {
+  background: var(--yellow);
+  color: var(--maroon);
+  border-color: var(--maroon);
+  transform: translateX(2px);
+}
 
 /* —— FORM ELEMENTS —— */
 label {
   display: block;
   margin-top: var(--gap);
   font-weight: bold;
-  
 }
+
 input,
 select {
   width: 100%;
-  max-width: 1000px;
   margin: 0.25rem 0 var(--gap);
   padding: 0.5rem;
   border: 1px solid var(--border);
@@ -266,28 +254,88 @@ select {
 .form-actions {
   text-align: center;
 }
+
+/*────────────────────────
+  Base submit-style button
+────────────────────────*/
 .btn-submit {
-  background: var(--yellow);
-  color: var(--maroon);
-  border: none;
+  display: inline-block;
   padding: 0.75rem 1.5rem;
+  border: none;
   border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s ease;
-  
+  color: var(--maroon);
+  background: var(--yellow);
 }
-.btn-submit:hover {
+
+/*────────────────────────
+  Color modifiers
+────────────────────────*/
+.btn-submit--view {
+  background: var(--yellow);
+  color: var(--maroon);
+}
+.btn-submit--update {
+  background: var(--blue);
+  color: #fff;
+}
+.btn-submit--delete {
+  background: var(--red);
+  color: #fff;
+}
+
+/*────────────────────────
+  Hover states
+────────────────────────*/
+.btn-submit--view:hover {
   background: #e5c100;
+}
+.btn-submit--update:hover {
+  background: #01579b;
+}
+.btn-submit--delete:hover {
+  background: #b71c1c;
+}
+
+/* Other buttons like “back” or “download” */
+.btn-back,
+.btn-download {
+  display: inline-block;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  background: var(--blue);
+  color: #fff;
+  margin: var(--button-gap) 0;
+}
+
+.btn-back:hover,
+.btn-download:hover {
+  background: #01579b;
+}
+
+/* Make all buttons in a row sit side–by–side */
+.button-row,
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--button-gap);
+  justify-content: flex-start;  /* or center / space-between */
 }
 
 /* —— TABLE STYLES —— */
+.detail-table,
 .qual-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: var(--gap);
-  
 }
+.detail-table th,
+.detail-table td,
 .qual-table th,
 .qual-table td {
   padding: 0.75rem 1rem;
@@ -310,7 +358,7 @@ select {
   color: #fff;
   max-width: 100%;
   padding: 0.5rem 2rem;
-    position: fixed;
+  position: fixed;
   bottom:   0;
   left:     0;
   width:    100%;
@@ -329,12 +377,10 @@ select {
   align-items: center;
   gap: 0.5rem;
 }
-
 .admin-footer .footer-logos img {
-  height: 50px;  
+  height: 50px;
   width: auto;
-} 
-
+}
 .admin-footer .footer-links {
   display: flex;
   gap: 1.5rem;
@@ -351,7 +397,6 @@ select {
   color: var(--yellow);
 }
 
-
 /* —— RESPONSIVE —— */
 @media (max-width: 480px) {
   .site-banner .banner-top,
@@ -367,18 +412,20 @@ select {
     font-size: 1.25rem;
     margin: 0.5rem 0;
   }
-  .btn-submit {
+  .btn-submit,
+  .btn-back,
+  .btn-download {
     width: 100%;
   }
 }
 
-    /* Smooth scrolling for anchor links */
-    html {
-      scroll-behavior: smooth;
-       scroll-padding-top: var(--header-height);
-    }
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height);
+}
 
-    /* Offset for anchor links to account for fixed elements */
-    section {
-      scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 20px);
-    }
+/* Offset for anchor links to account for fixed elements */
+section {
+  scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 20px);
+}

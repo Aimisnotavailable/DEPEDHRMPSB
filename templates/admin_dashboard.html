@@ -112,6 +112,7 @@
           <thead>
             <tr>
               <th>ID</th>
+              <th>Date</th>
               <th>Baselines</th>
               <th>#Eval</th>
               <th>#Applicants</th>
@@ -122,15 +123,18 @@
             {% for iv in interviews %}
             <tr>
               <td>{{ iv.id }}</td>
+              <td>{{ iv.date }} </td>
               <td>
-                Edu {{ iv.base_edu }} / 
-                Exp {{ iv.base_exp }} / 
-                Trn {{ iv.base_trn }}
+                Education:  {{ ed_labels[iv.base_edu ~ ''] }} <br>
+                Experience: {{ ex_labels[iv.base_exp ~ ''] }} <br>
+                Training: {{ tr_labels[iv.base_trn ~ ''] }}
               </td>
               <td>{{ iv.evaluator_tokens|length }}</td>
-              <td>{{ iv.participants|length }}</td>
+              <td>{{ iv.applicants|length }}</td>
               <td>
-                <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn-submit">View</a>
+                <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn-submit btn-submit--view">View</a>
+                <a href="{{ url_for('update_interview', iid=iv.id) }}" class="btn-submit btn-submit--update">Update</a>
+                <a href="{{ url_for('delete_interview', iid=iv.id) }}" class="btn-submit btn-submit--delete">Delete</a>
               </td>
             </tr>
             {% endfor %}
