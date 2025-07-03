@@ -21,8 +21,8 @@
      --button-gap: controls spacing between buttons
      (you can redefine these in :root)
      ================================================ */
-  --container-max-width: 1400px;
-  --button-gap:         1rem;
+  --container-max-width: 80%;
+  --button-gap:         0.5rem;
 }
 
 /* —— RESET & BASE —— */
@@ -111,6 +111,11 @@ body {
   text-decoration: none;
   font-weight: 500;
   transition: background 0.2s;
+}
+
+.banner-logout:hover{
+  background: #e5c100;
+  transform: translateY(-1px);
 }
 
 /* Sub-banner & HR section */
@@ -227,7 +232,6 @@ body {
 
 .tab-nav a:hover,
 .tab-nav a.active {
-  background: var(--yellow);
   color: var(--maroon);
   border-color: var(--maroon);
   transform: translateX(2px);
@@ -256,19 +260,39 @@ select {
 }
 
 /*────────────────────────
-  Base submit-style button
+  Button Group - Single Row Layout
 ────────────────────────*/
+.btn-group {
+  display: flex;                /* Use flexbox for better control */
+  align-items: center;          /* Center buttons vertically */
+  justify-content: center;      /* Center the group horizontally */
+  gap: var(--button-gap);       /* Space between buttons */
+  flex-wrap: nowrap;            /* Prevent wrapping to new line */
+  white-space: nowrap;          /* Prevent text wrapping */
+}
+
+/* Base button styles */
 .btn-submit {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
-  border: none;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
   border-radius: 10px;
-  font-size: 1rem;
+  border: none;
   cursor: pointer;
-  transition: background 0.2s ease;
-  color: var(--maroon);
   background: var(--yellow);
+  color: var(--maroon);
+  transition: all 0.2s ease;
+  text-decoration: none;        /* For anchor buttons */
+  text-align: center;
+  min-width: 60px;              /* Ensure minimum width for consistency */
+  flex-shrink: 0;               /* Prevent buttons from shrinking */
 }
+
+.btn-submit:hover{
+  background: #e5c100;
+  transform: translateY(-1px);
+}
+
 
 /*────────────────────────
   Color modifiers
@@ -277,10 +301,12 @@ select {
   background: var(--yellow);
   color: var(--maroon);
 }
+  
 .btn-submit--update {
   background: var(--blue);
   color: #fff;
 }
+
 .btn-submit--delete {
   background: var(--red);
   color: #fff;
@@ -291,15 +317,20 @@ select {
 ────────────────────────*/
 .btn-submit--view:hover {
   background: #e5c100;
-}
-.btn-submit--update:hover {
-  background: #01579b;
-}
-.btn-submit--delete:hover {
-  background: #b71c1c;
+  transform: translateY(-1px);
 }
 
-/* Other buttons like “back” or “download” */
+.btn-submit--update:hover {
+  background: #01579b;
+  transform: translateY(-1px);
+}
+
+.btn-submit--delete:hover {
+  background: #b71c1c;
+  transform: translateY(-1px);
+}
+
+/* Other buttons like "back" or "download" */
 .btn-back,
 .btn-download {
   display: inline-block;
@@ -333,23 +364,53 @@ select {
   width: 100%;
   border-collapse: collapse;
   margin-top: var(--gap);
+  table-layout: auto;            /* allow columns to size to content */
 }
+
 .detail-table th,
 .detail-table td,
 .qual-table th,
 .qual-table td {
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.75rem;       /* comfortable but compact spacing */
   border: 1px solid var(--border);
-  text-align: left;
+  text-align: left;              /* left-align for readability */
+  line-height: 1.4;              /* give lines breathing room */
+  white-space: normal;           /* allow wrapping */
+  word-break: break-word;        /* break long words/phrases */
 }
+
+.detail-table th,
 .qual-table th {
   background: var(--bg-light);
+  font-weight: bold;
 }
+
+/* Zebra stripes & hover */
+.detail-table tbody tr:nth-child(even),
 .qual-table tbody tr:nth-child(even) {
   background: #f9f9f9;
 }
+
+.detail-table tbody tr:hover,
 .qual-table tbody tr:hover {
   background: #fff8e1;
+}
+
+table td:first-child {
+  text-align: center;
+  white-space: nowrap;          /* Prevent cell content from wrapping */
+}
+
+
+
+table td:last-child {
+  text-align: center;
+  white-space: nowrap;       
+}
+
+
+td .btn-group {
+  justify-content: center;   
 }
 
 /* —— SITE FOOTER —— */
@@ -397,35 +458,317 @@ select {
   color: var(--yellow);
 }
 
-/* —— RESPONSIVE —— */
-@media (max-width: 480px) {
-  .site-banner .banner-top,
-  .form-container,
-  .admin-footer .footer-content {
-    flex-direction: column;
-    text-align: center;
+/* —— RESPONSIVE DESIGN —— */
+@media (max-width: 1024px) {
+  :root {
+    --container-max-width: 98%;
+    --dynamic-header-height: 120px; /* Adjust based on actual collapsed header height */
   }
-  .site-banner .banner-logo {
+  
+  body {
+    padding-top: calc(var(--dynamic-header-height) + 3rem);
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: var(--gap);
+  }
+
+  /* ensure table itself can overflow */
+  .detail-table,
+  .qual-table {
+    width: 100%;
+    min-width: 600px;       /* adjust this to match your widest content */
+    border-collapse: collapse;
+    table-layout: auto;
+  }
+
+  /* tighten up cells */
+  .detail-table th,
+  .detail-table td,
+  .qual-table th,
+  .qual-table td {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    text-align: left;
+    white-space: normal;    /* permit wrapping */
+    word-break: break-word;
+  }
+
+  /* let first/last columns wrap too */
+  .detail-table td:first-child,
+  .detail-table td:last-child,
+  .qual-table td:first-child,
+  .qual-table td:last-child {
+    white-space: normal;
+
+  }
+
+.btn-submit {
+  padding: 0.35rem 0.75rem;   /* less vertical & horizontal padding */
+  font-size: 0.8rem;          /* smaller text */
+  min-width: 1.5rem;          /* tighten the width */
+  line-height: 1.5;
+}
+
+  
+
+  /* center and tighten button groups */
+  td .btn-group {
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .banner-top {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: var(--dynamic-header-height);
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+
+  .banner-left-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .banner-logo {
     height: 40px;
   }
-  .site-banner .banner-top h1 {
-    font-size: 1.25rem;
-    margin: 0.5rem 0;
+
+  .banner-left-text {
+    font-size: 0.85rem;
+    text-align: center;
   }
-  .btn-submit,
-  .btn-back,
-  .btn-download {
+
+  .banner-text {
+    position: static;
+    transform: none;
     width: 100%;
+  }
+
+  .banner-text h1 {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .banner-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .banner-logout {
+    position: fixed;
+    order: 3;
+    margin-top: 0.5rem; 
+  }
+
+  .tab-nav {
+    position: sticky;
+    top: var(--dynamic-header-height); /* Stick below the header */
+    width: 100%;
+    height: auto;
+    max-width: 98%;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+    z-index: 999; /* Ensure it stays above content */
+    margin-bottom: 2vh;
+  }
+
+  .tab-nav a {
+    flex: 0 1 auto;
+    white-space: nowrap;
+    text-align: center;
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+    color: var(--maroon);
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .form-container,
+  .dashboard-box {
+    margin-left: 0;
+    padding: 1rem;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+  }
+
+/* —— SITE FOOTER —— */
+.admin-footer {
+  background: var(--maroon);
+  color: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.25rem 1rem;           /* reduced vertical + horizontal padding */
+  height: auto;                    /* let content dictate height */
+  z-index: 1000;
+}
+
+.admin-footer .footer-content {
+  max-width: var(--container-max-width); /* match your main content width */
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;                        /* smaller gap between logos & links */
+}
+
+.admin-footer .footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-footer .footer-logos img {
+  height: 30px;                     /* smaller logo */
+  width: auto;
+}
+
+.admin-footer .footer-links {
+  display: flex;
+  gap: 1rem;                        /* tighter spacing */
+}
+
+.admin-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;               /* smaller link text */
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.admin-footer .footer-links a:hover {
+  color: var(--yellow);
+}
+
+}
+
+@media (max-width: 768px) {
+  :root {
+    --button-gap: 0.25rem;
+    --container-max-width: 100%;
+    --dynamic-header-height: 100%; /* Slightly taller on smaller screens */
+  }
+
+  body {
+    padding-top: calc(var(--dynamic-header-height) + 3rem);
+  }
+
+  .banner-top {
+    height: var(--dynamic-header-height);
+    padding: 0.5rem;
+  }
+
+  .form-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .btn-group {
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .btn-submit {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    min-width: 50px;
+  }
+
+  .sub-banner {
+    padding: 0.5rem 1rem;
+  }
+
+  .tab-nav {
+    top: var(--dynamic-header-height);
+    padding: 0.25rem;
+    gap: 0.25rem;
+  }
+
+  .tab-nav a {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
   }
 }
 
-/* Smooth scrolling for anchor links */
+@media (max-width: 480px) {
+  :root {
+    --gap: 0.75rem;
+    --footer-height: 80px;
+    --dynamic-header-height: 160px; /* Even taller on mobile due to stacking */
+  }
+
+  body {
+    padding-top: calc(var(--dynamic-header-height) + 3rem);
+  }
+
+  .banner-top {
+    height: var(--dynamic-header-height);
+  }
+
+  .banner-text h1 {
+    font-size: 1rem;
+  }
+
+  .banner-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .tab-nav {
+    top: var(--dynamic-header-height);
+  }
+
+  .btn-back,
+  .btn-download {
+    width: 100%;
+    margin: 0.25rem 0;
+  }
+  
+  .btn-group {
+    gap: 0.2rem;
+  }
+  
+  .btn-submit {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem;
+    min-width: 45px;
+  }
+
+  .admin-footer {
+    height: auto;
+    padding: 0.5rem;
+  }
+
+  .admin-footer .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-height);
 }
 
-/* Offset for anchor links to account for fixed elements */
 section {
-  scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 20px);
+  scroll-margin-top: calc(var(--header-height) + 20px);
 }

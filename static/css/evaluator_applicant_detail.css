@@ -346,91 +346,109 @@ form button[type="submit"]:hover {
   color: var(--yellow);
 }
 
+/* —— RESPONSIVE DESIGN —— */
+@media (max-width: 1024px) {
+  :root {
+    --container-max-width: 98%;
+    --dynamic-header-height: 120px; /* Adjust based on actual collapsed header height */
+  }
+  
+  body {
+    padding-top: calc(var(--dynamic-header-height) + 3rem);
+  }
 
-/* Extra-small phones (portrait <576px) */
-@media (max-width: 575.98px) {
-  .content-container {
-    width: 100%;
-    margin: 0.5rem auto;
-    padding: 1rem;
-  }
-  .banner-text h1 {
-    font-size: 1.2rem;
-  }
-  .wizard-nav {
-    flex-direction: column;
-  }
-  .wizard-nav .wizard-btn {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-}
-
-/* Small phones & landscape phones (≥576px and <768px) */
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .content-container {
-    max-width: 480px;
-    margin: 1rem auto;
-    padding: 1.25rem;
-  }
-  .banner-text h1 {
-    font-size: 1.4rem;
-  }
-}
-
-/* Tablets (≥768px and <992px) */
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .content-container {
-    max-width: 640px;
-    margin: 1.5rem auto;
-    padding: 1.5rem;
-  }
   .banner-top {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    height: var(--dynamic-header-height);
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
   }
-  .banner-text {
-    flex: 1 1 100%;
+
+  .banner-left-group {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .banner-logo {
+    height: 40px;
+  }
+
+  .banner-left-text {
+    font-size: 0.85rem;
     text-align: center;
   }
-}
 
-/* Small laptops / desktops (≥992px and <1200px) */
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  .content-container {
-    max-width: 800px;
+  .banner-text {
+    position: static;
+    transform: none;
+    width: 100%;
   }
-  .banner-text h1 {
-    font-size: 1.75rem;
-  }
-  .wizard-nav {
-    justify-content: space-between;
-  }
-}
 
-/* Large desktops (≥1200px and <1600px) */
-@media (min-width: 1200px) and (max-width: 1599.98px) {
-  .content-container {
-    max-width: 960px;
-  }
   .banner-text h1 {
-    font-size: 2rem;
-  }
-  .wizard-nav .wizard-btn {
-    padding: 0.75rem 1.5rem;
-  }
-}
-
-/* Extra-wide desktops (≥1600px) */
-@media (min-width: 1600px) {
-  .content-container {
-    max-width: 1140px;
-  }
-  .banner-text h1 {
-    font-size: 2.25rem;
-  }
-  .wizard-nav .wizard-btn {
     font-size: 1.1rem;
+    margin: 0;
   }
+
+  .banner-subtitle {
+    font-size: 0.9rem;
+  }
+
+
+
+/* —— SITE FOOTER —— */
+.admin-footer {
+  background: var(--maroon);
+  color: #fff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 0.25rem 1rem;           /* reduced vertical + horizontal padding */
+  height: auto;                    /* let content dictate height */
+  z-index: 1000;
 }
+
+.admin-footer .footer-content {
+  max-width: var(--container-max-width); /* match your main content width */
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;                        /* smaller gap between logos & links */
+}
+
+.admin-footer .footer-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.admin-footer .footer-logos img {
+  height: 30px;                     /* smaller logo */
+  width: auto;
+}
+
+.admin-footer .footer-links {
+  display: flex;
+  gap: 1rem;                        /* tighter spacing */
+}
+
+.admin-footer .footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;               /* smaller link text */
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.admin-footer .footer-links a:hover {
+  color: var(--yellow);
+}
+}
+
+
