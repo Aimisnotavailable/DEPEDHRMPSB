@@ -589,6 +589,7 @@ def download_interview_CAR(code):
     applicant_data_temp = {'code' : [],
                       'name' : [],
                       'score' : [],
+                      'eval_score' : [],
                       'total_score' : [],
                       }
     for applicant in interview_data.applicants:
@@ -606,21 +607,25 @@ def download_interview_CAR(code):
             score_data_temp.append(app_data_json[key])
 
         applicant_data_temp['score'].append(score_data_temp)
-        applicant_data_temp['total_score'].append(calculate_applicant_score(applicant, EVAL_STRUCTURE[interview_data.type])[0])
+        total_score, eval_score = calculate_applicant_score(applicant, EVAL_STRUCTURE[interview_data.type])
+        applicant_data_temp['eval_score'].append(eval_score)
+        applicant_data_temp['total_score'].append(total_score)
     
     combined = list(zip(
         applicant_data_temp['code'],
         applicant_data_temp['name'],
         applicant_data_temp['score'],
+        applicant_data_temp['eval_score'],
         applicant_data_temp['total_score']
     ))
 
-    sorted_packed_data = sorted(combined, key=lambda x : -x[3])
+    sorted_packed_data = sorted(combined, key=lambda x : -x[4])
 
     applicant_data = {
         'code' : [],
         'name' : [],
         'score' : [],
+        'eval_score' : [],
         'total_score' : [],
     }
 
@@ -628,7 +633,8 @@ def download_interview_CAR(code):
         applicant_data['code'].append(data[0])
         applicant_data['name'].append(data[1])
         applicant_data['score'].append(data[2])
-        applicant_data['total_score'].append(data[3])
+        applicant_data['eval_score'].append(data[3])
+        applicant_data['total_score'].append(data[4])
     print("APP_DAT", applicant_data)
     doc_io = download_CAR(applicant_data, interview_data)
     return send_file(
