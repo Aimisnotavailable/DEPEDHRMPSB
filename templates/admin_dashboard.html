@@ -108,10 +108,12 @@
 
       <!-- Existing Interviews Panel -->
       <section class="card panel-list" aria-labelledby="list-heading" id="existing_interview">
-        <h2 id="list-heading">Existing Interviews</h2>
-        <div class="interview-search">
+        <h2 id="list-heading">Existing Interviews</h2>     
+        <div class="interview-controls">
           <input type="text" id="searchBar" placeholder="Search interview" onkeyup="filterInterviews()">
+          <button class="sort-btn" onclick="sortByDate()">⇅ Sort by Date</button>
         </div>
+        
         <table class="qual-table">
           <thead>
             <tr>
@@ -168,6 +170,59 @@
   <script>
     // This will hold the loaded SG types data
     let sgTypesData = null;
+    
+    //SEARCH BAR
+    function filterInterviews() {
+  const input = document.getElementById("searchBar").value.toLowerCase().trim();
+  const rows = document.querySelectorAll(".qual-table tbody tr");
+
+  rows.forEach(row => {
+    let match = false;
+
+    row.querySelectorAll("td").forEach(cell => {
+      // Restore original HTML by removing previous highlights
+      cell.innerHTML = cell.innerHTML.replace(/<span class="highlighted">(.*?)<\/span>/gi, '$1');
+
+      const plainText = cell.textContent.toLowerCase();
+
+      if (input && plainText.includes(input)) {
+        match = true;
+
+        // Highlight only text nodes, not HTML tags
+        const regex = new RegExp(`(${input})`, "gi");
+        const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT, null, false);
+
+        let node;
+        while ((node = walker.nextNode())) {
+          const span = document.createElement("span");
+          span.innerHTML = node.nodeValue.replace(regex, '<span class="highlighted">$1</span>');
+          node.parentNode.replaceChild(span, node);
+        }
+      }
+    });
+
+    row.style.display = match || input === "" ? "" : "none";
+  });
+}
+
+
+//SORT DATE
+let sortAsc = false; // Start with latest on top
+
+function sortByDate() {
+  const tbody = document.querySelector(".qual-table tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+
+  rows.sort((a, b) => {
+    const dateA = new Date(a.children[1].textContent.trim());
+    const dateB = new Date(b.children[1].textContent.trim());
+    return sortAsc ? dateA - dateB : dateB - dateA;
+  });
+
+  rows.forEach(row => tbody.appendChild(row));
+  sortAsc = !sortAsc;
+}
+
 
     // Map interview types to JSON categories
     const interviewTypeMap = {
@@ -241,20 +296,12 @@
       if (interviewTypeSelect.value) {
         updateSgLevels(interviewTypeSelect.value);
       }
+
+      
+      
     });
 
-    // Function to filter interviews in the table
-function filterInterviews() {
-  const input = document.getElementById("searchBar");
-  const filter = input.value.toLowerCase();
-  const rows = document.querySelectorAll(".qual-table tbody tr");
-
-  rows.forEach(row => {
-    const rowText = row.textContent.toLowerCase();
-    row.style.display = rowText.includes(filter) ? "" : "none";
-  });
-}
-
+    
   </script>
 </body>
 
