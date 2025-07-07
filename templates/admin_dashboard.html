@@ -120,7 +120,12 @@
 
       <!-- Existing Interviews Panel -->
       <section class="card panel-list" aria-labelledby="list-heading" id="existing_interview">
-        <h2 id="list-heading">Existing Interviews</h2>
+        <h2 id="list-heading">Existing Interviews</h2>     
+        <div class="interview-controls">
+          <input type="text" id="searchBar" placeholder="Search interview" onkeyup="filterInterviews()">
+          <button class="sort-btn" onclick="sortByDate()">⇅ Sort by Date</button>
+        </div>
+        
         <table class="qual-table">
           <thead>
             <tr>
@@ -131,7 +136,7 @@
               <th>#Applicants</th>
               <th>Details</th>
             </tr>
-          </thead>
+          </thead>          
           <tbody>
             {% for iv in interviews %}
             <tr>
@@ -149,15 +154,25 @@
                 <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
                   class="btn-submit btn-submit--view">View</a>
                 <a href="{{ url_for('update_interview', iid=iv.id) }}" class="btn-submit btn-submit--update">Update</a>
-                <a href="{{ url_for('delete_interview', iid=iv.id) }}" class="btn-submit btn-submit--delete">Delete</a>
+                <a href="{{ url_for('delete_interview', iid=iv.id) }}" class="btn-submit btn-submit--delete confirm-delete ">Delete</a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
     </div>
-    </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    </table>
-    </section>
+<!-- Deletion Confirmation Modal -->
+<div id="delete-modal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to delete this interview?</p>
+    <div class="modal-actions">
+      <button id="confirm-delete" class="btn-submit btn-submit--delete">Yes, delete</button>
+      <button id="cancel-delete" class="btn-submit btn-submit--view">Cancel</button>
     </div>
+  </div>
+</div>
 
   </main>
 
@@ -176,6 +191,108 @@
     </div>
   </footer>
   <script>
+
+    //Delete modal function.
+
+    document.addEventListener('DOMContentLoaded', () => {
+  const deleteModal      = document.getElementById('delete-modal');
+  const confirmDeleteBtn = document.getElementById('confirm-delete');
+  const cancelDeleteBtn  = document.getElementById('cancel-delete');
+
+  // Show modal and stash URL in the confirm button
+  document.querySelectorAll('a.confirm-delete').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      // store the link's href on the button
+      confirmDeleteBtn.dataset.url = link.href;
+      deleteModal.style.display = 'block';
+    });
+  });
+
+  // If they click “Yes, delete”, go to that URL
+  confirmDeleteBtn.addEventListener('click', () => {
+    const url = confirmDeleteBtn.dataset.url;
+    if (url) window.location.href = url;
+  });
+
+  // Cancel hides the modal
+  cancelDeleteBtn.addEventListener('click', () => {
+    deleteModal.style.display = 'none';
+    confirmDeleteBtn.dataset.url = '';
+  });
+
+  // click outside or Escape also close
+  deleteModal.addEventListener('click', e => {
+    if (e.target === deleteModal) {
+      deleteModal.style.display = 'none';
+      confirmDeleteBtn.dataset.url = '';
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      deleteModal.style.display = 'none';
+      confirmDeleteBtn.dataset.url = '';
+    }
+  });
+});
+
+    // This will hold the loaded SG types data
+    let sgTypesData = null;
+    
+    //SEARCH BAR
+    function filterInterviews() {
+  const input = document.getElementById("searchBar").value.toLowerCase().trim();
+  const rows = document.querySelectorAll(".qual-table tbody tr");
+
+  rows.forEach(row => {
+    let match = false;
+
+    row.querySelectorAll("td").forEach(cell => {
+      // Restore original HTML by removing previous highlights
+      cell.innerHTML = cell.innerHTML.replace(/<span class="highlighted">(.*?)<\/span>/gi, '$1');
+
+      const plainText = cell.textContent.toLowerCase();
+
+      if (input && plainText.includes(input)) {
+        match = true;
+
+        // Highlight only text nodes, not HTML tags
+        const regex = new RegExp(`(${input})`, "gi");
+        const walker = document.createTreeWalker(cell, NodeFilter.SHOW_TEXT, null, false);
+
+        let node;
+        while ((node = walker.nextNode())) {
+          const span = document.createElement("span");
+          span.innerHTML = node.nodeValue.replace(regex, '<span class="highlighted">$1</span>');
+          node.parentNode.replaceChild(span, node);
+        }
+      }
+    });
+
+    row.style.display = match || input === "" ? "" : "none";
+  });
+}
+
+
+//SORT DATE
+let sortAsc = false; // Start with latest on top
+
+function sortByDate() {
+  const tbody = document.querySelector(".qual-table tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+
+  rows.sort((a, b) => {
+    const dateA = new Date(a.children[1].textContent.trim());
+    const dateB = new Date(b.children[1].textContent.trim());
+    return sortAsc ? dateA - dateB : dateB - dateA;
+  });
+
+  rows.forEach(row => tbody.appendChild(row));
+  sortAsc = !sortAsc;
+}
+
+
+    // Map interview types to JSON categories
     // Static weight map
     const WEIGHT_STRUCTURE = {
       "teacher 1": { education: 10, experience: 10, training: 10 },
@@ -239,17 +356,22 @@
           ctr.style.display = 'none';
           inp.value = '';
         }
-      });
+      } else {
+        sgContainer.style.display = 'none';
+      }
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      try { await loadSgTypes(); }
-      catch (e) { console.error(e); alert('SG load failed'); return; }
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', async function () {
+      // Load the SG types data first
+      await loadSgTypes();
 
-      const t = document.getElementById('interview_type');
-      t.addEventListener('change', _ => {
-        updateSgLevels(t.value);
-        updateWeights(t.value);
+      // Get the interview type select element
+      const interviewTypeSelect = document.getElementById('interview_type');
+
+      // Set up the event listener for interview type changes
+      interviewTypeSelect.addEventListener('change', function () {
+        updateSgLevels(this.value);
       });
 
       // on-load sync if preselected
@@ -257,7 +379,22 @@
         updateSgLevels(t.value);
         updateWeights(t.value);
       }
+
+      
+      
     });
+
+  // Sorted existing interview.
+  document.addEventListener('DOMContentLoaded', function() {
+    // Select the tbody of the existing interviews table
+    const tbody = document.querySelector('.qual-table tbody');
+    if (!tbody) return;
+
+    // Grab all rows, reverse their order, and re-append them
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.reverse().forEach(row => tbody.appendChild(row));
+  });
+
   </script>
 
 
