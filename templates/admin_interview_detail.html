@@ -156,10 +156,10 @@
           <input name="address" required>
         </label>
         <label>Contact Number
-          <input name="contact_number" required>
+          <input maxlength="11" inputmode="numeric" type="tel" name="contact_number" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
         </label>
         <label>Email Address
-          <input name="email_address" required>
+          <input type="email" name="email_address" required>
         </label>
         <label>Birthday
           <input type="date" name="birthday" required>
