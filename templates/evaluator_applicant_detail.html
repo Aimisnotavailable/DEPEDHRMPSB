@@ -54,6 +54,7 @@
 
           <div id="wizard">
             <!-- each fieldset becomes one “step” -->
+            {% set ns = namespace(max_score=0) %}
             {% for section, fields in eval_struct.items() %}
             <fieldset class="step" data-step="{{ loop.index0 }}">
               {% set category = eval_struct[section].get('CATEGORY', {}) %}
@@ -71,7 +72,8 @@
                   max="{{ max_val }}"
                   required
                   value="{{ existing_data.get(section, {}).get(field, '') }}"
-                > 
+                >
+                {% set ns.max_score = ns.max_score + max_val %}
               {% endfor %}
             </fieldset>
             {% endfor %}
@@ -86,7 +88,7 @@
         </form>
 
         {% if overall is not none %}
-        <p>Your evaluation score: <strong>{{ overall }}</strong> (max 25)</p>
+        <p>Your evaluation score: <strong>{{ overall }}</strong> Max Score : <strong>{{ ns.max_score }}</strong></p>
         {% endif %}
   </div>
 

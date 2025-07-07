@@ -46,47 +46,61 @@
         <div class="dashboard-box">
             <!-- Create Interview Panel -->
             <section class="card panel-create" aria-labelledby="create-heading" id="create_interview">
-                <h2 id="create-heading">Update Interview ID : {{ interview.id }} 
+                <h2 id="create-heading">Update Interview ID : {{ interview.id }}
                     <br> Type: {{ interview.type }} <br>
-                    Position Title : {{ interview.position_title }} {{ interview.sg_level }}</h2>
+                    Position Title : {{ interview.position_title }}<br>
+                    SG LEVEL : {{ interview.sg_level }}
+                </h2>
 
                 <form method="post" action="{{ url_for('update_interview', iid=interview.id) }}">
-
-                    <label for="baseline_education">Baseline Education (Current Value : {{ed_labels[interview.base_exp ~ '']}}) </label>
+                    <label for="baseline_education">Baseline Education (Current Value : {{ed_labels[interview.base_exp ~
+                        '']}}) </label>
                     <select id="baseline_education" name="baseline_education" required>
                         <option disabled selected>– select –</option>
                         {% for k, v in ed_labels.items() %}
-                            {% if k == interview.base_edu ~ '' %}
-                            <option value="{{ k }}" selected>{{ v }}</option>
-                            {% else %}
-                            <option value="{{ k }}">{{ v }}</option>
-                            {% endif %}
+                        {% if k == interview.base_edu ~ '' %}
+                        <option value="{{ k }}" selected>{{ v }}</option>
+                        {% else %}
+                        <option value="{{ k }}">{{ v }}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
 
-                    <label for="baseline_experience">Baseline Experience (Current Value : {{ex_labels[interview.base_exp ~ '']}}) </label>
+                    <label for="weight_edu">Weight Edu</label>
+                    <input type="number" id="weight_edu" name="weight_edu" min="0" step="5" value="{{ weight_struct.get('education', 0) }}"/>
+
+                    <label for="baseline_experience">Baseline Experience (Current Value : {{ex_labels[interview.base_exp
+                        ~ '']}}) </label>
                     <select id="baseline_experience" name="baseline_experience" required>
                         <option disabled selected>– select –</option>
                         {% for k, v in ex_labels.items() %}
-                            {% if k == interview.base_exp ~ '' %}
-                            <option value="{{ k }}" selected>{{ v }}</option>
-                            {% else %}
-                            <option value="{{ k }}">{{ v }}</option>
-                            {% endif %}
+                        {% if k == interview.base_exp ~ '' %}
+                        <option value="{{ k }}" selected>{{ v }}</option>
+                        {% else %}
+                        <option value="{{ k }}">{{ v }}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
 
-                    <label for="baseline_training">Baseline Training (Current Value : {{tr_labels[interview.base_trn ~ '']}})</label>
+                    <label for="weight_exp">Weight Experience</label>
+                    <input type="number" id="weight_exp" name="weight_exp" min="0" step="5"  value="{{ weight_struct.get('experience', 0) }}"/>
+
+                    <label for="baseline_training">Baseline Training (Current Value : {{tr_labels[interview.base_trn ~
+                        '']}})</label>
                     <select id="baseline_training" name="baseline_training" required>
                         <option disabled selected>– select –</option>
                         {% for k, v in tr_labels.items() %}
-                            {% if k == interview.base_trn ~ '' %}
-                            <option value="{{ k }}" selected>{{ v }}</option>
-                            {% else %}
-                            <option value="{{ k }}">{{ v }}</option>
-                            {% endif %}
+                        {% if k == interview.base_trn ~ '' %}
+                        <option value="{{ k }}" selected>{{ v }}</option>
+                        {% else %}
+                        <option value="{{ k }}">{{ v }}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
+
+                    <label for="weight_trn">Weight Training</label>
+                    <input type="number" id="weight_trn" name="weight_trn" min="0" step="5" value="{{ weight_struct.get('training', 0) }}"/>
+
                     <div class="form-actions">
                         <button type="submit" class="btn-submit">Update Interview</button>
                     </div>

@@ -94,15 +94,15 @@
       </tr>
       <tr>
         <th>Score Education</th>
-        <td>{{ applicant.score_edu }}</td>
+        <td>{{ applicant_score.get('edu', 0) }}</td>
       </tr>
       <tr>
         <th>Score Experience</th>
-        <td>{{ applicant.score_exp }}</td>
+        <td>{{ applicant_score.get('exp', 0) }}</td>
       </tr>
       <tr>
         <th>Score Training</th>
-        <td>{{ applicant.score_trn }}</td>
+        <td>{{ applicant_score.get('trn', 0) }}</td>
       </tr>
       {% for field in extra_data.keys() %}
       <tr>
@@ -135,7 +135,7 @@
   </div>
 
   </div><!-- /.form-container -->
-  <a href="{{ url_for('download_applicant_pdf', code=applicant.code) }}" class="btn-download"><i
+  <a href="{{ url_for('download_applicant_data_file', code=applicant.code) }}" class="btn-download"><i
       class="fas fa-download"></i>Download File</a>
   </div><!-- /.form-container -->
   <a href="{{ url_for('update_applicant', code=applicant.code) }}" class="btn-download"><i

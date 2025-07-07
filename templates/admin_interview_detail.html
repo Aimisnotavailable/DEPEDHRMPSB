@@ -48,12 +48,40 @@
   </p>
 
     <div class="tab-nav">
+      <a href="#results">Results</a>
       <a href="#applicants">Applicants</a>
       <a href="#evaluators">Evaluators</a>
       <a href="#add-applicant">Add Applicant</a>
       <a href="#add-token">Generate Tokens</a>
              <a href="{{ url_for('admin_dashboard') }}" class="btn">← Dashboard</a>
     </div>
+    <!-- APPLICANTS -->
+    <section id="results">
+      <h2>Results</h2>
+      {% if applicants %}
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for score in applicants_total_score %}
+          <tr>
+            <td>{{ score[0] }}</td>
+            <td>{{ score[1] }}</td>
+            <td>{{ score[2] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="{{ url_for('download_interview_CAR', code=interview.id) }}" class="btn"> Download Results</a>
+      {% else %}
+      <p>No applicants added yet.</p>
+      {% endif %}
+    </section>
 
     <!-- APPLICANTS -->
     <section id="applicants">
@@ -170,8 +198,6 @@
         <label>{{ v['LABEL'] }} (MAX SCORE : {{ v['MAX_SCORE'] }} WEIGHT : {{ v['WEIGHT'] }})</label>
         <input type="number" name="{{ k }}" step="0.01" min="0" max="{{ v['MAX_SCORE'] }}" required>
         {% endfor %}
-
-
         <div class="form-actions">
           <button type="submit" class="btn-submit">Add Applicant</button>
         </div>

@@ -12,7 +12,7 @@ from scripts.criteriatable import CriteriaTable
 from scripts.incrementstable import IncrementsTable
 from scripts.table_handler import TableHandler
 
-from scripts.download_handler import download_pdf
+from scripts.download_handler import download_applicant_data, download_CAR
 
 from datetime import datetime
 
@@ -98,11 +98,6 @@ WEIGHT_STRUCTURE = {
         "experience" : 10,
         "training" : 10,
     },
-    "non teaching" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10,
-    },
     "related teaching" : {
         "education" : 10,
         "experience" : 10,
@@ -113,7 +108,7 @@ WEIGHT_STRUCTURE = {
         "experience" : 10,
         "training" : 10,
     },  
-    "non-teaching" : {
+    "non teaching" : {
         "education" : 5,
         "experience" : 5,
         "training" : 20,
@@ -182,6 +177,7 @@ class Interview(db.Model):
                       )
     position_title  = db.Column(db.String(100))
     sg_level        = db.Column(db.String(100))
+    weight_struct = db.Column(db.String(150))
 
     # ORM cascades + passive_deletes so we don't have to loop & delete children manually
     evaluator_tokens = db.relationship(
@@ -241,11 +237,7 @@ class Applicant(db.Model):
     raw_edu        = db.Column(db.Integer, nullable=False)
     raw_exp        = db.Column(db.Integer, nullable=False)
     raw_trn        = db.Column(db.Integer, nullable=False)
-    score_edu      = db.Column(db.Integer, nullable=False)
-    score_exp      = db.Column(db.Integer, nullable=False)
-    score_trn      = db.Column(db.Integer, nullable=False)
     extra_data     = db.Column(db.Text, nullable=True)
-
     interview      = db.relationship(
                        "Interview",
                        back_populates="applicants"
@@ -279,6 +271,56 @@ class Evaluation(db.Model):
                        )
     # (optionally, add relationships to EvaluatorToken & Applicant if you need them)
 
+# ------------------------------------------------------------------------------
+# Calculation HELPER
+# ------------------------------------------------------------------------------
+
+def calculate_baseline_score(applicant : Applicant, interview: Interview) -> dict[str, int]:
+        crit = CriteriaTable()
+        incs = IncrementsTable()
+        
+        weight_struct = json.loads(interview.weight_struct)
+        delta_edu = crit.get_score(applicant.raw_edu, interview.base_edu)
+        delta_exp = crit.get_score(applicant.raw_exp, interview.base_exp)
+        delta_trn = crit.get_score(applicant.raw_trn, interview.base_trn)
+
+        inc_edu = (weight_struct['education'] // 5)
+        inc_exp = (weight_struct['experience'] // 5)
+        inc_trn = (weight_struct['training'] // 5)
+
+        applicant_score = {}
+
+        applicant_score['edu'] = (incs.get_score(delta_edu, TableHandler().parse_table("increments", "education")) // 2) * inc_edu
+        applicant_score['exp'] = (incs.get_score(delta_exp, TableHandler().parse_table("increments", "experience")) // 2) * inc_exp
+        applicant_score['trn'] = (incs.get_score(delta_trn, TableHandler().parse_table("increments", "training")) // 2) * inc_trn
+
+        return applicant_score
+
+def calculate_applicant_score(applicant_data : Applicant, eval_struct):
+    eval_records = Evaluation.query.filter_by(
+         interview_id=applicant_data.interview_id,
+         applicant_code=applicant_data.code
+    ).all()
+    applicant_data_score = calculate_baseline_score(applicant_data, applicant_data.interview)
+    total_score = applicant_data_score['edu'] +applicant_data_score['exp'] + applicant_data_score['trn']
+    
+    app_json = json.loads(applicant_data.extra_data)
+    eval_score = 0
+    for field in app_json.keys():
+        total_score += app_json[field]
+
+    if eval_records:
+        for key in eval_struct.keys():
+            total = 0
+            for eval_record in eval_records:
+                temp_json = json.loads(eval_record.extra_data)
+                for val in temp_json[key].values():
+                    total += val
+            eval_score += round(((total / eval_struct[key]['TOTAL']) * eval_struct[key]['WEIGHT']) / len(eval_records), 2)
+            total_score += eval_score
+    
+    return total_score, eval_score
+    
 # ------------------------------------------------------------------------------
 # AUTHENTICATION HELPER
 # ------------------------------------------------------------------------------
@@ -342,15 +384,23 @@ def create_interview():
         position_data = str(request.form.get("sg_level")).split(';')
         now = datetime.now()
         date = datetime.strptime(now.strftime("%Y-%m-%d"), "%Y-%m-%d").date()
+
+        weight_struct = json.dumps({
+            "education": int(request.form.get("weight_edu", 10)),
+            "experience": int(request.form.get("weight_exp", 10)),
+            "training": int(request.form.get("weight_trn", 10)),}
+        )
+
         iv = Interview(
             id=iid,
-            base_edu=int(request.form["baseline_education"]),
-            base_exp=int(request.form["baseline_experience"]),
-            base_trn=int(request.form["baseline_training"]),
+            base_edu=int(request.form.get("baseline_education", 1)),
+            base_exp=int(request.form.get("baseline_experience", 1)),
+            base_trn=int(request.form.get("baseline_training", 1)),
             date=date,
             type=interview_type,
             position_title=position_data[0],
-            sg_level=position_data[1]
+            sg_level=position_data[1],
+            weight_struct = weight_struct
         )
         db.session.add(iv)
         db.session.commit()
@@ -370,11 +420,20 @@ def update_interview(iid):
          id=iid,
     ).all()[0]
 
+    weight_struct = json.loads(interview.weight_struct)
     if request.method == "POST":
         
         interview.base_edu = int(request.form.get("baseline_education", 1))
         interview.base_exp=int(request.form.get("baseline_experience", 1))
         interview.base_trn=int(request.form.get("baseline_training", 1))
+
+        weight_struct = json.dumps({
+            "education": int(request.form.get("weight_edu", 10)),
+            "experience": int(request.form.get("weight_exp", 10)),
+            "training": int(request.form.get("weight_trn", 10)),}
+        )
+
+        interview.weight_struct = weight_struct
         
         db.session.commit()
 
@@ -383,6 +442,7 @@ def update_interview(iid):
     
     return render_template("update_interview.html", iid=iid,
                            interview=interview,
+                           weight_struct=weight_struct,
                            ed_labels=ed_labels,
                            ex_labels=ex_labels,
                            tr_labels=tr_labels)
@@ -412,13 +472,20 @@ def admin_interview_detail(iid):
 
     applicant_structure = APPLICANT_STRUCTURE[iv.type]
 
+    applicants_total_score : list[tuple] = []
+
+    for applicant in applicants:
+        applicants_total_score.append((applicant.code, applicant.name, sum(calculate_applicant_score(applicant_data=applicant, eval_struct=EVAL_STRUCTURE[iv.type]))))
+    applicants_total_score = sorted(applicants_total_score, key= lambda x : -x[2])
+
     return render_template("admin_interview_detail.html",
                            interview=iv,
                            applicants=applicants,
                            applicant_structure=applicant_structure,
+                           applicants_total_score=applicants_total_score,
                            eval_tokens=eval_tokens,
                            ed_labels=ed_labels,
-                           ex_labels=ex_labels,
+                           ex_labels=ex_labels, 
                            tr_labels=tr_labels)
 
 @app.route("/admin/applicant/<code>")
@@ -445,7 +512,8 @@ def applicant_detail(code):
     avg_eval = None
     applicant_structure = APPLICANT_STRUCTURE[applicant.interview.type]
     evaluation_scores = {}
-    total_score = applicant.score_edu + applicant.score_exp + applicant.score_trn
+    applicant_score = calculate_baseline_score(applicant, interview=applicant.interview)
+    total_score = applicant_score.get('edu') + applicant_score.get('exp') + applicant_score.get('trn')
 
     app_json = json.loads(applicant.extra_data)
     for field in app_json.keys():
@@ -474,6 +542,7 @@ def applicant_detail(code):
 
     return render_template("applicant_detail.html",
                            applicant=applicant,
+                           applicant_score=applicant_score,
                            applicant_structure=applicant_structure,
                            extra_data=extra_data,
                            evaluation_scores=evaluation_scores,
@@ -483,35 +552,27 @@ def applicant_detail(code):
 
 @app.route("/admin/applicant/<code>/download")
 @admin_required
-def download_applicant_pdf(code):
+def download_applicant_data_file(code):
     applicant_data = Applicant.query.get_or_404(code)
     interview_data = Interview.query.get(applicant_data.interview_id)
     app_struct = APPLICANT_STRUCTURE[interview_data.type]
     eval_struct = EVAL_STRUCTURE[interview_data.type]
-    weight_struct = WEIGHT_STRUCTURE[interview_data.type]
+    weight_struct = json.loads(interview_data.weight_struct)
 
     eval_records = Evaluation.query.filter_by(
         interview_id=applicant_data.interview_id,
         applicant_code=applicant_data.code
     ).all()
-    total_score = applicant_data.score_edu + applicant_data.score_exp + applicant_data.score_trn
 
-    app_json = json.loads(applicant_data.extra_data)
-    eval_score = 0
-    for field in app_json.keys():
-        total_score += app_json[field]
-
-    if eval_records:
-        for key in eval_struct.keys():
-            total = 0
-            for eval_record in eval_records:
-                temp_json = json.loads(eval_record.extra_data)
-                for val in temp_json[key].values():
-                    total += val
-            eval_score += round(((total / eval_struct[key]['TOTAL']) * eval_struct[key]['WEIGHT']) / len(eval_records), 2)
-            total_score += eval_score
-
-    doc_io = download_pdf(applicant_data, interview_data, eval_score, total_score, app_struct, eval_struct, weight_struct)
+    total_score, eval_score = calculate_applicant_score(applicant_data, eval_struct)
+    doc_io = download_applicant_data(applicant_data, 
+                                     calculate_baseline_score(applicant_data, interview_data), 
+                                     interview_data, 
+                                     eval_score, 
+                                     total_score, 
+                                     app_struct, 
+                                     eval_struct, 
+                                     weight_struct)
     # doc_io = download_pdf(code, Applicant(), Evaluation(), Interview(), EVAL_STRUCTURE=EVAL_STRUCTURE, APP_STRUCTURE=APPLICANT_STRUCTURE)
     # print(doc_io)
 
@@ -521,6 +582,40 @@ def download_applicant_pdf(code):
         download_name=f'APPLICANT {code}_DETAILS.docx',
         mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     )
+@app.route("/admin/interview/<code>/download")
+@admin_required
+def download_interview_CAR(code):
+    interview_data = Interview.query.get_or_404(code)
+    applicant_data = {'code' : [],
+                      'name' : [],
+                      'score' : [],
+                      'total_score' : [],
+                      }
+    for applicant in interview_data.applicants:
+        applicant_data['code'].append(applicant.code)
+        applicant_data['name'].append(applicant.name)
+        
+        score_data_temp = []
+        app_data_json = json.loads(applicant.extra_data)
+
+        base_line_score = calculate_baseline_score(applicant, interview_data)
+        for key in base_line_score.keys():
+            score_data_temp.append(base_line_score[key])
+
+        for key in app_data_json.keys():
+            score_data_temp.append(app_data_json[key])
+
+        applicant_data['score'].append(score_data_temp)
+        applicant_data['total_score'].append(calculate_applicant_score(applicant, EVAL_STRUCTURE[interview_data.type])[0])
+
+    doc_io = download_CAR(applicant_data, interview_data)
+    return send_file(
+        doc_io,
+        as_attachment=True,
+        download_name=f'{interview_data.id}_CAR_.docx',
+        mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    )
+
 
 @app.route("/admin/evaluator/<token>")
 @admin_required
@@ -563,35 +658,29 @@ def add_applicant():
     else:
         code = code.strip().upper()
     
-    weight_stucture = WEIGHT_STRUCTURE[interview_obj.type]
-    name    = request.form["name"].strip()
-    address = request.form["address"].strip()
-    contact_number = request.form["contact_number"].strip()
-    email_addr = request.form["email_address"].strip()
-    bstr    = request.form["birthday"].strip()  # Expected format: YYYY-MM-DD
-    bd      = datetime.strptime(bstr, "%Y-%m-%d").date()
-    age     = int(request.form["age"])
-    sex     = request.form["sex"].strip()
+    weight_struct = json.loads(interview_obj.weight_struct)
+    # Text fields default to empty strings
+    name           = request.form.get("name", "").strip()
+    address        = request.form.get("address", "").strip()
+    contact_number = request.form.get("contact_number", "").strip()
+    email_addr     = request.form.get("email_address", "").strip()
+    sex            = request.form.get("sex", "Female").strip()
 
-    raw_edu = int(request.form["education"])
-    raw_exp = int(request.form["experience"])
-    raw_trn = int(request.form["training"])
+    # Birthday parsing with a safe default of None
+    bstr = request.form.get("birthday", "").strip()
+    if bstr:
+        try:
+            bd = datetime.strptime(bstr, "%Y-%m-%d").date()
+        except ValueError:
+            bd = None
+    else:
+        bd = None
 
-    # Compute base scores using CriteriaTable and IncrementsTable
-    crit = CriteriaTable()
-    incs = IncrementsTable()
-
-    delta_edu = crit.get_score(raw_edu, interview_obj.base_edu)
-    delta_exp = crit.get_score(raw_exp, interview_obj.base_exp)
-    delta_trn = crit.get_score(raw_trn, interview_obj.base_trn)
-
-
-    inc_edu = (weight_stucture['education'] // 5)
-    inc_exp = (weight_stucture['experience'] // 5)
-    inc_trn = (weight_stucture['training'] // 5)
-    s_edu = (incs.get_score(delta_edu, TableHandler().parse_table("increments", "education")) // inc_edu) * inc_edu
-    s_exp = (incs.get_score(delta_exp, TableHandler().parse_table("increments", "experience")) // inc_exp) * inc_exp
-    s_trn = (incs.get_score(delta_trn, TableHandler().parse_table("increments", "training")) // inc_trn) * inc_trn
+    # Numeric fields default to 0
+    age      = int(request.form.get("age", 0))
+    raw_edu  = int(request.form.get("education", 0))
+    raw_exp  = int(request.form.get("experience", 0))
+    raw_trn  = int(request.form.get("training", 0))
 
     p = Applicant(
         code=code,
@@ -606,9 +695,6 @@ def add_applicant():
         raw_edu=raw_edu,
         raw_exp=raw_exp,
         raw_trn=raw_trn,
-        score_edu=s_edu,
-        score_exp=s_exp,
-        score_trn=s_trn
     )
 
     # For teaching interviews, the admin now inputs the TRF rating (max 20)
@@ -643,40 +729,35 @@ def update_applicant(code):
     tr_labels = th.parse_table("table", "training")
 
     applicant_structure = APPLICANT_STRUCTURE[interview.type]
-    weight_stucture = WEIGHT_STRUCTURE[interview.type]
+    weight_struct = json.loads(interview.weight_struct)
     if request.method == 'POST':
-        applicant.name    = request.form["name"].strip()
-        applicant.address = request.form["address"].strip()
-        applicant.contact_number = request.form["contact_number"].strip()
-        applicant.email_addr = request.form["email_address"].strip()
-        bstr    = request.form["birthday"].strip()  # Expected format: YYYY-MM-DD
-        applicant.birthday      = datetime.strptime(bstr, "%Y-%m-%d").date()
-        applicant.age     = int(request.form["age"])
-        applicant.sex     = request.form["sex"].strip()
+        # Strings default to empty
+        applicant.name           = request.form.get("name", "").strip()
+        applicant.address        = request.form.get("address", "").strip()
+        applicant.contact_number = request.form.get("contact_number", "").strip()
+        applicant.email_addr     = request.form.get("email_address", "").strip()
+        applicant.sex            = request.form.get("sex", "").strip()
 
-        raw_edu_temp = int(request.form["education"])
-        raw_exp_temp = int(request.form["experience"])
-        raw_trn_temp = int(request.form["training"])
+        # Birthday: parse only if present, else leave as None (or set a default date)
+        bstr = request.form.get("birthday", "").strip()
+        if bstr:
+            try:
+                applicant.birthday = datetime.strptime(bstr, "%Y-%m-%d").date()
+            except ValueError:
+                applicant.birthday = None
+        else:
+            applicant.birthday = None
+
+        # Numbers default to zero
+        applicant.age = int(request.form.get("age", 0))
+
+        raw_edu_temp = int(request.form.get("education", 0))
+        raw_exp_temp = int(request.form.get("experience", 0))
+        raw_trn_temp = int(request.form.get("training", 0))
 
         applicant.raw_edu = raw_edu_temp
         applicant.raw_exp = raw_exp_temp
         applicant.raw_trn = raw_trn_temp
-        # Compute base scores using CriteriaTable and IncrementsTable
-        crit = CriteriaTable()
-        incs = IncrementsTable()
-
-        delta_edu = crit.get_score(raw_edu_temp, interview.base_edu)
-        delta_exp = crit.get_score(raw_exp_temp, interview.base_exp)
-        delta_trn = crit.get_score(raw_trn_temp, interview.base_trn)
-
-
-        inc_edu = (weight_stucture['education'] // 5)
-        inc_exp = (weight_stucture['experience'] // 5)
-        inc_trn = (weight_stucture['training'] // 5)
-
-        applicant.score_edu = (incs.get_score(delta_edu, TableHandler().parse_table("increments", "education")) // inc_edu) * inc_edu
-        applicant.score_exp = (incs.get_score(delta_exp, TableHandler().parse_table("increments", "experience")) // inc_exp) * inc_exp
-        applicant.score_trn = (incs.get_score(delta_trn, TableHandler().parse_table("increments", "training")) // inc_trn) * inc_trn
 
         calculated_score = {}
         try:

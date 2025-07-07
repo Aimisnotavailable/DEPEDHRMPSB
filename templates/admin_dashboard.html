@@ -19,35 +19,31 @@
 <body>
 
   <!-- SITE BANNER -->
-<header class="site-banner" role="banner">
-  <div class="banner-top">
-    <!-- Left group: logo and text -->
-    <div class="banner-left-group">
-      <img
-        src="{{ url_for('static', filename='images/deped_seal.png') }}"
-        alt="DepEd Logo"
-        class="banner-logo"
-      />
-      <div class="banner-left-text">
-        <p class="sub-banner-dept">Schools Division of Laoag City</p>
-        <p class="sub-banner-region">Region I – Ilocos Region</p>
+  <header class="site-banner" role="banner">
+    <div class="banner-top">
+      <!-- Left group: logo and text -->
+      <div class="banner-left-group">
+        <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo" class="banner-logo" />
+        <div class="banner-left-text">
+          <p class="sub-banner-dept">Schools Division of Laoag City</p>
+          <p class="sub-banner-region">Region I – Ilocos Region</p>
+        </div>
       </div>
-    </div>
 
-    <!-- Centered title -->
-    <div class="banner-text">
-      <h1>DEPARTMENT OF EDUCATION</h1>
-      <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+      <!-- Centered title -->
+      <div class="banner-text">
+        <h1>DEPARTMENT OF EDUCATION</h1>
+        <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+      </div>
+      <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
     </div>
-    <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
-  </div>
-  <!-- Add toggle button for mobile navigation -->
-</header>
+    <!-- Add toggle button for mobile navigation -->
+  </header>
 
   <!-- MAIN CONTAINER BOX -->
   <main class="form-container" role="main">
 
-      <div class="tab-nav">
+    <div class="tab-nav">
       <a href="#create_interview">Create Interview</a>
       <a href="#existing_interview">Existing Interview</a>
     </div>
@@ -85,6 +81,11 @@
             {% endfor %}
           </select>
 
+          <div id="weight_edu_container" style="display: none;">
+            <label for="weight_edu">Weight Edu</label>
+            <input type="number" id="weight_edu" name="weight_edu" min="0" step="5" required />
+          </div>
+
           <label for="baseline_experience">Baseline Experience</label>
           <select id="baseline_experience" name="baseline_experience" required>
             <option disabled selected>– select –</option>
@@ -93,6 +94,11 @@
             {% endfor %}
           </select>
 
+          <div id="weight_exp_container" style="display: none;">
+            <label for="weight_exp">Weight Experience</label>
+            <input type="number" id="weight_exp" name="weight_exp" min="0" step="5" required />
+          </div>
+
           <label for="baseline_training">Baseline Training</label>
           <select id="baseline_training" name="baseline_training" required>
             <option disabled selected>– select –</option>
@@ -100,6 +106,12 @@
             <option value="{{ k }}">{{ v }}</option>
             {% endfor %}
           </select>
+
+          <div id="weight_trn_container" style="display: none;">
+            <label for="weight_trn">Weight Training</label>
+            <input type="number" id="weight_trn" name="weight_trn" min="0" step="5" required />
+          </div>
+
           <div class="form-actions">
             <button type="submit" class="btn-submit">Create Interview</button>
           </div>
@@ -126,7 +138,7 @@
               <td>{{ iv.id }}</td>
               <td>{{ iv.date }} </td>
               <td>
-                Education:  {{ ed_labels[iv.base_edu ~ ''] }} <br>
+                Education: {{ ed_labels[iv.base_edu ~ ''] }} <br>
                 Experience: {{ ex_labels[iv.base_exp ~ ''] }} <br>
                 Training: {{ tr_labels[iv.base_trn ~ ''] }}
               </td>
@@ -134,16 +146,17 @@
               <td>{{ iv.applicants|length }}</td>
               <td>
                 <div class="btn-group"></div>
-                <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn-submit btn-submit--view">View</a>
+                <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
+                  class="btn-submit btn-submit--view">View</a>
                 <a href="{{ url_for('update_interview', iid=iv.id) }}" class="btn-submit btn-submit--update">Update</a>
                 <a href="{{ url_for('delete_interview', iid=iv.id) }}" class="btn-submit btn-submit--delete">Delete</a>
-                </div>
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </section>
+    </div>
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </section>
     </div>
 
   </main>
@@ -163,83 +176,91 @@
     </div>
   </footer>
   <script>
-    // This will hold the loaded SG types data
-    let sgTypesData = null;
-
-    // Map interview types to JSON categories
-    const interviewTypeMap = {
-      'teacher 1': 'TEACHING_POSITIONS',
-      'non teaching': 'NON_TEACHING',
-      'higher teaching': 'SCHOOL_ADMIN',
-      'school administration': 'SCHOOL_ADMIN',
-      'related teaching': 'RELATED_TEACHING'
+    // Static weight map
+    const WEIGHT_STRUCTURE = {
+      "teacher 1": { education: 10, experience: 10, training: 10 },
+      "related teaching": { education: 10, experience: 10, training: 10 },
+      "higher teaching": { education: 10, experience: 10, training: 10 },
+      "school administration": { education: 10, experience: 10, training: 10 },
+      "non teaching": { education: 5, experience: 5, training: 20 }
     };
 
-    // Function to load the sg-type.json file
+    // SG‐types loader (unchanged)
+    const interviewTypeMap = {
+      'teacher 1': 'TEACHING_POSITIONS',
+      'related teaching': 'RELATED_TEACHING',
+      'higher teaching': 'SCHOOL_ADMIN',
+      'school administration': 'SCHOOL_ADMIN',
+      'non teaching': 'NON_TEACHING'
+    };
+    let sgTypesData = null;
     async function loadSgTypes() {
-      try {
-        const response = await fetch("{{ url_for('static', filename='json/sg-type.json') }}");
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        sgTypesData = await response.json();
-        console.log('SG Types loaded successfully:', sgTypesData);
-      } catch (error) {
-        console.error('Error loading SG types:', error);
-        alert('Failed to load position data. Please check console for details.');
-      }
+
+      const r = await fetch("{{ url_for('static', filename='json/sg-type.json') }}");
+
+      if (!r.ok) throw new Error(r.statusText);
+      sgTypesData = await r.json();
     }
-
-    // Function to update SG level dropdown based on selected interview type
-    function updateSgLevels(interviewType) {
-      const sgContainer = document.getElementById('sg_level_container');
-      const sgSelect = document.getElementById('sg_level');
-
-      // Clear existing options
-      sgSelect.innerHTML = '<option disabled selected value="">– select –</option>';
-
-      if (interviewType && sgTypesData) {
-        const category = interviewTypeMap[interviewType];
-        const positions = sgTypesData[category];
-
-        if (positions && positions.length > 0) {
-          sgContainer.style.display = 'block';
-
-          // Add options for the selected interview type
-          positions.forEach(position => {
-            const optionText = `${position.Position_Title} (SG ${position.Salary_Grade})`;
-            const optionValue = `${position.Position_Title};${position.Salary_Grade}`;
-            const option = new Option(optionText, optionValue);
-            sgSelect.appendChild(option);
-          });
-        } else {
-          sgContainer.style.display = 'none';
-          console.warn(`No positions found for category: ${category}`);
-        }
+    function updateSgLevels(type) {
+      const cat = interviewTypeMap[type],
+        list = (cat && sgTypesData?.[cat]) || [];
+      const container = document.getElementById('sg_level_container');
+      const sel = document.getElementById('sg_level');
+      sel.innerHTML = '<option disabled selected value="">– select –</option>';
+      if (list.length) {
+        container.style.display = 'block';
+        list.forEach(p => {
+          const txt = `${p.Position_Title} (SG ${p.Salary_Grade})`;
+          const val = `${p.Position_Title};${p.Salary_Grade}`;
+          sel.appendChild(new Option(txt, val));
+        });
       } else {
-        sgContainer.style.display = 'none';
+        container.style.display = 'none';
       }
     }
 
-    // Initialize the page
-    document.addEventListener('DOMContentLoaded', async function () {
-      // Load the SG types data first
-      await loadSgTypes();
+    // NEW: set input.value and toggle visibility
+    function updateWeights(type) {
+      const w = WEIGHT_STRUCTURE[type] || null;
 
-      // Get the interview type select element
-      const interviewTypeSelect = document.getElementById('interview_type');
+      const map = {
+        weight_edu_container: { id: 'weight_edu', key: 'education' },
+        weight_exp_container: { id: 'weight_exp', key: 'experience' },
+        weight_trn_container: { id: 'weight_trn', key: 'training' }
+      };
 
-      // Set up the event listener for interview type changes
-      interviewTypeSelect.addEventListener('change', function () {
-        updateSgLevels(this.value);
+      Object.entries(map).forEach(([contId, { id, key }]) => {
+        const ctr = document.getElementById(contId),
+          inp = document.getElementById(id);
+        if (w && w[key] != null) {
+          ctr.style.display = 'block';
+          inp.value = w[key];
+        } else {
+          ctr.style.display = 'none';
+          inp.value = '';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try { await loadSgTypes(); }
+      catch (e) { console.error(e); alert('SG load failed'); return; }
+
+      const t = document.getElementById('interview_type');
+      t.addEventListener('change', _ => {
+        updateSgLevels(t.value);
+        updateWeights(t.value);
       });
 
-      // Trigger change event immediately if there's already a selected value
-      if (interviewTypeSelect.value) {
-        updateSgLevels(interviewTypeSelect.value);
+      // on-load sync if preselected
+      if (t.value) {
+        updateSgLevels(t.value);
+        updateWeights(t.value);
       }
     });
   </script>
+
+
 </body>
 
 </html>

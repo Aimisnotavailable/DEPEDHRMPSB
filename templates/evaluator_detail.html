@@ -47,7 +47,7 @@
         <tbody>
           {% for ev in eval_records %}
             <tr>
-              <td>{{ ev.participant_code }}</td>
+              <td>{{ ev.applicant_code }}</td>
               <td>{{ scores[loop.index0] | default(0) | round(2) }}</td>
             </tr>
           {% endfor %}
