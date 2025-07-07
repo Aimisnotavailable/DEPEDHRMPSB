@@ -220,10 +220,11 @@ body {
 }
 
     /* —— BACK BUTTON —— */
-    a.btn,
-    a.btn-back {
+    a.btn {
       display: inline-block;
+      background-color: var(--yellow);
       margin-bottom: var(--gap);
+      margin-top: var(--gap);
       padding: 0.75rem 1.5rem;
       color: var(--maroon);
       text-decoration: none;
@@ -237,6 +238,10 @@ body {
       background: #e5c100;
       transform: translateY(-1px);
       
+    }
+
+    .btn-back{
+      background-color: #f9f9f9;
     }
 
     /* —— PAGE TITLE & INFO —— */ 
