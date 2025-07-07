@@ -60,6 +60,52 @@ body {
   color: var(--bg-light);
 }
 
+
+
+.animated-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem auto;
+  animation: fadeSlideIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.interview-search {
+  width: 100%;
+  max-width: 360px;
+}
+
+.interview-search input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.interview-search input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+.interview-search input:focus {
+  border-color: var(--maroon);
+  box-shadow: 0 0 6px rgba(128, 0, 0, 0.3);
+}
+
 .banner-left-group {
   display: flex;
   align-items: center;
@@ -235,7 +281,9 @@ body {
   color: var(--maroon);
   border-color: var(--maroon);
   transform: translateX(2px);
+  background-color: var(--yellow);
 }
+
 
 /* —— FORM ELEMENTS —— */
 label {
@@ -772,3 +820,4 @@ html {
 section {
   scroll-margin-top: calc(var(--header-height) + 20px);
 }
+
