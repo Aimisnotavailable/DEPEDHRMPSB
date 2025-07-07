@@ -56,8 +56,9 @@
             <!-- each fieldset becomes one “step” -->
             {% for section, fields in eval_struct.items() %}
             <fieldset class="step" data-step="{{ loop.index0 }}">
+              {% set category = eval_struct[section].get('CATEGORY', {}) %}
               <legend>{{ section|capitalize }}</legend>
-              {% for field, max_val in fields['CATEGORY'].items() %}
+              {% for field, max_val in category.items() %}
               <label for="{{ section }}__{{ field }}">
                 {{ field|replace("_", " ")|capitalize }} (0–{{ max_val }})
               </label>

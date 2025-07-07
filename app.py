@@ -81,7 +81,7 @@ EVAL_STRUCTURE = {
                         "word choice" : 1,
                         "sentence, structure, grammar mechanics, and spelling" : 1,
                     }, "TOTAL" : 5, "WEIGHT" : 5},
-                    "Behavior Interview" : {"CATEGPORY" : {
+                    "Behavior Interview" : {"CATEGORY" : {
                         "aptitude" : 2,
                         "characteristics" : 2,
                         "fitness" : 2,
@@ -508,7 +508,7 @@ def download_applicant_pdf(code):
                 temp_json = json.loads(eval_record.extra_data)
                 for val in temp_json[key].values():
                     total += val
-            eval_score = round(((total / eval_struct[key]['TOTAL']) * eval_struct[key]['WEIGHT']) / len(eval_records), 2)
+            eval_score += round(((total / eval_struct[key]['TOTAL']) * eval_struct[key]['WEIGHT']) / len(eval_records), 2)
             total_score += eval_score
 
     doc_io = download_pdf(applicant_data, interview_data, eval_score, total_score, app_struct, eval_struct, weight_struct)
@@ -807,6 +807,7 @@ def evaluator_applicant_detail(code):
 
     eval_type = Interview.query.filter_by(id=iid).first().type
     eval_struct = EVAL_STRUCTURE[eval_type]
+    print("HEHE", eval_struct['Written Examination']['CATEGORY'])
     if request.method == "POST":
         try:
             extra_data = {}

@@ -191,25 +191,21 @@ body {
   backdrop-filter: blur(10px);
 }
 
-    .tab-nav a {
-      display: block;
-      padding: 1rem;
-      margin-bottom: 0.5rem;
-      color: var(--maroon);
-      text-decoration: none;
-      font-weight: 500;
-      border-radius: var(--radius);
-      transition: all 0.2s ease;
-      border: 1px solid transparent;
-    }
+.tab-nav a {
+  display: inline-block;
+  margin-bottom: var(--gap);
+  padding: 0.75rem 1.5rem;
+  color: var(--maroon);
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: var(--radius);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
 
-    .tab-nav a:hover,
-    .tab-nav a.active {
-      background: var(--yellow);
-      color: var(--maroon);
-      border-color: var(--maroon);
-      transform: translateX(2px);
-    }
+.tab-nav a:hover {
+  background: #e5c100;
+  transform: translateY(-1px);
+}
 
 
     /* —— MAIN CONTENT —— */

@@ -60,6 +60,169 @@ body {
   color: var(--bg-light);
 }
 
+/* CSS Variables - Add these if not already defined */
+:root {
+  --border: #ddd;
+  --maroon: #8B0000;
+  --yellow: #FFD700;
+}
+
+/* SEARCH BAR */
+.interview-controls {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; 
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 500px;
+  margin: 1rem auto;
+}
+
+
+.interview-controls input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 2px solid var(--border, #ddd);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  outline: none;
+  transition: all 0.25s ease;
+  height: 42px;
+  box-sizing: border-box;
+}
+
+.interview-controls input::placeholder {
+  color: #888;
+  font-style: Arial;
+}
+
+.interview-controls input:focus {
+  border-color: var(--maroon, #8B0000);
+  box-shadow: 0 0 6px rgba(128, 0, 0, 0.3);
+}
+
+.interview-controls .sort-btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: var(--yellow);
+  color: var(--maroon);
+  transition: all 0.2s ease;
+  text-align: center;
+  min-width: 60px;
+  flex-shrink: 0;
+  height: 42px;
+  box-sizing: border-box;
+  line-height: 1;
+  margin-top: 4px;
+  padding-top: 0.55rem;
+}
+
+.interview-controls .sort-btn:hover {
+  background-color: #e5c100;
+  transform: scale(1.05);
+}
+
+.interview-controls .sort-btn:active {
+  transform: scale(0.98);
+}
+
+.highlighted {
+  background-color: #FFD700;
+  border-radius: 4px;
+  padding: 2px 4px;
+  animation: fadeHighlight 0.4s ease;
+}
+
+@keyframes fadeHighlight {
+  0% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: #fff59d;
+  }
+}
+
+/* Additional utility classes for better compatibility */
+.search-container {
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .interview-controls {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .interview-controls input {
+    min-width: 100%;
+  }
+  
+  .interview-controls .sort-btn {
+    width: 100%;
+  }
+}
+
+/* SORT BUTTON - Fixed to match search bar height */
+.sort-btn {
+  display: inline-block;
+  padding: 0.5rem 0.9rem;       /* Changed from 0.8rem to 0.9rem to match input */
+  font-size: 0.9rem;            /* Same as input */
+  font-weight: 500;             /* Added to match input */
+  border-radius: 10px;
+  border: 2px solid var(--maroon, #8B0000);  /* Added border to match input */
+  cursor: pointer;
+  background: var(--yellow, #FFD700);
+  color: var(--maroon, #8B0000);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  text-align: center;
+  min-width: 60px;
+  flex-shrink: 0;
+  box-sizing: border-box;       /* Added to ensure consistent sizing */
+  height: auto;                 /* Let height be determined by padding */
+}
+
+.sort-btn:hover {
+  background: #e5c100;
+  transform: translateY(-1px);
+}
+
+.sort-btn:active {
+  transform: translateY(0);
+}
+
+/* Alternative: If you want to ensure exact same height, use this instead */
+.sort-btn-exact-height {
+  display: inline-block;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 10px;
+  border: 2px solid var(--maroon, #8B0000);
+  cursor: pointer;
+  background: var(--yellow, #FFD700);
+  color: var(--maroon, #8B0000);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  text-align: center;
+  min-width: 60px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  height: 40px;                 /* Fixed height to match input */
+  line-height: 24px;            /* Center text vertically */
+}
+
+/* BANNERS */
 .banner-left-group {
   display: flex;
   align-items: center;
@@ -219,23 +382,22 @@ body {
 }
 
 .tab-nav a {
-  display: block;
-  padding: 1rem;
-  margin-bottom: 0.5rem;
+  display: inline-block;
+  margin-bottom: var(--gap);
+  padding: 0.75rem 1.5rem;
   color: var(--maroon);
   text-decoration: none;
   font-weight: 500;
   border-radius: var(--radius);
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.tab-nav a:hover,
-.tab-nav a.active {
-  color: var(--maroon);
-  border-color: var(--maroon);
-  transform: translateX(2px);
+.tab-nav a:hover {
+  background: #e5c100;
+  transform: translateY(-1px);
 }
+
+
 
 /* —— FORM ELEMENTS —— */
 label {
@@ -1107,3 +1269,4 @@ html {
 section {
   scroll-margin-top: calc(var(--header-height) + 20px);
 }
+
