@@ -233,6 +233,7 @@ body {
       text-decoration: none;
       font-weight: 500;
       transition: background 0.2s ease;
+      border-radius: 10px;
     }
 
     a.btn:hover,

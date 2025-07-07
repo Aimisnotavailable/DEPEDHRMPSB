@@ -136,7 +136,7 @@
                 <div class="btn-group"></div>
                 <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}" class="btn-submit btn-submit--view">View</a>
                 <a href="{{ url_for('update_interview', iid=iv.id) }}" class="btn-submit btn-submit--update">Update</a>
-                <a href="{{ url_for('delete_interview', iid=iv.id) }}" class="btn-submit btn-submit--delete">Delete</a>
+                <a href="{{ url_for('delete_interview', iid=iv.id) }}" class="btn-submit btn-submit--delete confirm-delete">Delete</a>
                 </div>
               </td>
             </tr>
@@ -145,6 +145,16 @@
         </table>
       </section>
     </div>
+<!-- Deletion Confirmation Modal -->
+<div id="delete-modal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to delete this interview?</p>
+    <div class="modal-actions">
+      <button id="confirm-delete" class="btn-submit btn-submit--delete">Yes, delete</button>
+      <button id="cancel-delete" class="btn-submit btn-submit--view">Cancel</button>
+    </div>
+  </div>
+</div>
 
   </main>
 
@@ -163,6 +173,51 @@
     </div>
   </footer>
   <script>
+
+    //Delete modal function.
+
+    document.addEventListener('DOMContentLoaded', () => {
+  const deleteModal      = document.getElementById('delete-modal');
+  const confirmDeleteBtn = document.getElementById('confirm-delete');
+  const cancelDeleteBtn  = document.getElementById('cancel-delete');
+
+  // Show modal and stash URL in the confirm button
+  document.querySelectorAll('a.confirm-delete').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      // store the link's href on the button
+      confirmDeleteBtn.dataset.url = link.href;
+      deleteModal.style.display = 'block';
+    });
+  });
+
+  // If they click “Yes, delete”, go to that URL
+  confirmDeleteBtn.addEventListener('click', () => {
+    const url = confirmDeleteBtn.dataset.url;
+    if (url) window.location.href = url;
+  });
+
+  // Cancel hides the modal
+  cancelDeleteBtn.addEventListener('click', () => {
+    deleteModal.style.display = 'none';
+    confirmDeleteBtn.dataset.url = '';
+  });
+
+  // click outside or Escape also close
+  deleteModal.addEventListener('click', e => {
+    if (e.target === deleteModal) {
+      deleteModal.style.display = 'none';
+      confirmDeleteBtn.dataset.url = '';
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      deleteModal.style.display = 'none';
+      confirmDeleteBtn.dataset.url = '';
+    }
+  });
+});
+
     // This will hold the loaded SG types data
     let sgTypesData = null;
 
@@ -239,6 +294,18 @@
         updateSgLevels(interviewTypeSelect.value);
       }
     });
+
+  // Sorted existing interview.
+  document.addEventListener('DOMContentLoaded', function() {
+    // Select the tbody of the existing interviews table
+    const tbody = document.querySelector('.qual-table tbody');
+    if (!tbody) return;
+
+    // Grab all rows, reverse their order, and re-append them
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.reverse().forEach(row => tbody.appendChild(row));
+  });
+
   </script>
 </body>
 
