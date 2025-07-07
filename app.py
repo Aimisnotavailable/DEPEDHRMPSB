@@ -586,14 +586,14 @@ def download_applicant_data_file(code):
 @admin_required
 def download_interview_CAR(code):
     interview_data = Interview.query.get_or_404(code)
-    applicant_data = {'code' : [],
+    applicant_data_temp = {'code' : [],
                       'name' : [],
                       'score' : [],
                       'total_score' : [],
                       }
     for applicant in interview_data.applicants:
-        applicant_data['code'].append(applicant.code)
-        applicant_data['name'].append(applicant.name)
+        applicant_data_temp['code'].append(applicant.code)
+        applicant_data_temp['name'].append(applicant.name)
         
         score_data_temp = []
         app_data_json = json.loads(applicant.extra_data)
@@ -605,9 +605,31 @@ def download_interview_CAR(code):
         for key in app_data_json.keys():
             score_data_temp.append(app_data_json[key])
 
-        applicant_data['score'].append(score_data_temp)
-        applicant_data['total_score'].append(calculate_applicant_score(applicant, EVAL_STRUCTURE[interview_data.type])[0])
+        applicant_data_temp['score'].append(score_data_temp)
+        applicant_data_temp['total_score'].append(calculate_applicant_score(applicant, EVAL_STRUCTURE[interview_data.type])[0])
+    
+    combined = list(zip(
+        applicant_data_temp['code'],
+        applicant_data_temp['name'],
+        applicant_data_temp['score'],
+        applicant_data_temp['total_score']
+    ))
 
+    sorted_packed_data = sorted(combined, key=lambda x : -x[3])
+
+    applicant_data = {
+        'code' : [],
+        'name' : [],
+        'score' : [],
+        'total_score' : [],
+    }
+
+    for data in sorted_packed_data:
+        applicant_data['code'].append(data[0])
+        applicant_data['name'].append(data[1])
+        applicant_data['score'].append(data[2])
+        applicant_data['total_score'].append(data[3])
+    print("APP_DAT", applicant_data)
     doc_io = download_CAR(applicant_data, interview_data)
     return send_file(
         doc_io,
