@@ -162,6 +162,21 @@ body {
   font-style: italic;
 }
 
+
+/* —— FLASH MESSAGING —— */
+.flash {
+  position: relative;
+  z-index: 2;
+  background: rgba(255,0,0,0.1);
+  color: #900;
+  border: 1px solid #900;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+
 /* —— LOGIN WRAPPER —— */
 .login-page {
   position: relative;
