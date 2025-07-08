@@ -47,12 +47,14 @@
   {% endif %}
 {% endwith %}
 
-    <div class="tab-nav">
-             <a href="{{ url_for('admin_interview_detail', iid=applicant.interview.id) }}" class="btn-back">← Dashboard</a>
-    </div>
-
     <!-- CONTENT -->
     <main class="content-container" role="main">
+
+        
+    <div class="tab-nav">
+    <a href="{{ url_for('admin_interview_detail', iid=applicant.interview.id) }}" class="btn-back">← Dashboard</a>
+    </div>
+
         <h1>Applicant {{ applicant.code }} Details</h1>
         <p>
             <strong>Type:</strong> {{ interview.type.capitalize() }}<br>
@@ -65,7 +67,7 @@
         <!-- Add Applicant Section -->
         <section id="update-applicant">
             <h2>Update Applicant</h2>
-            <form method="post" action="{{ url_for('update_applicant', code=applicant.code) }}">
+            <form   id="update-applicant-form" method="post" action="{{ url_for('update_applicant', code=applicant.code) }}">
                 <label>Name
                     <input name="name" required value="{{ applicant.name }}">
                 </label>
@@ -116,10 +118,27 @@
                 <input type="number" name="{{ k }}" step="0.01" min="0" max="{{ v['MAX_SCORE'] }}" required value="{{ (extra_data_json.get(k, {}) / v.get('WEIGHT', 1) * v['MAX_SCORE']) | round(2)}}">
                 {% endfor %}
                 <div class="form-actions">
-                    <button type="submit" class="btn-submit">Update</button>
+                    <button type="submit" class="btn-submit" id="trigger-update">Update</button>
                 </div>
             </form>
         </section>
+
+        <!-- Update Confirmation Modal -->
+<div id="update-applicant-modal" class="modal" style="display:none; flex-direction:column;">
+  <div class="modal-content">
+    <p>Do you wish to update the applicant details?</p>
+    <div class="modal-actions">
+      <button id="confirm-update" class="btn-submit btn-submit--update">
+        Yes, update
+      </button>
+      <button id="cancel-update" class="btn-submit btn-submit--view">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+
 
         <!-- SITE FOOTER -->
         <footer class="admin-footer" role="contentinfo">
@@ -136,6 +155,43 @@
                 </div>
             </div>
         </footer>
+
+
+        <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form          = document.getElementById('update-applicant-form');
+  const modal         = document.getElementById('update-applicant-modal');
+  const btnConfirm    = document.getElementById('confirm-update');
+  const btnCancel     = document.getElementById('cancel-update');
+
+  // 1) prevent immediate submit, show modal instead
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    modal.style.display = 'flex';
+  });
+
+  // 2) if they click “Yes, update”, actually submit the form
+  btnConfirm.addEventListener('click', () => {
+    modal.style.display = 'none';
+    form.submit();
+  });
+
+  // 3) Cancel hides the modal
+  btnCancel.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  // 4) click outside or Esc also hides
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.style.display = 'none';
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.style.display === 'flex') {
+      modal.style.display = 'none';
+    }
+  });
+});
+</script>
 
 </body>
 

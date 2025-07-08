@@ -677,6 +677,69 @@ td .btn-group {
 }
 
 
+/* blur the tab-nav when any modal is open */
+body.modal-open .tab-nav {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* keep your existing .modal, .modal-content, .modal-actions, fadeInBackdrop, popIn */
+
+/* “Yes, update” button: maroon */
+#update-interview-modal .modal-actions #confirm-update-interview-btn {
+  background: var(--maroon);
+  color: var(--bg-light);
+  border: 1px solid var(--maroon);
+}
+
+/* “Cancel” button: yellow */
+#update-interview-modal .modal-actions #cancel-update-interview-btn {
+  background: var(--yellow);
+  color: var(--maroon);
+  border: 1px solid var(--yellow);
+}
+
+/* Hover tweaks */
+#update-interview-modal .modal-actions #confirm-update-interview-btn:hover {
+  background: #660000;
+  border-color: #660000;
+}
+#update-interview-modal .modal-actions #cancel-update-interview-btn:hover {
+  background: #e5c100;
+  border-color: #e5c100;
+}
+
+/* blur sidebar when any modal is open */
+body.modal-open .tab-nav {
+  filter: blur(4px);
+  pointer-events: none;
+}
+
+/* “Yes, log out” button: maroon */
+#logout-modal .modal-actions #confirm-logout {
+  background: var(--maroon);
+  color: var(--bg-light);
+  border: 1px solid var(--maroon);
+}
+/* hover */
+#logout-modal .modal-actions #confirm-logout:hover {
+  background: #660000;
+  border-color: #660000;
+}
+
+/* “Cancel” button: yellow */
+#logout-modal .modal-actions #cancel-logout {
+  background: var(--yellow);
+  color: var(--maroon);
+  border: 1px solid var(--yellow);
+}
+#logout-modal .modal-actions #cancel-logout:hover {
+  background: #e5c100;
+  border-color: #e5c100;
+}
+
+
+
 
 /* —— SITE FOOTER —— */
 .admin-footer {
@@ -1293,12 +1356,12 @@ td .btn-group {
 }
 
 /* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: var(--header-height);
-}
+    html {
+      scroll-behavior: smooth;
+       scroll-padding-top: var(--header-height);
+    }
 
-section {
-  scroll-margin-top: calc(var(--header-height) + 20px);
-}
 
+    section {
+      scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 5px);
+    }

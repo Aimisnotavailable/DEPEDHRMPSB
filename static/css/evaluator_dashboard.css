@@ -315,6 +315,111 @@ tbody tr:nth-child(even) {
   border: 1px solid #f5c6cb;
 }
 
+/* full‐screen backdrop with fade‐in */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+  animation: fadeInBackdrop 0.3s ease-out forwards;
+}
+
+/* white box with pop‐in animation */
+.modal-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 90%;
+  width: 360px;
+  text-align: center;
+  transform: scale(0.95);
+  opacity: 0;
+  animation: popIn 0.3s ease-out 0.1s forwards;
+}
+
+/* space out the buttons */
+.modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Keyframes */
+@keyframes fadeInBackdrop {
+  from { background: rgba(0,0,0,0); }
+  to   { background: rgba(0,0,0,0.5); }
+}
+@keyframes popIn {
+  from {
+    transform: scale(0.95) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Yes = maroon */
+#logout-modal .modal-actions #confirm-logout {
+  background: var(--maroon);
+  color: #fff;
+  border: 1px solid var(--maroon);
+}
+#logout-modal .modal-actions #confirm-logout:hover {
+  background: #660000;
+  border-color: #660000;
+}
+
+/* Cancel = yellow */
+#logout-modal .modal-actions #cancel-logout {
+  background: var(--yellow);
+  color: var(--maroon);
+  border: 1px solid var(--yellow);
+}
+#logout-modal .modal-actions #cancel-logout:hover {
+  background: #e5c100;
+  border-color: #e5c100;
+}
+
+/* Blur the nav when modal is open */
+body.modal-open .tab-nav {
+  filter: blur(4px);
+  pointer-events: none;
+}
+/* Enlarge the modal box */
+#logout-modal .modal-content {
+  max-width: 400px;        /* wider container */
+  width: 90%;
+  padding: 2rem;           /* more breathing room */
+  border-radius: 10px;     /* slightly rounder */
+}
+
+/* Slightly bigger, more tappable buttons */
+#logout-modal .modal-actions .btn-submit {
+  height: 40px;            /* taller buttons */
+  line-height: 40px;       /* center text vertically */
+  font-size: 14px;         /* larger text */
+  min-width: 80px;         /* wider buttons */
+  padding: 0 1rem;         /* horizontal padding */
+  border-radius: 6px;      /* softer corners */
+}
+
+/* Bigger prompt text */
+#logout-modal .modal-content p {
+  font-size: 18px;
+  margin-bottom: 1.5rem;
+}
+
+
+
+
 /* —— RESPONSIVE —— */
 @media (max-width: 768px) {
   header {
