@@ -55,12 +55,21 @@
       <h2>Admin Login</h2>
 
       <form class="login-form" method="post" action="{{ url_for('admin_login') }}">
-        
-        {% with msgs = get_flashed_messages(category_filter=["error"]) %}
-          {% for m in msgs %}
-            <div class="flash">{{ m }}</div>
-          {% endfor %}
-        {% endwith %}
+
+{% with flashes = get_flashed_messages(
+      with_categories=true,
+      category_filter=["success", "error"]
+   ) %}
+  {% if flashes %}
+    <div class="flash-msg-container">
+      {% for category, text in flashes %}
+        <div class="flash-{{ category }}">
+          {{ text }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
         <label for="username">Username</label>
         <input id="username" name="username" required>
