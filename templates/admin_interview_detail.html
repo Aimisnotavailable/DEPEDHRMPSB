@@ -101,7 +101,8 @@
           {% endfor %}
         </tbody>
       </table>
-      <a href="{{ url_for('download_interview_CAR', code=interview.id) }}" class="btn"> Download Results</a>
+      <a href="{{ url_for('download_interview_CAR', code=interview.id, f_type='with_name') }}" class="btn"> Download CAR with name</a>
+      <a href="{{ url_for('download_interview_CAR', code=interview.id, f_type='without_name') }}" class="btn"> Download CAR without name</a>
       {% else %}
       <p>No applicants added yet.</p>
       {% endif %}

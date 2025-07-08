@@ -601,9 +601,10 @@ def download_applicant_data_file(code):
         download_name=f'APPLICANT {code}_DETAILS.docx',
         mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     )
-@app.route("/admin/interview/<code>/download")
+@app.route("/admin/interview/<code>/download/<f_type>")
 @admin_required
-def download_interview_CAR(code):
+def download_interview_CAR(code, f_type="with_name"):
+    print(f_type)
     interview_data = Interview.query.get_or_404(code)
     applicant_data_temp = {'code' : [],
                       'name' : [],
@@ -655,11 +656,11 @@ def download_interview_CAR(code):
         applicant_data['eval_score'].append(data[3])
         applicant_data['total_score'].append(data[4])
 
-    doc_io = download_CAR(applicant_data, interview_data)
+    doc_io = download_CAR(applicant_data, interview_data, f_type=f_type)
     return send_file(
         doc_io,
         as_attachment=True,
-        download_name=f'{interview_data.id}_CAR_.docx',
+        download_name=f'{interview_data.id}_CAR_{f_type}.docx',
         mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     )
 

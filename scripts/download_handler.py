@@ -46,9 +46,9 @@ def download_applicant_data(applicant_data, applicant_baseline_scores, interview
     # 3. send_file from that buffer
     return buf
 
-def download_CAR(applicant_data, interview):
+def download_CAR(applicant_data, interview, f_type="with_name"):
     # 1. Load & render your template
-    file_type = "CAR_with_name"
+    file_type = "CAR_" + f_type
 #     edu_data = TableHandler().parse_table('table', 'education')
 #     exp_data = TableHandler().parse_table('table', 'experience')
 #     trn_data = TableHandler().parse_table('table', 'training')
