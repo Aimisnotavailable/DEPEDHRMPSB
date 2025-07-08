@@ -32,12 +32,20 @@
             </div>
         </div>
     </header>
-
-             {% with msgs = get_flashed_messages(category_filter=["error"]) %}
-          {% for m in msgs %}
-            <div class="flash">{{ m }}</div>
-          {% endfor %}
-        {% endwith %}
+{% with flashes = get_flashed_messages(
+      with_categories=true,
+      category_filter=["success", "error"]
+   ) %}
+  {% if flashes %}
+    <div class="flash-msg-container">
+      {% for category, text in flashes %}
+        <div class="flash-{{ category }}">
+          {{ text }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
     <!-- CONTENT -->
     <main class="content-container" role="main">

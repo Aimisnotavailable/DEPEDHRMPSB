@@ -33,10 +33,24 @@
       <h1>DEPARTMENT OF EDUCATION</h1>
       <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
     </div>
-
-
   </div>
 </header>
+
+
+{% with flashes = get_flashed_messages(
+      with_categories=true,
+      category_filter=["success", "error"]
+   ) %}
+  {% if flashes %}
+    <div class="flash-msg-container">
+      {% for category, text in flashes %}
+        <div class="flash-{{ category }}">
+          {{ text }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
   <h2>Interview: {{ interview.id }} ({{ interview.type.capitalize() }})</h2>
   <table>

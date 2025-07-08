@@ -49,11 +49,20 @@
       <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Seal" class="logo-small">
       <h2>HRMPSB</h2>
 
-      {% with msgs = get_flashed_messages(category_filter=['error']) %}
-      {% for m in msgs %}
-      <div class="flash">{{ m }}</div>
+{% with flashes = get_flashed_messages(
+      with_categories=true,
+      category_filter=["success", "error"]
+   ) %}
+  {% if flashes %}
+    <div class="flash-msg-container">
+      {% for category, text in flashes %}
+        <div class="flash-{{ category }}">
+          {{ text }}
+        </div>
       {% endfor %}
-      {% endwith %}
+    </div>
+  {% endif %}
+{% endwith %}
 
       <form class="login-form" method="post" action="{{ url_for('evaluator_login') }}">
         <label for="token">Token</label>
