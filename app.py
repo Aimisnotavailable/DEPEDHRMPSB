@@ -318,7 +318,7 @@ def calculate_applicant_score(applicant_data : Applicant, eval_struct):
                 for val in temp_json[key].values():
                     total += val
             eval_score += round(((total / eval_struct[key]['TOTAL']) * eval_struct[key]['WEIGHT']) / len(eval_records), 2)
-            total_score += eval_score
+        total_score += eval_score
     
     return total_score, eval_score
     
@@ -494,7 +494,7 @@ def admin_interview_detail(iid):
     applicants_total_score : list[tuple] = []
 
     for applicant in applicants:
-        applicants_total_score.append((applicant.code, applicant.name, sum(calculate_applicant_score(applicant_data=applicant, eval_struct=EVAL_STRUCTURE[iv.type]))))
+        applicants_total_score.append((applicant.code, applicant.name, calculate_applicant_score(applicant_data=applicant, eval_struct=EVAL_STRUCTURE[iv.type])[0]))
     applicants_total_score = sorted(applicants_total_score, key= lambda x : -x[2])
 
     return render_template("admin_interview_detail.html",
