@@ -916,7 +916,7 @@ def evaluator_applicant_detail(code):
 
     eval_type = Interview.query.filter_by(id=iid).first().type
     eval_struct = EVAL_STRUCTURE[eval_type]
-    print("HEHE", eval_struct['Written Examination']['CATEGORY'])
+    #print("HEHE", eval_struct['Written Examination']['CATEGORY'])
     if request.method == "POST":
         try:
             extra_data = {}
