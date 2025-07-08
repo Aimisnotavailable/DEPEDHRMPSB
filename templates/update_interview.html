@@ -41,9 +41,17 @@
     </header>
 
 
+             {% with msgs = get_flashed_messages(category_filter=["error"]) %}
+          {% for m in msgs %}
+            <div class="flash">{{ m }}</div>
+          {% endfor %}
+        {% endwith %}
+
           <div class="tab-nav">
       <a href="{{ url_for('admin_dashboard') }}" class="btn">← Back to Dashboard</a>
     </div>
+
+
 
 
     <!-- MAIN CONTAINER BOX -->

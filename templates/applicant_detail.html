@@ -40,6 +40,12 @@
   </header>
 
 
+           {% with msgs = get_flashed_messages(category_filter=["error"]) %}
+          {% for m in msgs %}
+            <div class="flash">{{ m }}</div>
+          {% endfor %}
+        {% endwith %}
+
   <!-- MAIN CONTENT PANEL -->
   <div class="form-container">
     <a href="{{ url_for('admin_interview_detail', iid=applicant.interview_id) }}" class="btn-back">← Back to Interview
