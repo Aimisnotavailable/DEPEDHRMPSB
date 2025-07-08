@@ -633,9 +633,7 @@ def download_interview_CAR(code):
         applicant_data['code'].append(data[0])
         applicant_data['name'].append(data[1])
         applicant_data['score'].append(data[2])
-        applicant_data['eval_score'].append(data[3])
-        applicant_data['total_score'].append(data[4])
-
+        applicant_data['total_score'].append(data[3])
     print("APP_DAT", applicant_data)
     doc_io = download_CAR(applicant_data, interview_data)
     return send_file(
