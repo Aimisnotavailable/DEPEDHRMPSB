@@ -50,18 +50,43 @@
   </p>
 
     <div class="tab-nav">
+      <a href="{{ url_for('admin_dashboard') }}" class="btn">← Dashboard</a>
       <a href="#results">Results</a>
       <a href="#applicants">Applicants</a>
       <a href="#evaluators">Evaluators</a>
       {% if interview.status == "open" %}
       <a href="#add-applicant">Add Applicant</a>
-      <a href="#add-token">Generate Tokens</a>
-             
-      <a href="{{ url_for('close_interview', iid=interview.id) }}" class="btn">Close Interview</a>
+      <a href="#add-token">Generate Tokens</a>   
+      
+  <a 
+    href="{{ url_for('close_interview', iid=interview.id) }}" 
+    class="btn confirm-close"
+  >
+    Close Interview
+  </a>
       {% endif %}
-      <a href="{{ url_for('admin_dashboard') }}" class="btn">← Dashboard</a>
+      
     </div>
+
+    <!-- Close Interview Confirmation Modal -->
+<div id="close-modal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <p>Are you sure you want to close this interview?</p>
+     <p>This action cannot be undone</p>
+    <div class="modal-actions">
+      <button id="confirm-close" class="btn-submit btn-submit--delete">
+        Yes, close this interview
+      </button>
+      <button id="cancel-close" class="btn-submit btn-submit--view">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+
     <!-- APPLICANTS -->
+     
 
 {% with flashes = get_flashed_messages(
       with_categories=true,
@@ -96,7 +121,7 @@
           <tr>
             <td>{{ score[0] }}</td>
             <td>{{ score[1] }}</td>
-            <td>{{ score[2] }}</td>
+            <td>{{ score[2] | round(2) }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -270,5 +295,47 @@
   </footer>
 
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const closeModal      = document.getElementById('close-modal');
+  const confirmCloseBtn = document.getElementById('confirm-close');
+  const cancelCloseBtn  = document.getElementById('cancel-close');
+  let pendingCloseUrl   = null;
+
+  // 1) Launcher: any link with .confirm-close
+  document.querySelectorAll('a.confirm-close').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      pendingCloseUrl = link.href;
+      closeModal.style.display = 'flex';
+    });
+  });
+
+  // 2) “Yes, close” navigates
+  confirmCloseBtn.addEventListener('click', () => {
+    if (pendingCloseUrl) window.location.href = pendingCloseUrl;
+  });
+
+  // 3) “Cancel” hides
+  cancelCloseBtn.addEventListener('click', () => {
+    closeModal.style.display = 'none';
+    pendingCloseUrl = null;
+  });
+
+  // 4) clicking outside box or pressing Esc also cancels
+  closeModal.addEventListener('click', e => {
+    if (e.target === closeModal) {
+      closeModal.style.display = 'none';
+      pendingCloseUrl = null;
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && closeModal.style.display === 'flex') {
+      closeModal.style.display = 'none';
+      pendingCloseUrl = null;
+    }
+  });
+});
+</script>
 
 </html>

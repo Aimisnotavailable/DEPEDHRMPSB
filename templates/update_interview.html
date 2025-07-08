@@ -124,7 +124,22 @@
                     <input type="number" id="weight_trn" name="weight_trn" min="0" step="5" value="{{ weight_struct.get('training', 0) }}"/>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn-submit">Update Interview</button>
+                        <button type="submit" class="btn-submit  confirm-update-interview">Update Interview</button>
+
+                                      <!-- Update Interview Confirmation Modal -->
+<div id="update-interview-modal" class="modal" style="display:none; flex-direction:column;">
+  <div class="modal-content">
+    <p>Do you wish to update the interview details?</p>
+    <div class="modal-actions">
+      <button id="confirm-update-interview-btn" class="btn-submit">
+        Yes, update
+      </button>
+      <button id="cancel-update-interview-btn" class="btn-submit btn-submit--view">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
                     </div>
                 </form>
             </section>
@@ -145,6 +160,49 @@
             </div>
         </div>
     </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const openBtn   = document.querySelector('.confirm-update-interview');
+  const form      = openBtn.closest('form');             // assumes your button is inside the form
+  const modal     = document.getElementById('update-interview-modal');
+  const yesBtn    = document.getElementById('confirm-update-interview-btn');
+  const noBtn     = document.getElementById('cancel-update-interview-btn');
+
+  function showModal() {
+    document.body.classList.add('modal-open');
+    modal.style.display = 'flex';
+  }
+  function hideModal() {
+    document.body.classList.remove('modal-open');
+    modal.style.display = 'none';
+  }
+
+  // 1) Intercept the Update button
+  openBtn.addEventListener('click', e => {
+    e.preventDefault();
+    showModal();
+  });
+
+  // 2) Yes → submit form
+  yesBtn.addEventListener('click', () => {
+    hideModal();
+    form.submit();
+  });
+
+  // 3) No → hide
+  noBtn.addEventListener('click', hideModal);
+
+  // 4) click outside or Esc → hide
+  modal.addEventListener('click', e => {
+    if (e.target === modal) hideModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.style.display === 'flex') hideModal();
+  });
+});
+</script>
+
 </body>
 
 </html>

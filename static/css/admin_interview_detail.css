@@ -207,7 +207,126 @@ body {
   transform: translateY(-1px);
 }
 
+/* full‐screen backdrop with fade‐in */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+  backdrop-filter: blur(2px);
+  animation: fadeInBackdrop 0.3s ease-out forwards;
+}
 
+
+/* white box with pop‐in animation */
+.modal-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  max-width: 90%;
+  width: 400px;
+  text-align: center;
+  transform: scale(0.95);
+  opacity: 0;
+  animation: popIn 0.3s ease-out 0.1s forwards;
+}
+
+/* space out the buttons */
+.modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Keyframes for backdrop fade */
+@keyframes fadeInBackdrop {
+  from {
+    background: rgba(0,0,0,0);
+  }
+  to {
+    background: rgba(0,0,0,0.5);
+  }
+}
+
+/* Keyframes for content pop/in */
+@keyframes popIn {
+  from {
+    transform: scale(0.95) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* “Yes, close” button: maroon */
+#close-modal .modal-actions #confirm-close {
+  background: var(--maroon);
+  color: var(--bg-light);
+  border: 1px solid var(--maroon);
+}
+
+/* “Cancel” button: yellow */
+#close-modal .modal-actions #cancel-close {
+  background: var(--yellow);
+  color: var(--maroon);
+  border: 1px solid var(--yellow);
+  
+}
+
+/* Hover tweaks */
+#close-modal .modal-actions #confirm-close:hover {
+  background: #660000; /* darker maroon */
+  border-color: #660000;
+}
+
+#close-modal .modal-actions #cancel-close:hover {
+  background: #e5c100; /* darker yellow */
+  border-color: #e5c100;
+}
+
+/* Close Interview button */
+a.btn.confirm-close {
+  background-color: var(--maroon);      /* your red token */
+  color: var(--bg-light);            /* light text */
+  border: 1px solid var(--maroon);
+}
+
+/* Slightly darker on hover */
+a.btn.confirm-close:hover {
+  background-color: #a31616;         /* deeper red */
+  border-color: #a31616;
+}
+
+
+#close-modal    .modal-actions #confirm-close,
+#delete-applicant-modal .modal-actions #confirm-delete-btn,
+#update-applicant-modal .modal-actions #confirm-update {
+  background: var(--maroon);
+  color: var(--bg-light);
+  border: 1px solid var(--maroon);
+}
+
+/* 4) Hover tweak for all “Yes” buttons */
+#close-modal    .modal-actions #confirm-close:hover,
+#delete-applicant-modal .modal-actions #confirm-delete-btn:hover,
+#update-applicant-modal .modal-actions #confirm-update:hover {
+  background: #660000;
+  border-color: #660000;
+}
+
+
+
+
+
+/*-----------------------------------------
 
     /* —— MAIN CONTENT —— */
 .content-container {
@@ -539,7 +658,7 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     border-bottom: 2px solid var(--border);
     overflow-x: auto;
-    z-index: 999; 
+    z-index: 1000; 
   }
   .tab-nav a {
     flex: 0 1 auto;
@@ -572,6 +691,11 @@ body {
   .dashboard-box {
     margin-left: 0;
   }
+
+
+a.btn.closebtn{
+background-color: #155724;
+}
 
 
 /* —— SITE FOOTER —— */
@@ -624,9 +748,7 @@ body {
 
 .admin-footer .footer-links a:hover {
   color: var(--yellow);
-}
-
-  
+  } 
 }
 
 @media (max-width: 1440px){
@@ -634,3 +756,14 @@ body {
     height: 75.4vh;
   }
 }
+
+
+    html {
+      scroll-behavior: smooth;
+       scroll-padding-top: var(--header-height);
+    }
+
+
+    section {
+      scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 5px);
+    }

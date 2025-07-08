@@ -35,12 +35,39 @@
         <h1>DEPARTMENT OF EDUCATION</h1>
         <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
       </div>
-      <a href="{{ url_for('admin_logout') }}" class="banner-logout">Logout</a>
+      <a href="{{ url_for('admin_logout') }}" class="banner-logout confirm-logout">Logout</a>
     </div>
     <!-- Add toggle button for mobile navigation -->
   </header>
 
-{% with flashes = get_flashed_messages(
+  <!-- Logout Confirmation Modal -->
+<div id="logout-modal" class="modal" style="display:none; flex-direction:column;">
+  <div class="modal-content">
+    <p>Are you sure you want to log out?</p>
+    <div class="modal-actions">
+      <button id="confirm-logout" class="btn-submit btn-submit--delete">
+        Log out
+      </button>
+      <button id="cancel-logout" class="btn-submit btn-submit--view">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- MAIN CONTAINER BOX -->
+  <main class="form-container" role="main">
+
+    <div class="tab-nav">
+      <a href="#create_interview">Create Interview</a>
+      <a href="#open_interview">Open Interview</a>
+      <a href="#closed_interview">Closed Interviews</a>
+    </div>
+
+    <div class="dashboard-box">
+
+      {% with flashes = get_flashed_messages(
       with_categories=true,
       category_filter=["success", "error"]
    ) %}
@@ -54,16 +81,6 @@
     </div>
   {% endif %}
 {% endwith %}
-  <!-- MAIN CONTAINER BOX -->
-  <main class="form-container" role="main">
-
-    <div class="tab-nav">
-      <a href="#create_interview">Create Interview</a>
-      <a href="#open_interview">Open Interview</a>
-      <a href="#closed_interview">Closed Interviews</a>
-    </div>
-
-    <div class="dashboard-box">
       <!-- Create Interview Panel -->
       <section class="card panel-create" aria-labelledby="create-heading" id="create_interview">
         <h2 id="create-heading">Create Interview</h2>
@@ -445,6 +462,51 @@
       rows.reverse().forEach(row => tbody.appendChild(row));
     });
   </script>
+
+  <script>// Logout modal logic
+const logoutModal     = document.getElementById('logout-modal');
+const btnLogoutYes    = document.getElementById('confirm-logout');
+const btnLogoutCancel = document.getElementById('cancel-logout');
+let pendingLogoutUrl  = null;
+
+document.querySelectorAll('a.confirm-logout').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    pendingLogoutUrl = link.href;
+    document.body.classList.add('modal-open');
+    logoutModal.style.display = 'flex';
+  });
+});
+
+btnLogoutYes.addEventListener('click', () => {
+  document.body.classList.remove('modal-open');
+  if (pendingLogoutUrl) window.location.href = pendingLogoutUrl;
+});
+
+btnLogoutCancel.addEventListener('click', () => {
+  document.body.classList.remove('modal-open');
+  logoutModal.style.display = 'none';
+  pendingLogoutUrl = null;
+});
+
+logoutModal.addEventListener('click', e => {
+  if (e.target === logoutModal) {
+    document.body.classList.remove('modal-open');
+    logoutModal.style.display = 'none';
+    pendingLogoutUrl = null;
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && logoutModal.style.display === 'flex') {
+    document.body.classList.remove('modal-open');
+    logoutModal.style.display = 'none';
+    pendingLogoutUrl = null;
+  }
+});
+</script>
+
+
 
 </body>
 

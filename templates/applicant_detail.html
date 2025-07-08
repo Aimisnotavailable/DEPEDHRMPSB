@@ -155,8 +155,27 @@
     <a href="{{ url_for('update_applicant', code=applicant.code) }}" class="btn-download"><i
         class="fas fa-edit"></i>Update</a>
 
-    <a href="{{ url_for('delete_applicant', code=applicant.code) }}" class="btn-download"><i
+    <a href="{{ url_for('delete_applicant', code=applicant.code) }}" class="btn-download confirm-delete"><i
         class="fas fa-trash"></i>Delete</a>
+
+<!-- Applicant Delete Confirmation Modal -->
+<div id="delete-applicant-modal" class="modal" style="display:none; flex-direction:column;">
+  <div class="modal-content">
+    <p>Are you sure you want to delete applicant<br>
+       <strong>{{ applicant.name }} ({{ applicant.code }})</strong>?
+    </p>
+    <div class="modal-actions">
+      <button id="confirm-delete-btn" class="btn-submit btn-submit--delete">
+        Yes, delete
+      </button>
+      <button id="cancel-delete-btn" class="btn-submit btn-submit--view">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+    
   {% endif %}
   <!-- SITE FOOTER -->
   <footer class="admin-footer" role="contentinfo">
@@ -172,6 +191,50 @@
       </div>
     </div>
   </footer>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+  const modal       = document.getElementById('delete-applicant-modal');
+  const btnYes      = document.getElementById('confirm-delete-btn');
+  const btnNo       = document.getElementById('cancel-delete-btn');
+  let pendingUrl    = null;
+
+  // 1) Intercept all delete links
+  document.querySelectorAll('a.confirm-delete').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      pendingUrl = link.href;
+      modal.style.display = 'flex';
+    });
+  });
+
+  // 2) Yes → navigate
+  btnYes.addEventListener('click', () => {
+    if (pendingUrl) window.location.href = pendingUrl;
+  });
+
+  // 3) No → hide
+  btnNo.addEventListener('click', () => {
+    modal.style.display = 'none';
+    pendingUrl = null;
+  });
+
+  // 4) Click outside or Esc → hide
+  modal.addEventListener('click', e => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      pendingUrl = null;
+    }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && modal.style.display === 'flex') {
+      modal.style.display = 'none';
+      pendingUrl = null;
+    }
+  });
+});
+</script>
+
 
 
 </body>

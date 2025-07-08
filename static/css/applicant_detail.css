@@ -283,6 +283,159 @@ body {
   border: 1px solid #f5c6cb;
 }
 
+/* full‐screen backdrop with fade‐in */
+/* full‐screen backdrop with fade‐in */
+#close-modal.modal,
+#delete-applicant-modal.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay - added from original */
+  backdrop-filter: blur(2px);
+  animation: fadeInBackdrop 0.3s ease-out forwards;
+}
+
+/* white box with pop‐in animation */
+#close-modal .modal-content,
+#delete-applicant-modal .modal-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  max-width: 90%;
+  width: 400px;
+  text-align: center;
+  transform: scale(0.95);
+  opacity: 0;
+  animation: popIn 0.3s ease-out 0.1s forwards;
+}
+
+/* space out the buttons */
+#close-modal .modal-actions,
+#delete-applicant-modal .modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Keyframes for backdrop fade */
+@keyframes fadeInBackdrop {
+  from {
+    background: rgba(0,0,0,0);
+  }
+  to {
+    background: rgba(0,0,0,0.5);
+  }
+}
+
+/* Keyframes for content pop-in */
+@keyframes popIn {
+  from {
+    transform: scale(0.95) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* "Yes, close" button */
+#close-modal .modal-actions #confirm-close {
+  background: var(--maroon);
+  color: var(--bg-light);
+  border: 1px solid var(--maroon);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+/* "Cancel" (close) */
+#close-modal .modal-actions #cancel-close {
+  background: var(--yellow);
+  color: var(--maroon);
+  border: 1px solid var(--yellow);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+/* Hover tweaks */
+#close-modal .modal-actions #confirm-close:hover {
+  background: #660000; /* darker maroon - matched original */
+  border-color: #660000;
+}
+#close-modal .modal-actions #cancel-close:hover {
+  background: #e5c100; /* darker yellow - matched original */
+  border-color: #e5c100;
+}
+
+/* "Yes, delete" button */
+#delete-applicant-modal .modal-actions #confirm-delete-btn,
+#delete-applicant-modal .modal-actions .btn-submit--delete {
+  background: var(--maroon) !important;
+  color: var(--bg-light) !important;
+  border: 1px solid var(--maroon) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: var(--radius) !important;
+  cursor: pointer;
+  font-size: 0.9rem !important;
+  transition: all 0.2s ease;
+}
+/* "Cancel" (delete) */
+#delete-applicant-modal .modal-actions #cancel-delete-btn,
+#delete-applicant-modal .modal-actions .btn-submit--view {
+  background: var(--yellow) !important;
+  color: var(--maroon) !important;
+  border: 1px solid var(--yellow) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: var(--radius) !important;
+  cursor: pointer;
+  font-size: 0.9rem !important;
+  transition: all 0.2s ease;
+}
+/* Hover tweaks */
+#delete-applicant-modal .modal-actions #confirm-delete-btn:hover,
+#delete-applicant-modal .modal-actions .btn-submit--delete:hover {
+  background: #660000 !important; /* darker maroon - matched original */
+  border-color: #660000 !important;
+}
+#delete-applicant-modal .modal-actions #cancel-delete-btn:hover,
+#delete-applicant-modal .modal-actions .btn-submit--view:hover {
+  background: #e5c100 !important; /* darker yellow - matched original */
+  border-color: #e5c100 !important;
+}
+
+/* Close Interview trigger button */
+a.btn.confirm-close {
+  background-color: var(--maroon);
+  color: var(--bg-light);
+  border: 1px solid var(--maroon);
+  transition: background 0.2s, border-color 0.2s;
+}
+a.btn.confirm-close:hover {
+  background-color: #a31616; /* kept your existing hover color */
+  border-color: #a31616;
+}
+
+/* Delete Applicant trigger button */
+a.btn.confirm-delete {
+  background-color: var(--maroon);
+  color: var(--bg-light);
+  border: 1px solid var(--maroon);
+  transition: background 0.2s, border-color 0.2s;
+}
+a.btn.confirm-delete:hover {
+  background-color: #660000; /* matched to modal button hover */
+  border-color: #660000;
+}
 
 
 /* —— SECTION WRAPPERS —— */
