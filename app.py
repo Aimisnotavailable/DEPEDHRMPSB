@@ -471,9 +471,10 @@ def delete_interview(iid):
     interview = Interview.query.filter_by(
         id=iid,
         ).all()[0]
-    
+
     db.session.delete(interview)
     db.session.commit()
+    flash(f"Interview {iid} deleted", "success")
     return redirect(url_for("admin_dashboard"))
 
 @app.route("/admin/interview/<iid>")
@@ -819,7 +820,7 @@ def update_applicant(code):
             return redirect(url_for("admin_interview_detail", iid=interview.id))
         # Store the TRF in extra_data as JSON
         applicant.extra_data = json.dumps(calculated_score)
-
+        flash(f"Updated applicant {code}", "success")
         db.session.commit()
         return redirect(url_for("admin_interview_detail", iid=interview.id))
 
