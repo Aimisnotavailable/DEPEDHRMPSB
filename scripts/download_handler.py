@@ -56,13 +56,15 @@ def download_CAR(applicant_data, interview):
     code = applicant_data.get('code', [])
     name = applicant_data.get('name', [])
     score = applicant_data.get('score', [])
+    eval_score = applicant_data.get('eval_score', [])
     total_score = applicant_data.get('total_score', [])
 
     delete_excess_rows(f'{DOC_PATH}/CAR/{str(interview.type)}_{file_type}.docx', 'temp.docx', len(code))
 
     doc = DocxTemplate('temp.docx')
     context = {
-            'ad' : {"name" : name, "code" : code, "score" : score, "total_score" : total_score},
+            'ad' : {"name" : name, "code" : code, "score" : score, "eval_score" : eval_score, "total_score" : total_score},
+            'id' : {'type' : interview.position_title}
     }
 
     # doc.render(context)

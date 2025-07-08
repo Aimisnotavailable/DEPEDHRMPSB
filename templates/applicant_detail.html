@@ -138,12 +138,13 @@
   <a href="{{ url_for('download_applicant_data_file', code=applicant.code) }}" class="btn-download"><i
       class="fas fa-download"></i>Download File</a>
   </div><!-- /.form-container -->
-  <a href="{{ url_for('update_applicant', code=applicant.code) }}" class="btn-download"><i
-      class="fas fa-edit"></i>Update</a>
+  {% if applicant.interview.status == "open" %}
+    <a href="{{ url_for('update_applicant', code=applicant.code) }}" class="btn-download"><i
+        class="fas fa-edit"></i>Update</a>
 
-  <a href="{{ url_for('delete_applicant', code=applicant.code) }}" class="btn-download"><i
-      class="fas fa-trash"></i>Delete</a>
-
+    <a href="{{ url_for('delete_applicant', code=applicant.code) }}" class="btn-download"><i
+        class="fas fa-trash"></i>Delete</a>
+  {% endif %}
   <!-- SITE FOOTER -->
   <footer class="admin-footer" role="contentinfo">
     <div class="footer-content">

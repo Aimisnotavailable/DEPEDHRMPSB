@@ -51,9 +51,13 @@
       <a href="#results">Results</a>
       <a href="#applicants">Applicants</a>
       <a href="#evaluators">Evaluators</a>
+      {% if interview.status == "open" %}
       <a href="#add-applicant">Add Applicant</a>
       <a href="#add-token">Generate Tokens</a>
-             <a href="{{ url_for('admin_dashboard') }}" class="btn">← Dashboard</a>
+             
+      <a href="{{ url_for('close_interview', iid=interview.id) }}" class="btn">Close Interview</a>
+      {% endif %}
+      <a href="{{ url_for('admin_dashboard') }}" class="btn">← Dashboard</a>
     </div>
     <!-- APPLICANTS -->
     <section id="results">
@@ -140,83 +144,84 @@
       <p>No evaluator tokens generated yet.</p>
       {% endif %}
     </section>
+    {% if interview.status == "open"%}
+      <!-- Add Applicant Section -->
+      <section id="add-applicant">
+        <h2>Add Applicant</h2>
+        <form method="post" action="{{ url_for('add_applicant') }}">
+          <input type="hidden" name="interview_id" value="{{ interview.id }}" required>
+          <label>Applicant Code (optional)
+            <input name="applicant_code" placeholder="Leave empty to auto-generate">
+          </label>
+          <label>Name
+            <input name="name" required>
+          </label>
+          <label>Address
+            <input name="address" required>
+          </label>
+          <label>Contact Number
+            <input maxlength="11" inputmode="numeric" type="tel" name="contact_number" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+          </label>
+          <label>Email Address
+            <input type="email" name="email_address" required>
+          </label>
+          <label>Birthday
+            <input type="date" name="birthday" required>
+          </label>
+          <label>Age
+            <input type="number" name="age" min="0" required>
+          </label>
+          <label>Sex</label>
+          <select name="sex" required>
+            <option disabled selected>– select –</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+          <label>Raw Education</label>
+          <select name="education" required>
+            <option disabled selected>– select –</option>
+            {% for k, v in ed_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+            {% endfor %}
+          </select>
+          <label>Raw Experience</label>
+          <select name="experience" required>
+            <option disabled selected>– select –</option>
+            {% for k, v in ex_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+            {% endfor %}
+          </select>
+          <label>Raw Training</label>
+          <select name="training" required>
+            <option disabled selected>– select –</option>
+            {% for k, v in tr_labels.items() %}
+            <option value="{{ k }}">{{ v }}</option>
+            {% endfor %}
+          </select>
+          {% for k, v in applicant_structure.items() %}
+          <label>{{ v['LABEL'] }} (MAX SCORE : {{ v['MAX_SCORE'] }} WEIGHT : {{ v['WEIGHT'] }})</label>
+          <input type="number" name="{{ k }}" step="0.01" min="0" max="{{ v['MAX_SCORE'] }}" required>
+          {% endfor %}
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Add Applicant</button>
+          </div>
+        </form>
+      </section>
 
-    <!-- Add Applicant Section -->
-    <section id="add-applicant">
-      <h2>Add Applicant</h2>
-      <form method="post" action="{{ url_for('add_applicant') }}">
-        <input type="hidden" name="interview_id" value="{{ interview.id }}" required>
-        <label>Applicant Code (optional)
-          <input name="applicant_code" placeholder="Leave empty to auto-generate">
-        </label>
-        <label>Name
-          <input name="name" required>
-        </label>
-        <label>Address
-          <input name="address" required>
-        </label>
-        <label>Contact Number
-          <input maxlength="11" inputmode="numeric" type="tel" name="contact_number" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-        </label>
-        <label>Email Address
-          <input type="email" name="email_address" required>
-        </label>
-        <label>Birthday
-          <input type="date" name="birthday" required>
-        </label>
-        <label>Age
-          <input type="number" name="age" min="0" required>
-        </label>
-        <label>Sex</label>
-        <select name="sex" required>
-          <option disabled selected>– select –</option>
-          <option>Male</option>
-          <option>Female</option>
-        </select>
-        <label>Raw Education</label>
-        <select name="education" required>
-          <option disabled selected>– select –</option>
-          {% for k, v in ed_labels.items() %}
-          <option value="{{ k }}">{{ v }}</option>
-          {% endfor %}
-        </select>
-        <label>Raw Experience</label>
-        <select name="experience" required>
-          <option disabled selected>– select –</option>
-          {% for k, v in ex_labels.items() %}
-          <option value="{{ k }}">{{ v }}</option>
-          {% endfor %}
-        </select>
-        <label>Raw Training</label>
-        <select name="training" required>
-          <option disabled selected>– select –</option>
-          {% for k, v in tr_labels.items() %}
-          <option value="{{ k }}">{{ v }}</option>
-          {% endfor %}
-        </select>
-        {% for k, v in applicant_structure.items() %}
-        <label>{{ v['LABEL'] }} (MAX SCORE : {{ v['MAX_SCORE'] }} WEIGHT : {{ v['WEIGHT'] }})</label>
-        <input type="number" name="{{ k }}" step="0.01" min="0" max="{{ v['MAX_SCORE'] }}" required>
-        {% endfor %}
-        <div class="form-actions">
-          <button type="submit" class="btn-submit">Add Applicant</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- GENERATE TOKENS -->
-    <section id="add-token">
-      <h2>Generate Evaluator Tokens</h2>
-      <form method="post" action="{{ url_for('generate_evaluator_tokens') }}">
-        <input type="hidden" name="interview_id" value="{{ interview.id }}">
-        <label>How many tokens?
-          <input type="number" name="count_tokens" min="1" value="1" required>
-        </label>
-        <div class="form-actions">
-          <button type="submit" class="btn-submit">Generate Tokens</button>
-        </div>
-      </form>
-    </section>
+      <!-- GENERATE TOKENS -->
+      <section id="add-token">
+        <h2>Generate Evaluator Tokens</h2>
+        <form method="post" action="{{ url_for('generate_evaluator_tokens') }}">
+          <input type="hidden" name="interview_id" value="{{ interview.id }}">
+          <label>How many tokens?
+            <input type="number" name="count_tokens" min="1" value="1" required>
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">Generate Tokens</button>
+          </div>
+        </form>
+      </section>
+    {% endif %}
   </main>
 
   <!-- SITE FOOTER -->

@@ -45,7 +45,8 @@
 
     <div class="tab-nav">
       <a href="#create_interview">Create Interview</a>
-      <a href="#existing_interview">Existing Interview</a>
+      <a href="#open_interview">Open Interview</a>
+      <a href="#closed_interview">Closed Interviews</a>
     </div>
 
     <div class="dashboard-box">
@@ -118,14 +119,61 @@
         </form>
       </section>
 
-      <!-- Existing Interviews Panel -->
-      <section class="card panel-list" aria-labelledby="list-heading" id="existing_interview">
-        <h2 id="list-heading">Existing Interviews</h2>
+      <!-- Open Interviews Panel -->
+      <section class="card panel-list" aria-labelledby="list-heading" id="open_interview">
+        <h2 id="list-heading">Open Interviews</h2>
         <div class="interview-controls">
-          <input type="text" id="searchBar" placeholder="Search interview" onkeyup="filterInterviews()">
-          <button class="sort-btn" onclick="sortByDate()">⇅ Sort by Date</button>
+          <input type="text" id="searchBarOpen" placeholder="Search interview" onkeyup="filterInterviews('Open')">
+          <button class="sort-btn" onclick="sortByDate('Open')">⇅ Sort by Date</button>
         </div>
-        <table class="qual-table">
+        <table class="qual-table" id="qual-tableOpen">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Type</th>
+              <th>Date</th>
+              <th>Baselines</th>
+              <th>#Applicants</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for iv in interviews %}
+              {% if iv.status == "open" %}
+              <tr>
+                <td>{{ iv.id }}</td>
+                <td>{{ iv.type }}</td>  
+                <td>{{ iv.date }} </td>
+                <td>
+                  Education: {{ ed_labels[iv.base_edu ~ ''] }} <br>
+                  Experience: {{ ex_labels[iv.base_exp ~ ''] }} <br>
+                  Training: {{ tr_labels[iv.base_trn ~ ''] }}
+                </td>
+                <td>{{ iv.applicants|length }}</td>
+                <td>
+                  <div class="btn-group"></div>
+                  <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
+                    class="btn-submit btn-submit--view">View</a>
+                  <a href="{{ url_for('update_interview', iid=iv.id) }}" class="btn-submit btn-submit--update">Update</a>
+                  <a href="{{ url_for('delete_interview', iid=iv.id) }}"
+                    class="btn-submit btn-submit--delete confirm-delete ">Delete</a>
+              {% endif %}
+    </div>
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </section>
+
+    <!-- Closed Interviews Panel -->
+      <section class="card panel-list" aria-labelledby="list-heading" id="closed_interview">
+        <h2 id="list-heading">Closed Interviews</h2>
+        <div class="interview-controls">
+          <input type="text" id="searchBarClose" placeholder="Search interview" onkeyup="filterInterviews('Close')">
+          <button class="sort-btn" onclick="sortByDate('Close')">⇅ Sort by Date</button>
+        </div>
+        <table class="qual-table" id="qual-tableClose">
           <thead>
             <tr>
               <th>ID</th>
@@ -138,22 +186,24 @@
           </thead>
           <tbody>
             {% for iv in interviews %}
-            <tr>
-              <td>{{ iv.id }}</td>
-              <td>{{ iv.date }} </td>
-              <td>
-                Education: {{ ed_labels[iv.base_edu ~ ''] }} <br>
-                Experience: {{ ex_labels[iv.base_exp ~ ''] }} <br>
-                Training: {{ tr_labels[iv.base_trn ~ ''] }}
-              </td>
-              <td>{{ iv.evaluator_tokens|length }}</td>
-              <td>{{ iv.applicants|length }}</td>
-              <td>
-                <div class="btn-group"></div>
-                <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
-                  class="btn-submit btn-submit--view">View</a>
-                <a href="{{ url_for('update_interview', iid=iv.id) }}" class="btn-submit btn-submit--update">Update</a>
-                <a href="{{ url_for('delete_interview', iid=iv.id) }}" class="btn-submit btn-submit--delete confirm-delete ">Delete</a>
+              {% if iv.status == "close" %}
+              <tr>
+                <td>{{ iv.id }}</td>
+                <td>{{ iv.date }} </td>
+                <td>
+                  Education: {{ ed_labels[iv.base_edu ~ ''] }} <br>
+                  Experience: {{ ex_labels[iv.base_exp ~ ''] }} <br>
+                  Training: {{ tr_labels[iv.base_trn ~ ''] }}
+                </td>
+                <td>{{ iv.evaluator_tokens|length }}</td>
+                <td>{{ iv.applicants|length }}</td>
+                <td>
+                  <div class="btn-group"></div>
+                  <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
+                    class="btn-submit btn-submit--view">View</a>
+                  <a href="{{ url_for('delete_interview', iid=iv.id) }}"
+                    class="btn-submit btn-submit--delete confirm-delete ">Delete</a>
+              {% endif %}
     </div>
     </td>
     </tr>
@@ -161,6 +211,7 @@
     </tbody>
     </table>
     </section>
+
     </div>
 
     <div id="delete-modal" class="modal">
@@ -320,9 +371,10 @@
     });
 
     //SEARCH BAR
-    function filterInterviews() {
-      const input = document.getElementById("searchBar").value.toLowerCase().trim();
-      const rows = document.querySelectorAll(".qual-table tbody tr");
+    function filterInterviews(type) {
+      const input = document.getElementById("searchBar"+type).value.toLowerCase().trim();
+      console.log("searchBar"+type)
+      const rows = document.querySelectorAll("#qual-table"+type+" tbody tr");
 
       rows.forEach(row => {
         let match = false;
@@ -355,8 +407,8 @@
     //SORT DATE
     let sortAsc = false; // Start with latest on top
 
-    function sortByDate() {
-      const tbody = document.querySelector(".qual-table tbody");
+    function sortByDate(type) {
+      const tbody = document.querySelector("#qual-table"+type+" tbody");
       const rows = Array.from(tbody.querySelectorAll("tr"));
 
       rows.sort((a, b) => {
@@ -371,7 +423,7 @@
     // Sorted existing interview.
     document.addEventListener('DOMContentLoaded', function () {
       // Select the tbody of the existing interviews table
-      const tbody = document.querySelector('.qual-table tbody');
+      const tbody = document.querySelector("#qual-table"+type+" tbody");
       if (!tbody) return;
 
       // Grab all rows, reverse their order, and re-append them

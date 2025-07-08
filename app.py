@@ -177,7 +177,8 @@ class Interview(db.Model):
                       )
     position_title  = db.Column(db.String(100))
     sg_level        = db.Column(db.String(100))
-    weight_struct = db.Column(db.String(150))
+    weight_struct   = db.Column(db.String(150))
+    status          = db.Column(db.String(7))
 
     # ORM cascades + passive_deletes so we don't have to loop & delete children manually
     evaluator_tokens = db.relationship(
@@ -398,6 +399,7 @@ def create_interview():
             base_trn=int(request.form.get("baseline_training", 1)),
             date=date,
             type=interview_type,
+            status="open",
             position_title=position_data[0],
             sg_level=position_data[1],
             weight_struct = weight_struct
@@ -408,6 +410,18 @@ def create_interview():
         flash(f"Interview {iid} created", "success")
         return redirect(url_for("admin_dashboard"))
     return render_template("create_interview.html")
+
+@app.route("/admin/close_interview/<iid>")
+@admin_required
+def close_interview(iid):
+    interview = Interview.query.filter_by(
+         id=iid,
+    ).all()[0]
+
+    interview.status = "close"
+    db.session.commit()
+    flash(f"Interview {iid} successfully closed", "success")
+    return redirect(url_for("admin_dashboard"))
 
 @app.route("/admin/update_interview/<iid>", methods=["GET", "POST"])
 @admin_required
@@ -420,6 +434,10 @@ def update_interview(iid):
          id=iid,
     ).all()[0]
 
+    if interview.status == "close":
+        flash(f"The interview is already closed you can't do that", "error")
+        return redirect(url_for("admin_dashboard"))
+    
     weight_struct = json.loads(interview.weight_struct)
     if request.method == "POST":
         
@@ -437,7 +455,7 @@ def update_interview(iid):
         
         db.session.commit()
 
-        flash(f"Interview {iid} created", "success")
+        flash(f"Interview {iid} updated", "success")
         return redirect(url_for("admin_dashboard"))
     
     return render_template("update_interview.html", iid=iid,
@@ -635,7 +653,7 @@ def download_interview_CAR(code):
         applicant_data['score'].append(data[2])
         applicant_data['eval_score'].append(data[3])
         applicant_data['total_score'].append(data[4])
-    print("APP_DAT", applicant_data)
+
     doc_io = download_CAR(applicant_data, interview_data)
     return send_file(
         doc_io,
@@ -751,6 +769,11 @@ def update_applicant(code):
          code = code
     ).all()[0]
     interview = applicant.interview
+
+    if interview.status == "close":
+        flash(f"The interview is already closed you can't do that", "error")
+        return redirect(url_for("admin_dashboard"))
+
     th = TableHandler()
     ed_labels = th.parse_table("table", "education")
     ex_labels = th.parse_table("table", "experience")
@@ -817,6 +840,10 @@ def delete_applicant(code):
     applicant = Applicant.query.filter_by(
         code=code,
     ).all()[0]
+    if applicant.interview.status == "close":
+        flash(f"Interview {applicant.interview.id} is already closed you can't do that", "error")
+        return redirect(url_for("admin_dashboard"))
+    flash(f"Applicant {applicant.code} data is deleted", "success")
     iid_temp = applicant.interview.id
     db.session.delete(applicant)
     db.session.commit()
@@ -853,10 +880,18 @@ def evaluator_login():
             flash("Invalid evaluator token", "error")
             return render_template("evaluator_login.html")
         if not et.registered:
+
+            interview = Interview.query.filter_by(id=et.interview_id).first()
+            if interview.status == "close":
+                flash(f"The interview is already closed you can't do that", "error")
+                return render_template("evaluator_login.html")
+            
             et.registered = True
             db.session.commit()
+        
         session["evaluator_token"] = tk
         session["interview_id"] = et.interview_id
+
         return redirect(url_for("evaluator_dashboard"))
     return render_template("evaluator_login.html")
 
@@ -931,9 +966,9 @@ def evaluator_applicant_detail(code):
         for key in eval_struct.keys():
             for field in eval_struct[key]['CATEGORY'].keys():
                 if extra_data[key][field] <= 0 or extra_data[key][field] > eval_struct[key]['CATEGORY'][field]:
+                    print("GAGO KA BA HANS")
                     flash("Each criteria must be between 0 and 1.", "error")
                     return redirect(url_for("evaluator_applicant_detail", code=code))
-
         extra_data_str = json.dumps(extra_data)            
         if evaluation:
             evaluation.extra_data = extra_data_str
