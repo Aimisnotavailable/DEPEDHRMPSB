@@ -47,6 +47,10 @@
   {% endif %}
 {% endwith %}
 
+    <div class="tab-nav">
+             <a href="{{ url_for('admin_interview_detail', iid=applicant.interview.id) }}" class="btn-back">← Dashboard</a>
+    </div>
+
     <!-- CONTENT -->
     <main class="content-container" role="main">
         <h1>Applicant {{ applicant.code }} Details</h1>

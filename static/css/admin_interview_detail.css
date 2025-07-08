@@ -179,11 +179,11 @@ body {
   bottom: var(--footer-height);  
   left: 0;
   width: var(--sidebar-width);
-  height: 90vh;
+  height: 81.2vh;
   background: rgba(255, 255, 255, 0.95);
   border-right: 2px solid var(--border);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000 ;
+  z-index: 999 ;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -206,6 +206,7 @@ body {
   background: #e5c100;
   transform: translateY(-1px);
 }
+
 
 
     /* —— MAIN CONTENT —— */
@@ -628,3 +629,8 @@ body {
   
 }
 
+@media (max-width: 1440px){
+  .tab-nav{
+    height: 75.4vh;
+  }
+}
