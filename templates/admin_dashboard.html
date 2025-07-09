@@ -34,8 +34,7 @@
       <div class="banner-text">
         <h1>DEPARTMENT OF EDUCATION</h1>
         <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
-      </div>
-      <a href="{{ url_for('admin_logout') }}" class="banner-logout confirm-logout">Logout</a>
+      <a href="{{ url_for('admin_logout') }}" class="banner-logout desktop-logout confirm-logout">Logout</a>
     </div>
     <!-- Add toggle button for mobile navigation -->
   </header>
@@ -63,6 +62,9 @@
       <a href="#create_interview">Create Interview</a>
       <a href="#open_interview">Open Interview</a>
       <a href="#closed_interview">Closed Interviews</a>
+        <!-- MOBILE VERSION -->
+      <a href="{{ url_for('admin_logout') }}" class="btn logout-tab mobile-logout confirm-logout">
+      </a>
     </div>
 
     <div class="dashboard-box">
