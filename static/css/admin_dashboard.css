@@ -25,6 +25,9 @@
   --button-gap:         0.5rem;
 }
 
+
+
+
 /* —— RESET & BASE —— */
 *,
 *::before,
@@ -1227,6 +1230,8 @@ body.modal-open .tab-nav {
   color: var(--yellow);
 }
 
+
+
 }
 
 @media (max-width: 768px) {
@@ -1303,8 +1308,8 @@ body.modal-open .tab-nav {
 @media (max-width: 480px) {
   :root {
     --gap: 0.75rem;
-    --footer-height: 80px;
-    --dynamic-header-height: 160px; /* Even taller on mobile due to stacking */
+    --footer-height: 30px;
+    --dynamic-header-height: 30px;
   }
 
   body {
@@ -1312,31 +1317,70 @@ body.modal-open .tab-nav {
   }
 
   .banner-top {
-    height: var(--dynamic-header-height);
+    height: 80px;
   }
 
+  /* Main Title */
   .banner-text h1 {
-    font-size: 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 0.2rem;
   }
 
+  /* Subtitle */
   .banner-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  /* Sub-banner Details */
+  .sub-banner-dept {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .sub-banner-region {
+    font-size: 0.75rem;
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+  }
+
+  .banner-left-text {
+    text-align: center;
+  }
+
+  .banner-logo {
+    height: 30px;
+    margin-bottom: 0.3rem;
   }
 
   .tab-nav {
-    top: var(--dynamic-header-height);
+    position: sticky;
+    top: 80px; /* 👈 Match this to your header height */
+    z-index: 999;
+    background-color: #fff; /* Prevent content from showing through */
+    padding: 0.5rem 1rem; /* Optional: add spacing */
   }
+  
+  
 
   .btn-back,
   .btn-download {
     width: 100%;
     margin: 0.25rem 0;
   }
-  
+
   .btn-group {
     gap: 0.2rem;
   }
-  
+
   .btn-submit {
     padding: 0.35rem 0.5rem;
     font-size: 0.75rem;
@@ -1344,7 +1388,7 @@ body.modal-open .tab-nav {
   }
 
   .admin-footer {
-    height: auto;
+    height: 40px;
     padding: 0.5rem;
   }
 
@@ -1353,15 +1397,43 @@ body.modal-open .tab-nav {
     justify-content: center;
     gap: 0.5rem;
   }
+
+  .banner-logout {
+    position: absolute;
+    right: 2rem;
+    background: var(--yellow);
+    color: var(--maroon);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
 }
 
+
+/* MOBILE LOGOUT —— */
+.mobile-logout {
+  display: none;
+}
+.desktop-logout {
+  display: none !important;
+}
+
+.banner-text h1 {
+  font-size: 0.85rem !important;
+}
+
+.banner-subtitle {
+  font-size: 0.75rem
+}
 /* Smooth scrolling */
-    html {
-      scroll-behavior: smooth;
-       scroll-padding-top: var(--header-height);
-    }
+html {
+  scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height);
+}
 
 
-    section {
-      scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 5px);
-    }
+section {
+  scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 5px);
+}
