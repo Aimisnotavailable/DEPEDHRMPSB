@@ -13,6 +13,7 @@ from scripts.incrementstable import IncrementsTable
 from scripts.table_handler import TableHandler
 
 from scripts.download_handler import download_applicant_data, download_CAR
+from scripts.path import JSON_PATH
 
 from datetime import datetime
 
@@ -26,131 +27,12 @@ db = SQLAlchemy(app)
 # SG LEVEL
 # contact number email
 
-EVAL_STRUCTURE = {
-    "teacher 1" : {"Behavior Interview" : {"CATEGORY" : {
-                        "aptitude" : 1,
-                        "characteristics" : 1,
-                        "fitness" : 1,
-                        "leadership" : 1,
-                        "communication" : 1
-                    }, "TOTAL" : 5, "WEIGHT" : 5},
-                    },
-    "related teaching" : {
-                    "Written Examination" : {"CATEGORY" : {
-                        "focus and detail" : 2,
-                        "organization" : 2,
-                        "content" : 2,
-                        "word choice" : 2,
-                        "sentence, structure, grammar mechanics, and spelling" : 2,
-                        "work sample test" : 5
-                    }, "TOTAL" : 15, "WEIGHT" : 15},
-                    "Behavior Interview" : {"CATEGORY" : {
-                        "aptitude" : 1,
-                        "characteristics" : 1,
-                        "fitness" : 1,
-                        "leadership" : 1,
-                        "communication" : 1
-                    }, "TOTAL" : 5, "WEIGHT" : 5},
-                    },
-    "higher teaching" : {       
-                    "BEI" : {"CATEGORY" : {
-                        "Alignment with the NCOIs" : 3,
-                        "Clarity and Coherence" : 3,
-                        "Active listening" : 3,
-                        "Confidence" : 3,
-                    }, "TOTAL" : 12, "WEIGHT" : 5},
-                },
-    "non teaching" : {
-                    "Exam" :{"CATEGORY" : {
-                        "written exam" : 5,
-                        "practice set" : 10
-                    }, "TOTAL" : 15, "WEIGHT" : 15},
-                    "Behavior Interview" : {"CATEGORY" : {
-                        "aptitude" : 1,
-                        "characteristics" : 1,
-                        "fitness" : 1,
-                        "leadership" : 1,
-                        "communication" : 1
-                    }, "TOTAL" : 5, "WEIGHT" : 5},
-                    },
-    "school administration" : {
-                    "Written Examination" : {"CATEGORY" : {
-                        "focus and detail" : 1,
-                        "organization" : 1,
-                        "content" : 1,
-                        "word choice" : 1,
-                        "sentence, structure, grammar mechanics, and spelling" : 1,
-                    }, "TOTAL" : 5, "WEIGHT" : 5},
-                    "Behavior Interview" : {"CATEGORY" : {
-                        "aptitude" : 2,
-                        "characteristics" : 2,
-                        "fitness" : 2,
-                        "leadership" : 2,
-                        "communication" : 2
-                    }, "TOTAL" : 10, "WEIGHT" : 10},
-                    }
-}                 
-
-
-WEIGHT_STRUCTURE = {
-    "teacher 1" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10,
-    },
-    "related teaching" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10,
-    },
-    "higher teaching" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10,
-    },  
-    "non teaching" : {
-        "education" : 5,
-        "experience" : 5,
-        "training" : 20,
-    },
-    "school administration" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10,
-    },
-}
-
-APPLICANT_STRUCTURE = {
-    "teacher 1" : {
-        "lpt_rating" : {"WEIGHT" : 10, "MAX_SCORE" : 100, "LABEL" : "LPT/PBET/LEPT Rating"},
-        "cot" : {"WEIGHT" : 35, "MAX_SCORE" : 30, "LABEL" : "COT"},
-        "trf_rating" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "TRF"}
-    },
-    "related teaching" : {
-        "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
-        "outstanding_accomplishment" : {"WEIGHT" : 5, "MAX_SCORE" : 5, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
-        "application_of_education" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "APPLICATION OF EDUCATION"},
-        "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"},
-    },
-    "higher teaching" : {
-        "performance" : {"WEIGHT" : 30, "MAX_SCORE" : 30, "LABEL" : "PERFORMANCE"},
-        "ppst_cois" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PPST COIS"},
-        "ppst_ncois" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "PPST NCOIS"},
-    },
-    "non teaching" : {
-        "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
-        "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
-        "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
-        "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"},
-    },
-    "school administration" : {
-        "performance" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PERFORMANCE"},
-        "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
-        "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
-        "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"},
-    },
-
-}
+with open(f'{JSON_PATH}/eval_struct.json') as fp:
+    EVAL_STRUCTURE = json.load(fp)
+with open(f'{JSON_PATH}/weight_struct.json') as fp:
+    WEIGHT_STRUCTURE = json.load(fp)
+with open(f'{JSON_PATH}/applicant_struct.json') as fp:
+    APPLICANT_STRUCTURE = json.load(fp)
 
 # ------------------------------------------------------------------------------
 # MODELS
