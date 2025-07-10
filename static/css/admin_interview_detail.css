@@ -972,7 +972,8 @@ html {
         --footer-height: 30px;
         --dynamic-header-height: 30px;
       }
-      /* 1. Ensure the container fills its parent and allows both scroll axes */
+  
+          /* 1. Ensure the container fills its parent and allows both scroll axes */
 .table-container {
   width: 100%;                /* full-width wrapper */
   max-height: 300px;          /* cap vertical size */
