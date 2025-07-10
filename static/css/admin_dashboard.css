@@ -821,7 +821,9 @@ body.modal-open .tab-nav {
 
 
 
+
 /* —— SITE FOOTER —— */
+
 .admin-footer {
   background: var(--maroon);
   color: #fff;
@@ -865,6 +867,7 @@ body.modal-open .tab-nav {
 .admin-footer .footer-links a:hover {
   color: var(--yellow);
 }
+
 
 
 @media (max-width: 1440px){
@@ -1548,8 +1551,6 @@ body.modal-open .tab-nav {
     min-width: 45px;
   }
 
- 
-
   .admin-footer {
     position: fixed;
     bottom: 0;
@@ -1572,7 +1573,6 @@ body.modal-open .tab-nav {
     /* disable clicks when hidden */
     pointer-events: none;
   }
-  
 
   .footer-content {
     display: flex;
