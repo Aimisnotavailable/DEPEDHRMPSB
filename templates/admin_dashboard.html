@@ -62,7 +62,7 @@
 
     <div class="tab-nav">
       <a href="#create_interview">Create Interview</a>
-      <a href="#open_interview">Open Interview</a>
+      <a href="#open_interview">On-going Interview</a>
       <a href="#closed_interview">Closed Interviews</a>
       <!-- MOBILE VERSION -->
       <a href="{{ url_for('admin_logout') }}" class="btn logout-tab mobile-logout confirm-logout">Logout
@@ -156,7 +156,7 @@
 
       <!-- Open Interviews Panel -->
       <section class="card panel-list" id="open_interview" aria-labelledby="open-heading">
-        <h2 id="open-heading">Open Interviews</h2>
+        <h2 id="open-heading">On-going Interviews</h2>
         <div class="interview-controls">
           <input type="text" id="searchBarOpen" placeholder="Search interview" onkeyup="filterInterviews('Open')">
           <button class="sort-btn" onclick="sortByDate('Open')">⇅ Sort by Date</button>
