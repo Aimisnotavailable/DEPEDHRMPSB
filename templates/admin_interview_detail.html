@@ -103,9 +103,9 @@
     
       {% if applicants %}
       <div class="sort-controls">
-        <!-- your search & sort controls -->
+        <input type="text" id="searchBarResults" placeholder="Search Applicants" onkeyup="filterInterviews('Results')">
+        <button class="sort-btn" onclick="sortByRank('Results')">⇅ Sort by Rank</button>
       </div>
-    
       <!-- wrap only the table in this container -->
       <div class="table-container">
         <table class="detail-table" id="qual-tableResults">
