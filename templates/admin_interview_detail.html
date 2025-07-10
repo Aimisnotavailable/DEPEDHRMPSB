@@ -100,44 +100,51 @@
 
     <section id="results">
       <h2>Results</h2>
+    
       {% if applicants %}
       <div class="sort-controls">
-        <input type="text" id="searchBarResults" placeholder="Search Applicants" onkeyup="filterInterviews('Results')">
-        <button class="sort-btn" onclick="sortByRank('Results')">⇅ Sort by Rank</button>
+        <!-- your search & sort controls -->
       </div>
-      <table class="detail-table" id="qual-tableResults">
-        <thead>
-          <tr>
-            <th>RANK</th>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Score</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for score in applicants_total_score %}
-          <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ score[0] }}</td>
-            <td>{{ score[1] }}</td>
-            <td>{{ score[2] | round(2) }}</td>
-            <td>
-              <a href="{{ url_for('applicant_detail', code=score[0]) }}" class="btn">View Details</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <a href="{{ url_for('download_interview_CAR', code=interview.id, f_type='with_name') }}" class="btn"> Download CAR
-        with name</a>
-      <a href="{{ url_for('download_interview_CAR', code=interview.id, f_type='without_name') }}" class="btn"> Download
-        CAR without name</a>
+    
+      <!-- wrap only the table in this container -->
+      <div class="table-container">
+        <table class="detail-table" id="qual-tableResults">
+          <thead>
+            <tr>
+              <th>RANK</th>
+              <th>Code</th>
+              <th>Name</th>
+              <th>Score</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for score in applicants_total_score %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ score[0] }}</td>
+              <td>{{ score[1] }}</td>
+              <td>{{ score[2] | round(2) }}</td>
+              <td>
+                <a href="{{ url_for('applicant_detail', code=score[0]) }}"
+                   class="btn">View Details</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    
+      <!-- other buttons (downloads) remain outside -->
+      <a href="{{ url_for('download_interview_CAR', code=interview.id, f_type='with_name') }}"
+         class="btn">Download CAR with name</a>
+      <a href="{{ url_for('download_interview_CAR', code=interview.id, f_type='without_name') }}"
+         class="btn">Download CAR without name</a>
       {% else %}
       <p>No applicants added yet.</p>
       {% endif %}
     </section>
-
+    
     <!-- APPLICANTS
     <section id="applicants">
       <h2>Applicants</h2>
@@ -411,6 +418,7 @@
     const rows = Array.from(tbody.querySelectorAll('tr'));
     rows.reverse().forEach(row => tbody.appendChild(row));
   });
+  
 </script>
 
 
