@@ -47,7 +47,7 @@ body {
 }
 
 /* —— SITE BANNER —— */
-.banner-top {
+banner-top {
   position: fixed;
   top:      0;
   left:     0;
@@ -61,6 +61,67 @@ body {
   padding: 0.5rem 2rem;
   gap: 1rem;
   color: var(--bg-light);
+}
+
+.banner-left-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.banner-logo {
+  height: 60px;
+}
+
+.banner-left-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.banner-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.banner-text h1 {
+  font-size: 1.75rem;
+  margin: 0;
+}
+
+.banner-subtitle {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #fff;
+  margin-top: 0.25rem;
+}
+
+.banner-logout {
+  position: absolute;
+  right: 2rem;
+  background: var(--yellow);
+  color: var(--maroon);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.banner-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
 }
 
 /* CSS Variables - Add these if not already defined */
@@ -173,6 +234,22 @@ body {
   .interview-controls .sort-btn {
     width: 100%;
   }
+}
+
+.banner-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  background: var(--maroon);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 2rem;
+  gap: 1rem;
+  color: var(--bg-light);
 }
 
 /* SORT BUTTON - Fixed to match search bar height */
@@ -750,7 +827,7 @@ body.modal-open .tab-nav {
   color: #fff;
   max-width: 100%;
   padding: 0.5rem 2rem;
-  position: fixed;
+    position: fixed;
   bottom:   0;
   left:     0;
   width:    100%;
@@ -806,6 +883,7 @@ body.modal-open .tab-nav {
     margin-bottom: var(--gap);
   }
 
+  
   .modal-content {
     max-width: 450px;
     padding: 35px;
@@ -869,13 +947,20 @@ body.modal-open .tab-nav {
   }
 
   .banner-top {
-    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    z-index: 1000;
+    background: var(--maroon);
+    display: flex;
     align-items: center;
-    justify-content: center;
-    height: var(--dynamic-header-height);
-    padding: 0.5rem 1rem;
-    gap: 0.5rem;
-  }
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+    gap: 1rem;
+    color: var(--bg-light);
+}
 
   .banner-left-group {
     flex-direction: row;
@@ -884,12 +969,20 @@ body.modal-open .tab-nav {
   }
 
   .banner-logo {
-    height: 40px;
+    height: 60px;
   }
 
   .banner-left-text {
     font-size: 0.85rem;
     text-align: center;
+    flex-direction: column;
+  }
+
+
+  .banner-left-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   }
 
   .banner-text {
@@ -898,9 +991,9 @@ body.modal-open .tab-nav {
     width: 100%;
   }
 
-  .banner-text h1 {
-    font-size: 1.1rem;
+  .site-banner .banner-text h1 {
     margin: 0;
+    font-size: 1.75rem;
   }
 
   .banner-subtitle {
@@ -914,24 +1007,7 @@ body.modal-open .tab-nav {
   }
 
   .tab-nav {
-    position: sticky;
-    top: var(--dynamic-header-height); /* Stick below the header */
-    width: 100%;
-    height: auto;
-    max-width: 98%;
-    margin: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    border-bottom: 2px solid var(--border);
-    overflow-x: auto;
-    z-index: 999; /* Ensure it stays above content */
-    margin-bottom: 2vh;
+    height: 1000px;
   }
 
   .tab-nav a {
@@ -949,43 +1025,42 @@ body.modal-open .tab-nav {
   .dashboard-box {
     margin-left: 0;
     padding: 1rem;
-    max-width: var(--container-max-width);
+    max-width: 1000px;
     margin: 0 auto;
+    
   }
 
 /* —— SITE FOOTER —— */
 .admin-footer {
   background: var(--maroon);
   color: #fff;
+  max-width: 100%;
+  padding: 0.5rem 2rem;
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 0.25rem 1rem;           /* reduced vertical + horizontal padding */
-  height: auto;                    /* let content dictate height */
-  z-index: 1000;
+  bottom:   0;
+  left:     0;
+  width:    100%;
+  height:   var(--footer-height);
+  z-index:  1000;
 }
 
 .admin-footer .footer-content {
-  max-width: var(--container-max-width); /* match your main content width */
+  max-width: 1800px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;                        /* smaller gap between logos & links */
 }
 
 .admin-footer .footer-logos {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
 }
 
 .admin-footer .footer-logos img {
-  height: 30px;                     /* smaller logo */
+  height: 50px;  
   width: auto;
-}
-
+} 
 .admin-footer .footer-links {
   display: flex;
   gap: 1rem;                        /* tighter spacing */
@@ -1004,6 +1079,34 @@ body.modal-open .tab-nav {
 .admin-footer .footer-links a:hover {
   color: var(--yellow);
 }
+
+.main-wrapper {
+  display: flex;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem 2rem;
+  gap: 2rem;
+}
+
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+.interview-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.panel-list {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  padding: 1.5rem;
+}
+
 
 }
 
@@ -1269,9 +1372,15 @@ body.modal-open .tab-nav {
   }
 
   .banner-top {
-    height: var(--dynamic-header-height);
-    padding: 0.5rem;
-  }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+    background: var(--maroon);
+    color: #fff;
+    position: relative;
+    gap: 1rem;
+}
 
   .form-container {
     padding: 1rem 0.5rem;
@@ -1305,19 +1414,74 @@ body.modal-open .tab-nav {
   }
 }
 
+/* 1) Make the ID column nowrap and give it a fixed minimal width */
+.interview-list th:nth-child(1),
+.interview-list td:nth-child(1) {
+  white-space: nowrap;
+  width: 1%;            /* lets browser size it to the content */
+  text-align: center;
+
+}
+
+/* 2) Vertically center all cells in the table */
+.interview-list th,
+.interview-list td {
+  vertical-align: middle;
+  text-align: left;     /* or center, if you prefer */
+}
+
+/* 3) (Optional) If you want that ID column center-aligned */
+.interview-list th:nth-child(1),
+.interview-list td:nth-child(1) {
+  text-align: center;
+}
+/* 1. Make the actions cell a flex container */
+.interview-list td.actions,
+.interview-list .action-buttons {
+  padding: 0.6rem 0.8rem;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+  text-align: left;            /* space between buttons */
+}
+
+/* 2. Ensure each link/button doesn’t stretch or wrap */
+.interview-list td.actions a,
+.action-buttons a {
+  display: inline-flex;      /* shrink to content */
+  align-items: center;       /* center icon/text if present */
+  white-space: nowrap;       /* prevent wrapping */
+}
+
+/* 3. (Optional) Equal-width buttons */
+.interview-list td.actions a.equal-width,
+.action-buttons a.equal-width {
+  flex: 1;                   /* share available space */
+  text-align: center;
+}
+
+.interview-list {
+  max-height: none;
+  overflow: visible;
+}
+
 @media (max-width: 480px) {
   :root {
     --gap: 0.75rem;
     --footer-height: 30px;
     --dynamic-header-height: 30px;
   }
-
+  
+  .login-box {
+    width: 90%;
+    padding: 1.5rem;
+  }
   body {
     padding-top: calc(var(--dynamic-header-height) + 3rem);
   }
 
   .banner-top {
-    height: 80px;
+    height: 100px;
   }
 
   /* Main Title */
@@ -1363,13 +1527,10 @@ body.modal-open .tab-nav {
 
   .tab-nav {
     position: sticky;
-    top: 80px; /* 👈 Match this to your header height */
+    top: 100px; /* 👈 Match this to your header height */
     z-index: 999;
     background-color: #fff; /* Prevent content from showing through */
-    padding: 0.5rem 1rem; /* Optional: add spacing */
   }
-  
-  
 
   .btn-back,
   .btn-download {
@@ -1387,15 +1548,59 @@ body.modal-open .tab-nav {
     min-width: 45px;
   }
 
+ 
+
   .admin-footer {
-    height: 40px;
-    padding: 0.5rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45px;
+    padding: .5rem 1rem;
+    background-color: var(--maroon);
+    border-top: 1px solid #ddd;
+    font-size: .75rem;
+    z-index: 100;
+    transition: transform 0.3s ease;
+    /* allow interactions in visible state */
+    pointer-events: auto;
+  }
+  
+  .admin-footer.hidden {
+    /* slide it fully out of view */
+    transform: translateY(100%);
+    /* disable clicks when hidden */
+    pointer-events: none;
+  }
+  
+
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer-logo {
+    height: 24px;
+    max-width: 100px;
+    object-fit: contain;
   }
 
   .admin-footer .footer-links {
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
+    flex-direction: row;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
   }
 
   .banner-logout {
@@ -1409,8 +1614,45 @@ body.modal-open .tab-nav {
     font-weight: 500;
     transition: background 0.2s;
   }
+
+  .site-banner {
+    transition: transform 0.3s ease;
+  }
+  .site-banner.hidden {
+    transform: translateY(-100%);
+  }
+
+  .admin-footer {
+    transition: transform 0.3s ease;
+  }
+  .admin-footer.hidden {
+    transform: translateY(100%);
+  }
+  /* ──────────────────────────────────────────────
+   1) GLOBAL FOOTER & HEADER (no hide-on-scroll)
+────────────────────────────────────────────── */
+.admin-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #800000;
+  color: #fff;
+  padding: 1rem;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  height: 45px;
+  /* NO transform here */
 }
 
+.site-banner {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: #fff;
+  z-index: 1000;
+  /* NO transform here */
+}
 
 /* MOBILE LOGOUT —— */
 .mobile-logout {
@@ -1427,12 +1669,112 @@ body.modal-open .tab-nav {
 .banner-subtitle {
   font-size: 0.75rem
 }
+
+/* SCROLLABLE INTERVIEWS - ADDED */
+.table-container {
+  max-height: 350px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #800000;
+  border-radius: 3px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #a00000;
+}
+
+.interview-list {
+    max-height: 40vh;            /* adjust to taste */
+    overflow-y: auto;            /* vertical scrollbar */
+    -webkit-overflow-scrolling: touch;
+    background: #fff;            /* optional: frame it */
+    padding-right: 0.5rem;       /* avoid content hiding under scroll */
+  }
+
+  .interview-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .interview-list th,
+  .interview-list td {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+    white-space: nowrap;
+    text-align: left;
+  }
+
+  .interview-list thead th {
+    position: sticky;
+    top: 0;
+    background: #fafafa;
+    z-index: 1;
+  }
+
+.baseline-text {
+  font-size: 0.65rem;
+  line-height: 1.3;
+  color: #555;
+  }
+}
+
+
+.hide-on-scroll {
+  transition: transform 0.3s ease;
+}
+
+.hide-on-scroll.hidden {
+  transform: translateY(-100%);
+}
+
+.admin-footer.hidden {
+  transform: translateY(100%);
+}
+
+.site-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.site-banner.hidden {
+  transform: translateY(-100%);
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-    scroll-padding-top: var(--header-height);
+  scroll-padding-top: var(--header-height);
 }
-
+/* Shrink table & make scrollable */ 
+.detail-applicants .table-wrapper {
+   max-height: 35vh; overflow-x: auto; margin-top: 0.5rem; } 
+   
+   .detail-applicants table { 
+    font-size: 0. eight‌rem; 
+  } 
+   .detail-applicants th, .detail-applicants td { 
+    padding: 0.4rem 0.3rem;
+   }
 
 section {
   scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 5px);

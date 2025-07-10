@@ -187,15 +187,15 @@ q .site-banner .banner-subtitle,
   bottom: var(--footer-height);
   left: 0;
   width: var(--sidebar-width);
-  height: 81.2vh;
+  height: 90vh;
   background: rgba(255, 255, 255, 0.95);
   border-right: 2px solid var(--border);
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  z-index: 1000;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: calc(var(--header-height) + var(--hr-height) + 1rem) 1rem 1rem 1rem;
+  padding: calc(var(--header-height) + var(--hr-height) + 1rem) 1rem 1rem;
   backdrop-filter: blur(10px);
 }
 
@@ -356,19 +356,18 @@ a.btn.confirm-close:hover {
   z-index: 1;
 }
 
-/* —— BACK BUTTON —— */
-a.btn {
-  display: inline-block;
-  background-color: var(--yellow);
-  margin-bottom: var(--gap);
-  margin-top: var(--gap);
-  padding: 0.75rem 1.5rem;
-  color: var(--maroon);
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s ease;
-  border-radius: 10px;
-}
+    /* —— BACK BUTTON —— */
+    a.btn {
+      display: inline-block;
+      margin-bottom: var(--gap);
+      margin-top: var(--gap);
+      padding: 0.75rem 1.5rem;
+      color: var(--maroon);
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.2s ease;
+      border-radius: 10px;
+    }
 
 a.btn:hover,
 a.btn-back:hover {
@@ -728,13 +727,14 @@ button:hover {
 
 .admin-footer .footer-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .admin-footer .footer-links a {
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  font-size: 0.85rem;               /* smaller link text */
   color: #fff;
   text-decoration: none;
   transition: color 0.2s;
@@ -947,9 +947,9 @@ section {
   }
 }
 
-@media (max-width: 1440px) {
-  .tab-nav {
-    height: 75.4vh;
+@media (max-width: 1440px){
+  .tab-nav{
+    height: auto;
   }
 }
 
@@ -960,6 +960,299 @@ html {
 }
 
 
-section {
-  scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 5px);
+    section {
+      scroll-margin-top: calc(var(--header-height) + var(--hr-height) + 5px);
+    }
+
+
+    
+    @media (max-width: 480px) {
+      :root {
+        --gap: 0.75rem;
+        --footer-height: 30px;
+        --dynamic-header-height: 30px;
+      }
+      
+      .login-box {
+        width: 90%;
+        padding: 1.5rem;
+      }
+      body {
+        padding-top: calc(var(--dynamic-header-height) + 3rem);
+      }
+    
+      .banner-top {
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 2rem;
+        background: var(--maroon);
+        color: #fff;
+        position: relative;
+        gap: 1rem;
+      }
+      
+    
+      /* Main Title */
+      .site-banner .banner-text h1 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-align: center;
+        margin-bottom: 0.2rem;
+    }
+    
+      /* Subtitle */
+      .banner-subtitle {
+        font-size: 0.75rem;
+        font-weight: 400;
+        line-height: 1.2;
+        text-align: center;
+      }
+    
+      /* Sub-banner Details */
+      .sub-banner-dept {
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1.2;
+        text-align: center;
+      }
+    
+      .sub-banner-region {
+        font-size: 0.75rem;
+        font-weight: 400;
+        font-style: italic;
+        text-align: center;
+      }
+    
+      .banner-left-text {
+        text-align: center;
+      }
+    
+      .banner-logo {
+        height: 30px;
+        margin-bottom: 0.3rem;
+      }
+    
+      .interview-tabs {
+  display: flex;               /* lay tabs out in a row */
+  justify-content: center;     /* center them as a group */
+  align-items: center;         /* vertically center the labels */
+  gap: 1rem;                   /* even space between tabs */
+  border-bottom: 2px solid #eee;
+  margin-bottom: 2rem;
 }
+
+.tab-btn {
+  flex: 1;                     /* (optional) make every tab equal-width */
+  text-align: center;          /* center text in its own box */
+  padding: 0.75rem 1rem;       /* room to breathe */
+  font-size: 0.95rem;
+  color: #444;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;        /* turn each into its own flexbox */
+  align-items: center;         /* center text vertically */
+  justify-content: center;     /* and horizontally */
+}
+
+.tab-btn.active {
+  color: var(--maroon);
+  border-bottom: 3px solid var(--maroon);
+}
+
+      .tab-nav {
+        position: sticky;
+        top: 80px; /* 👈 Match this to your header height */
+        z-index: 999;
+        background-color: #fff; /* Prevent content from showing through */
+        height: auto;
+        padding: 0rem;
+        gap: 0rem;
+        backdrop-filter: blur(10px);
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 2vh;
+      }
+    
+      .btn-back,
+      .btn-download {
+        width: 100%;
+        margin: 0.25rem 0;
+      }
+    
+      .btn-group {
+        gap: 0.2rem;
+      }
+    
+      .btn-submit {
+        padding: 0.35rem 0.5rem;
+        font-size: 0.75rem;
+        min-width: 45px;
+      }
+    
+      body::after {
+        content: "";
+        display: block;
+        height: 40px;
+        background-color: #f5f5f5;
+    }
+
+    .admin-footer {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: #800000;
+      color: #fff;
+      padding: 1rem;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      /* NO transform here */
+      height: 45px;
+      transition: transform 0.3s ease;
+    }
+  
+      .footer-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    
+      .footer-links {
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+    
+      .footer-logo {
+        height: 24px;
+        max-width: 100px;
+        object-fit: contain;
+      }
+    
+      .admin-footer .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        flex-direction: row;
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+    
+      .banner-logout {
+        position: absolute;
+        right: 2rem;
+        background: var(--yellow);
+        color: var(--maroon);
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius);
+        text-decoration: none;
+        font-weight: 500;
+        transition: background 0.2s;
+      }
+    }
+    
+    .hide-on-scroll {
+      transition: transform 0.3s ease;
+    }
+    
+    .hide-on-scroll.hidden {
+      transform: translateY(-100%);
+    }
+    
+    .admin-footer.hidden {
+      transform: translateY(100%);
+    }
+    
+    .site-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #fff;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+    
+    .site-banner.hidden {
+      transform: translateY(-100%);
+    }
+
+    .results-scroll {
+  max-height: 50vh;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding-right: 0.5rem; /* prevent scrollbar overlap */
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detail-table th,
+.detail-table td {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.detail-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fafafa;
+  z-index: 2;
+}
+
+.car-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/*scrollable*/
+
+.results-scroll {
+  max-height: 50vh;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding-right: 0.5rem; /* prevent scrollbar overlap */
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detail-table th,
+.detail-table td {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.detail-table thead th {
+  position: sticky;
+  top: 0;
+  background: #fafafa;
+  z-index: 2;
+}
+
+.car-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
