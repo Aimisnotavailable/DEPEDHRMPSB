@@ -27,12 +27,116 @@ db = SQLAlchemy(app)
 # SG LEVEL
 # contact number email
 
-with open(f'{JSON_PATH}/eval_struct.json') as fp:
+try:
+    fp = open(f'{JSON_PATH}/eval_struct.json', 'r+') 
     EVAL_STRUCTURE = json.load(fp)
-with open(f'{JSON_PATH}/weight_struct.json') as fp:
+except Exception as e:
+    EVAL_STRUCTURE = {
+        "teacher 1" : {
+            "lpt_rating" : {"WEIGHT" : 10, "MAX_SCORE" : 100, "LABEL" : "LPT/PBET/LEPT Rating"},
+            "cot" : {"WEIGHT" : 35, "MAX_SCORE" : 30, "LABEL" : "COT"},
+            "trf_rating" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "TRF"}
+        },
+        "related teaching" : {
+            "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
+            "outstanding_accomplishment" : {"WEIGHT" : 5, "MAX_SCORE" : 5, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+            "application_of_education" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "APPLICATION OF EDUCATION"},
+            "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
+        },
+        "higher teaching" : {
+            "performance" : {"WEIGHT" : 30, "MAX_SCORE" : 30, "LABEL" : "PERFORMANCE"},
+            "ppst_cois" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PPST COIS"},
+            "ppst_ncois" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "PPST NCOIS"}
+        },
+        "non teaching" : {
+            "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
+            "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+            "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
+            "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
+        },
+        "school administration" : {
+            "performance" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PERFORMANCE"},
+            "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+            "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
+            "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
+        }
+
+    }
+    with open(f'{JSON_PATH}/eval_struct.json', 'w+') as fp:
+        json.dump(EVAL_STRUCTURE, fp) 
+
+try:
+    fp = open(f'{JSON_PATH}/weight_struct.json', 'r+')
     WEIGHT_STRUCTURE = json.load(fp)
-with open(f'{JSON_PATH}/applicant_struct.json') as fp:
+except Exception as e:
+    WEIGHT_STRUCTURE = {
+                        "teacher 1" : {
+                            "education" : 10,
+                            "experience" : 10,
+                            "training" : 10
+                        },
+                        "related teaching" : {
+                            "education" : 10,
+                            "experience" : 10,
+                            "training" : 10
+                        },
+                        "higher teaching" : {
+                            "education" : 10,
+                            "experience" : 10,
+                            "training" : 10
+                        },  
+                        "non teaching" : {
+                            "education" : 5,
+                            "experience" : 5,
+                            "training" : 20
+                        },
+                        "school administration" : {
+                            "education" : 10,
+                            "experience" : 10,
+                            "training" : 10
+                        }
+                    }
+    with open(f'{JSON_PATH}/weight_struct.json', 'w+') as fp:
+        json.dump(WEIGHT_STRUCTURE, fp)
+
+try:
+    fp = open(f'{JSON_PATH}/applicant_struct1.json', 'r+')
     APPLICANT_STRUCTURE = json.load(fp)
+except Exception as e:
+    APPLICANT_STRUCTURE = {
+                            "teacher 1" : {
+                                "lpt_rating" : {"WEIGHT" : 10, "MAX_SCORE" : 100, "LABEL" : "LPT/PBET/LEPT Rating"},
+                                "cot" : {"WEIGHT" : 35, "MAX_SCORE" : 30, "LABEL" : "COT"},
+                                "trf_rating" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "TRF"}
+                            },
+                            "related teaching" : {
+                                "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
+                                "outstanding_accomplishment" : {"WEIGHT" : 5, "MAX_SCORE" : 5, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+                                "application_of_education" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "APPLICATION OF EDUCATION"},
+                                "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
+                            },
+                            "higher teaching" : {
+                                "performance" : {"WEIGHT" : 30, "MAX_SCORE" : 30, "LABEL" : "PERFORMANCE"},
+                                "ppst_cois" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PPST COIS"},
+                                "ppst_ncois" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "PPST NCOIS"}
+                            },
+                            "non teaching" : {
+                                "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
+                                "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+                                "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
+                                "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
+                            },
+                            "school administration" : {
+                                "performance" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PERFORMANCE"},
+                                "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
+                                "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
+                                "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
+                            }
+
+                        }
+    with open(f'{JSON_PATH}/applicant_struct.json', 'w+') as fp:
+        json.dump(APPLICANT_STRUCTURE, fp)
+            
 
 # ------------------------------------------------------------------------------
 # MODELS
@@ -40,7 +144,7 @@ with open(f'{JSON_PATH}/applicant_struct.json') as fp:
 class Interview(db.Model):
     __tablename__ = "interviews"
 
-    id              = db.Column(db.String(8), primary_key=True)
+    id              = db.Column(db.UnicodeText, primary_key=True)
     date            = db.Column(db.Date, nullable=False)
     base_edu        = db.Column(db.Integer, nullable=False)
     base_exp        = db.Column(db.Integer, nullable=False)
@@ -57,9 +161,11 @@ class Interview(db.Model):
                         nullable=False,
                         default="non teaching"
                       )
-    position_title  = db.Column(db.String(100))
-    sg_level        = db.Column(db.String(100))
-    weight_struct   = db.Column(db.String(150))
+    position_title  = db.Column(db.UnicodeText)
+    sg_level        = db.Column(db.UnicodeText)
+    weight_struct   = db.Column(db.UnicodeText)
+    app_struct   = db.Column(db.UnicodeText)
+    eval_struct   = db.Column(db.UnicodeText)
     status          = db.Column(db.String(7))
 
     # ORM cascades + passive_deletes so we don't have to loop & delete children manually
@@ -104,16 +210,16 @@ class EvaluatorToken(db.Model):
 class Applicant(db.Model):
     __tablename__ = "applicants"
 
-    code           = db.Column(db.String(8), primary_key=True)
+    code           = db.Column(db.UnicodeText, primary_key=True)
     interview_id   = db.Column(
                        db.String(8),
                        db.ForeignKey("interviews.id", ondelete="CASCADE"),
                        nullable=False
                      )
-    name           = db.Column(db.String(128), nullable=False)
-    address        = db.Column(db.String(256), nullable=False)
-    contact_number = db.Column(db.String(256), nullable=False)
-    email_addr     = db.Column(db.String(256), nullable=False)
+    name           = db.Column(db.UnicodeText, nullable=False)
+    address        = db.Column(db.UnicodeText, nullable=False)
+    contact_number = db.Column(db.UnicodeText, nullable=False)
+    email_addr     = db.Column(db.UnicodeText, nullable=False)
     birthday       = db.Column(db.Date, nullable=False)
     age            = db.Column(db.Integer, nullable=False)
     sex            = db.Column(db.String(16), nullable=False)
@@ -274,6 +380,13 @@ def create_interview():
             "training": int(request.form.get("weight_trn", 10)),}
         )
 
+        app_struct = APPLICANT_STRUCTURE.get(interview_type, {})
+        eval_struct = EVAL_STRUCTURE.get(interview_type, {})
+
+        if len(eval_struct) == 0 or len(app_struct) == 0:
+            flash(f"Hmmm, check if your evaluation structure or applicant structure is valid", "Error")
+            return redirect(url_for("admin_dashboard"))
+        
         iv = Interview(
             id=iid,
             base_edu=int(request.form.get("baseline_education", 1)),
@@ -284,7 +397,9 @@ def create_interview():
             status="open",
             position_title=position_data[0],
             sg_level=position_data[1],
-            weight_struct = weight_struct
+            weight_struct = weight_struct,
+            app_struct = json.dumps(app_struct),
+            eval_struct=json.dumps(eval_struct)
         )
         db.session.add(iv)
         db.session.commit()
@@ -371,12 +486,12 @@ def admin_interview_detail(iid):
     ex_labels = th.parse_table("table", "experience")
     tr_labels = th.parse_table("table", "training")
 
-    applicant_structure = APPLICANT_STRUCTURE[iv.type]
+    applicant_structure = json.loads(iv.app_struct)
 
     applicants_total_score : list[tuple] = []
 
     for applicant in applicants:
-        applicants_total_score.append((applicant.code, applicant.name, calculate_applicant_score(applicant_data=applicant, eval_struct=EVAL_STRUCTURE[iv.type])[0]))
+        applicants_total_score.append((applicant.code, applicant.name, calculate_applicant_score(applicant_data=applicant, eval_struct=json.loads(iv.eval_struct))[0]))
     applicants_total_score = sorted(applicants_total_score, key= lambda x : -x[2])
 
     return render_template("admin_interview_detail.html",
@@ -406,12 +521,12 @@ def applicant_detail(code):
     ).all()
 
     eval_type = Interview.query.filter_by(id=applicant.interview_id).first().type
-    eval_struct = EVAL_STRUCTURE[eval_type]
+    eval_struct = json.loads(applicant.interview.eval_struct)
 
     
     scores = []
     avg_eval = None
-    applicant_structure = APPLICANT_STRUCTURE[applicant.interview.type]
+    applicant_structure = json.loads(applicant.interview.app_struct)
     evaluation_scores = {}
     applicant_score = calculate_baseline_score(applicant, interview=applicant.interview)
     total_score = applicant_score.get('edu') + applicant_score.get('exp') + applicant_score.get('trn')
@@ -456,8 +571,8 @@ def applicant_detail(code):
 def download_applicant_data_file(code):
     applicant_data = Applicant.query.get_or_404(code)
     interview_data = Interview.query.get(applicant_data.interview_id)
-    app_struct = APPLICANT_STRUCTURE[interview_data.type]
-    eval_struct = EVAL_STRUCTURE[interview_data.type]
+    app_struct = json.loads(interview_data.app_struct)
+    eval_struct = json.loads(interview_data.eval_struct)
     weight_struct = json.loads(interview_data.weight_struct)
 
     eval_records = Evaluation.query.filter_by(
@@ -509,7 +624,7 @@ def download_interview_CAR(code, f_type="with_name"):
             score_data_temp.append(app_data_json[key])
 
         applicant_data_temp['score'].append(score_data_temp)
-        total_score, eval_score = calculate_applicant_score(applicant, EVAL_STRUCTURE[interview_data.type])
+        total_score, eval_score = calculate_applicant_score(applicant, json.loads(interview_data.eval_struct))
         applicant_data_temp['eval_score'].append(eval_score)
         applicant_data_temp['total_score'].append(total_score)
     
@@ -556,9 +671,9 @@ def evaluator_detail(token):
          interview_id=evaluator.interview_id,
          evaluator_token=token
     ).all()
-    
-    eval_type = Interview.query.filter_by(id=evaluator.interview_id).first().type
-    eval_struct = EVAL_STRUCTURE[eval_type]
+    iv = Interview.query.filter_by(id=evaluator.interview_id).first()
+    eval_type = iv.type
+    eval_struct = json.loads(iv.eval_struct)
     scores = []
 
     for eval_record in eval_records:
@@ -628,7 +743,7 @@ def add_applicant():
     )
 
     # For teaching interviews, the admin now inputs the TRF rating (max 20)
-    applicant_structure = APPLICANT_STRUCTURE[interview_obj.type]
+    applicant_structure = json.loads(interview_obj.app_struct)
     
     calculated_score = {}
     try:
@@ -663,7 +778,7 @@ def update_applicant(code):
     ex_labels = th.parse_table("table", "experience")
     tr_labels = th.parse_table("table", "training")
 
-    applicant_structure = APPLICANT_STRUCTURE[interview.type]
+    applicant_structure = json.loads(interview.app_struct)
     weight_struct = json.loads(interview.weight_struct)
     if request.method == 'POST':
         # Strings default to empty
@@ -789,8 +904,8 @@ def evaluator_dashboard():
     applicants = iv.applicants
 
     # print(evaluation.interview.type)
-    eval_type = Interview.query.filter_by(id=iid).first().type
-    eval_struct = EVAL_STRUCTURE[eval_type]
+    eval_type = iv.type
+    eval_struct = json.loads(iv.eval_struct)
     # For each applicant, get only the evaluation record for the current evaluator.
     my_scores = {}
     for a in applicants:
@@ -833,8 +948,9 @@ def evaluator_applicant_detail(code):
         applicant_code=code
     ).first()
 
-    eval_type = Interview.query.filter_by(id=iid).first().type
-    eval_struct = EVAL_STRUCTURE[eval_type]
+    iv = Interview.query.filter_by(id=iid).first()
+    eval_type = iv.type
+    eval_struct = json.loads(iv.eval_struct)
     if request.method == "POST":
         try:
             extra_data = {}

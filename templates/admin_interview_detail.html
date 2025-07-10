@@ -100,11 +100,11 @@
 
     <section id="results">
       <h2>Results</h2>
+      {% if applicants %}
       <div class="sort-controls">
         <input type="text" id="searchBarResults" placeholder="Search Applicants" onkeyup="filterInterviews('Results')">
         <button class="sort-btn" onclick="sortByRank('Results')">⇅ Sort by Rank</button>
       </div>
-      {% if applicants %}
       <table class="detail-table" id="qual-tableResults">
         <thead>
           <tr>
