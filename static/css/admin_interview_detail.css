@@ -966,13 +966,49 @@ html {
 
 
     
-    @media (max-width: 480px) {
+ @media (max-width: 480px) {
       :root {
         --gap: 0.75rem;
         --footer-height: 30px;
         --dynamic-header-height: 30px;
       }
-      
+  
+          /* 1. Ensure the container fills its parent and allows both scroll axes */
+.table-container {
+  width: 100%;                /* full-width wrapper */
+  max-height: 300px;          /* cap vertical size */
+  overflow-y: auto;           /* vertical scroll when needed */
+  overflow-x: auto;           /* horizontal scroll when needed */
+  -webkit-overflow-scrolling: touch;
+  border-radius: 4px;
+  background: #fff;
+}
+
+/* 2. Let the table size itself to its content */
+.table-container table {
+  width: max-content;         /* grow to fit all columns */
+  min-width: 100%;            /* but never shrink below wrapper */
+  border-collapse: collapse;
+}
+
+/* 3. Optional: style WebKit scrollbars */
+.table-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+.table-container::-webkit-scrollbar-thumb {
+  background: #800;
+  border-radius: 3px;
+}
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #a00;
+}
+
+
       .login-box {
         width: 90%;
         padding: 1.5rem;
