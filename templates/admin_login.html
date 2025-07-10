@@ -55,21 +55,11 @@
       <h2>Admin Login</h2>
 
       <form class="login-form" method="post" action="{{ url_for('admin_login') }}">
-
-{% with flashes = get_flashed_messages(
-      with_categories=true,
-      category_filter=["success", "error"]
-   ) %}
-  {% if flashes %}
-    <div class="flash-msg-container">
-      {% for category, text in flashes %}
-        <div class="flash-{{ category }}">
-          {{ text }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
+        {% with msgs = get_flashed_messages(category_filter=["error"]) %}
+          {% for m in msgs %}
+            <div class="flash">{{ m }}</div>
+          {% endfor %}
+        {% endwith %}
 
         <label for="username">Username</label>
         <input id="username" name="username" required>
@@ -82,27 +72,21 @@
     </div>
   </div>
 
-  <!-- SITE FOOTER -->
-  <footer class="admin-footer" role="contentinfo">
+  <footer class="admin-footer">
     <div class="footer-content">
       <div class="footer-logos">
-        <img
-          src="{{ url_for('static', filename='images/deped_logo.png') }}"
-          alt="DepEd Logo"
-        />
+        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
       </div>
       <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph"
-          ><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a
-        >
-        <a
-          href="https://www.facebook.com/depedtayolaoagcity"
-          target="_blank"
-          ><i class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a
-        >
-        <a href="https://www.depedlaoagcity.com" target="_blank"
-          ><i class="fas fa-globe"></i>depedlaoagcity.com</a
-        >
+        <a href="mailto:laoag.city@deped.gov.ph" title="Email">
+          <i class="fas fa-envelope"></i> Email
+        </a>
+        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank" title="Facebook">
+          <i class="fab fa-facebook-square"></i> Facebook
+        </a>
+        <a href="https://www.depedlaoagcity.com" target="_blank" title="Website">
+          <i class="fas fa-globe"></i> Website
+        </a>
       </div>
     </div>
   </footer>

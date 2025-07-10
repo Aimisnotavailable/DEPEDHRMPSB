@@ -19,9 +19,10 @@
 <body>
 
   <!-- SITE BANNER -->
-  <header class="site-banner" role="banner">
+  <header class="site-banner hide-on-scroll">
+    <link rel="stylesheet" href="styles.css">
     <div class="banner-top">
-      <!-- Left group: logo and text -->
+      <!-- Logo and text -->
       <div class="banner-left-group">
         <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo" class="banner-logo" />
         <div class="banner-left-text">
@@ -29,15 +30,16 @@
           <p class="sub-banner-region">Region I – Ilocos Region</p>
         </div>
       </div>
-
+  
       <!-- Centered title -->
       <div class="banner-text">
         <h1>DEPARTMENT OF EDUCATION</h1>
         <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
-      <a href="{{ url_for('admin_logout') }}" class="banner-logout desktop-logout confirm-logout">Logout</a>
+
+      </div>
     </div>
-    <!-- Add toggle button for mobile navigation -->
   </header>
+  
 
   <!-- Logout Confirmation Modal -->
 <div id="logout-modal" class="modal" style="display:none; flex-direction:column;">
@@ -63,7 +65,7 @@
       <a href="#open_interview">Open Interview</a>
       <a href="#closed_interview">Closed Interviews</a>
         <!-- MOBILE VERSION -->
-      <a href="{{ url_for('admin_logout') }}" class="btn logout-tab mobile-logout confirm-logout">
+      <a href="{{ url_for('admin_logout') }}" class="btn logout-tab mobile-logout confirm-logout">Logout
       </a>
     </div>
 
@@ -152,127 +154,122 @@
         </form>
       </section>
 
-      <!-- Open Interviews Panel -->
-      <section class="card panel-list" aria-labelledby="list-heading" id="open_interview">
-        <h2 id="list-heading">Open Interviews</h2>
-        <div class="interview-controls">
-          <input type="text" id="searchBarOpen" placeholder="Search interview" onkeyup="filterInterviews('Open')">
-          <button class="sort-btn" onclick="sortByDate('Open')">⇅ Sort by Date</button>
-        </div>
-        <table class="qual-table" id="qual-tableOpen">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Type</th>
-              <th>Date</th>
-              <th>Baselines</th>
-              <th>#Applicants</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for iv in interviews %}
-              {% if iv.status == "open" %}
-              <tr>
-                <td>{{ iv.id }}</td>
-                <td>{{ iv.type }}</td>  
-                <td>{{ iv.date }} </td>
-                <td>
-                  Education: {{ ed_labels[iv.base_edu ~ ''] }} <br>
-                  Experience: {{ ex_labels[iv.base_exp ~ ''] }} <br>
-                  Training: {{ tr_labels[iv.base_trn ~ ''] }}
-                </td>
-                <td>{{ iv.applicants|length }}</td>
-                <td>
-                  <div class="btn-group"></div>
-                  <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
-                    class="btn-submit btn-submit--view">View</a>
-                  <a href="{{ url_for('update_interview', iid=iv.id) }}" class="btn-submit btn-submit--update">Update</a>
-                  <a href="{{ url_for('delete_interview', iid=iv.id) }}"
-                    class="btn-submit btn-submit--delete confirm-delete ">Delete</a>
-              {% endif %}
-    </div>
-    </td>
-    </tr>
-    {% endfor %}
-    </tbody>
+<!-- Open Interviews Panel -->
+<section class="card panel-list" id="open_interview" aria-labelledby="open-heading">
+  <h2 id="open-heading">Open Interviews</h2>
+  <div class="interview-controls">
+    <input type="text" id="searchBarOpen" placeholder="Search interview" onkeyup="filterInterviews('Open')">
+    <button class="sort-btn" onclick="sortByDate('Open')">⇅ Sort by Date</button>
+  </div>
+
+  <!-- scrollable wrapper -->
+  <div class="interview-list">
+    <table class="qual-table" id="qual-tableOpen">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Date</th>
+          <th>Baselines</th>
+          <th>#Applicants</th>
+          <th>Actions</th>      <!-- added -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for iv in interviews if iv.status == "open" %}
+        <tr>
+          <td>{{ iv.id }}</td>
+          <td>{{ iv.type }}</td>
+          <td>{{ iv.date }}</td>
+          <td>
+            Education: {{ ed_labels[iv.base_edu ~ ''] }}<br>
+            Experience: {{ ex_labels[iv.base_exp ~ ''] }}<br>
+            Training: {{ tr_labels[iv.base_trn ~ ''] }}
+          </td>
+          <td>{{ iv.applicants|length }}</td>
+          <td class="actions">
+            <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
+               class="btn-submit btn-submit--view">View</a>
+            <a href="{{ url_for('update_interview', iid=iv.id) }}"
+               class="btn-submit btn-submit--update">Update</a>
+            <a href="{{ url_for('delete_interview', iid=iv.id) }}"
+               class="btn-submit btn-submit--delete confirm-delete">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
-    </section>
+  </div>
+</section>
 
-    <!-- Closed Interviews Panel -->
-      <section class="card panel-list" aria-labelledby="list-heading" id="closed_interview">
-        <h2 id="list-heading">Closed Interviews</h2>
-        <div class="interview-controls">
-          <input type="text" id="searchBarClose" placeholder="Search interview" onkeyup="filterInterviews('Close')">
-          <button class="sort-btn" onclick="sortByDate('Close')">⇅ Sort by Date</button>
-        </div>
-        <table class="qual-table" id="qual-tableClose">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Date</th>
-              <th>Baselines</th>
-              <th>#Eval</th>
-              <th>#Applicants</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for iv in interviews %}
-              {% if iv.status == "close" %}
-              <tr>
-                <td>{{ iv.id }}</td>
-                <td>{{ iv.date }} </td>
-                <td>
-                  Education: {{ ed_labels[iv.base_edu ~ ''] }} <br>
-                  Experience: {{ ex_labels[iv.base_exp ~ ''] }} <br>
-                  Training: {{ tr_labels[iv.base_trn ~ ''] }}
-                </td>
-                <td>{{ iv.evaluator_tokens|length }}</td>
-                <td>{{ iv.applicants|length }}</td>
-                <td>
-                  <div class="btn-group"></div>
-                  <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
-                    class="btn-submit btn-submit--view">View</a>
-                  <a href="{{ url_for('delete_interview', iid=iv.id) }}"
-                    class="btn-submit btn-submit--delete confirm-delete ">Delete</a>
-              {% endif %}
-    </div>
-    </td>
-    </tr>
-    {% endfor %}
-    </tbody>
+
+<!-- Closed Interviews Panel -->
+<section class="card panel-list" id="closed_interview" aria-labelledby="closed-heading">
+  <h2 id="closed-heading">Closed Interviews</h2>
+  <div class="interview-controls">
+    <input type="text" id="searchBarClose" placeholder="Search interview" onkeyup="filterInterviews('Close')">
+    <button class="sort-btn" onclick="sortByDate('Close')">⇅ Sort by Date</button>
+  </div>
+
+  <div class="interview-list">
+    <table class="qual-table" id="qual-tableClose">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Baselines</th>
+          <th>#Eval</th>
+          <th>#Applicants</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for iv in interviews if iv.status == "close" %}
+        <tr>
+          <td>{{ iv.id }}</td>
+          <td>{{ iv.date }}</td>
+          <td>
+            Education: {{ ed_labels[iv.base_edu ~ ''] }}<br>
+            Experience: {{ ex_labels[iv.base_exp ~ ''] }}<br>
+            Training: {{ tr_labels[iv.base_trn ~ ''] }}
+          </td>
+          <td>{{ iv.evaluator_tokens|length }}</td>
+          <td>{{ iv.applicants|length }}</td>
+          <td class="actions">
+            <a href="{{ url_for('admin_interview_detail', iid=iv.id) }}"
+               class="btn-submit btn-submit--view">View</a>
+            <a href="{{ url_for('delete_interview', iid=iv.id) }}"
+               class="btn-submit btn-submit--delete confirm-delete">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
-    </section>
-
-    </div>
-
-    <div id="delete-modal" class="modal">
-      <div class="modal-content">
-        <p>Are you sure you want to delete this interview?</p>
-        <div class="modal-actions">
-          <button id="confirm-delete" class="btn-submit btn-submit--delete">Yes, delete</button>
-          <button id="cancel-delete" class="btn-submit btn-submit--view">Cancel</button>
-        </div>
-      </div>
-    </div>
+  </div>
+</section>
 
   </main>
 
   <!-- SITE FOOTER -->
-  <footer class="admin-footer" role="contentinfo">
+  <footer class="admin-footer">
     <div class="footer-content">
       <div class="footer-logos">
         <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
       </div>
       <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph"><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a>
-        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank"><i
-            class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a>
-        <a href="https://www.depedlaoagcity.com" target="_blank"><i class="fas fa-globe"></i>depedlaoagcity.com</a>
+        <a href="mailto:laoag.city@deped.gov.ph" title="Email">
+          <i class="fas fa-envelope"></i> Email
+        </a>
+        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank" title="Facebook">
+          <i class="fab fa-facebook-square"></i> Facebook
+        </a>
+        <a href="https://www.depedlaoagcity.com" target="_blank" title="Website">
+          <i class="fas fa-globe"></i> Website
+        </a>
       </div>
     </div>
   </footer>
+  
   <script>
     // Static weight map
     const WEIGHT_STRUCTURE = {
@@ -437,32 +434,84 @@
         row.style.display = match || input === "" ? "" : "none";
       });
     }
-    //SORT DATE
-    let sortAsc = false; // Start with latest on top
+// SORT DATE
+let sortAsc = {
+  Open: false, // Track sort direction for Open Interviews
+  Close: false // Track sort direction for Closed Interviews
+};
 
-    function sortByDate(type) {
-      const tbody = document.querySelector("#qual-table"+type+" tbody");
-      const rows = Array.from(tbody.querySelectorAll("tr"));
+function sortByDate(type) {
+  const tableId = `#qual-table${type}`;
+  const tbody = document.querySelector(`${tableId} tbody`);
+  
+  // Check if tbody exists
+  if (!tbody) {
+    console.error(`Table body for ${tableId} not found.`);
+    return;
+  }
 
-      rows.sort((a, b) => {
-        const dateA = new Date(a.children[1].textContent.trim());
-        const dateB = new Date(b.children[1].textContent.trim());
-        return sortAsc ? dateA - dateB : dateB - dateA;
-      });
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const dateIndex = type === 'Open' ? 2 : 1; // Date column index for Open (2) or Close (1)
 
-      rows.forEach(row => tbody.appendChild(row));
-      sortAsc = !sortAsc;
+  rows.sort((a, b) => {
+    const dateA = a.children[dateIndex].textContent.trim();
+    const dateB = b.children[dateIndex].textContent.trim();
+
+    // Attempt to parse dates (assuming YYYY-MM-DD or other standard format)
+    const parsedDateA = new Date(dateA);
+    const parsedDateB = new Date(dateB);
+
+    // Handle invalid dates
+    if (isNaN(parsedDateA) || isNaN(parsedDateB)) {
+      console.warn(`Invalid date(s) in ${type} table: ${dateA}, ${dateB}`);
+      // Fallback: compare as strings if dates are invalid
+      return sortAsc[type] ? dateA.localeCompare(dateB) : dateB.localeCompare(dateA);
     }
-    // Sorted existing interview.
-    document.addEventListener('DOMContentLoaded', function () {
-      // Select the tbody of the existing interviews table
-      const tbody = document.querySelector("#qual-table"+type+" tbody");
-      if (!tbody) return;
 
-      // Grab all rows, reverse their order, and re-append them
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-      rows.reverse().forEach(row => tbody.appendChild(row));
+    return sortAsc[type] ? parsedDateA - parsedDateB : parsedDateB - parsedDateA;
+  });
+
+  // Re-append sorted rows
+  rows.forEach(row => tbody.appendChild(row));
+  sortAsc[type] = !sortAsc[type];
+
+  // Update button text to indicate sort direction
+  const sortBtn = document.getElementById(`sortBtn${type}`);
+  if (sortBtn) {
+    sortBtn.textContent = `Sort by Date ${sortAsc[type] ? '↑' : '↓'}`;
+  }
+}
+
+// Initial sorting for both tables
+document.addEventListener('DOMContentLoaded', function () {
+  ['Open', 'Close'].forEach(type => {
+    const tableId = `#qual-table${type}`;
+    const tbody = document.querySelector(`${tableId} tbody`);
+    if (!tbody) {
+      console.error(`Table body for ${tableId} not found during initial sort.`);
+      return;
+    }
+
+    const dateIndex = type === 'Open' ? 2 : 1;
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+      const dateA = new Date(a.children[dateIndex].textContent.trim());
+      const dateB = new Date(b.children[dateIndex].textContent.trim());
+      if (isNaN(dateA) || isNaN(dateB)) {
+        console.warn(`Invalid date(s) during initial ${type} sort: ${a.children[dateIndex].textContent}, ${b.children[dateIndex].textContent}`);
+        return a.children[dateIndex].textContent.localeCompare(b.children[dateIndex].textContent);
+      }
+      return dateB - dateA; // Latest dates first
     });
+    rows.forEach(row => tbody.appendChild(row));
+
+    // Set initial button text
+    const sortBtn = document.getElementById(`sortBtn${type}`);
+    if (sortBtn) {
+      sortBtn.textContent = `Sort by Date ↓`; // Indicate descending (latest first)
+    }
+  });
+});
   </script>
 
   <script>// Logout modal logic
@@ -506,6 +555,20 @@ document.addEventListener('keydown', e => {
     pendingLogoutUrl = null;
   }
 });
+
+let lastScrollTop = 0;
+const footer = document.querySelector('.admin-footer');
+
+window.addEventListener('scroll', () => {
+  const st = window.pageYOffset || document.documentElement.scrollTop;
+  if (st > lastScrollTop) {
+    footer.classList.add('hidden');   // scroll down → hide
+  } else {
+    footer.classList.remove('hidden'); // scroll up → show
+  }
+  lastScrollTop = st <= 0 ? 0 : st;
+});
+
 </script>
 
 

@@ -271,26 +271,21 @@
   </main>
 
   <!-- SITE FOOTER -->
- <footer class="admin-footer" role="contentinfo">
+  <footer class="admin-footer">
     <div class="footer-content">
       <div class="footer-logos">
-        <img
-          src="{{ url_for('static', filename='images/deped_logo.png') }}"
-          alt="DepEd Logo"
-        />
+        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
       </div>
       <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph"
-          ><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a
-        >
-        <a
-          href="https://www.facebook.com/depedtayolaoagcity"
-          target="_blank"
-          ><i class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a
-        >
-        <a href="https://www.depedlaoagcity.com" target="_blank"
-          ><i class="fas fa-globe"></i>depedlaoagcity.com</a
-        >
+        <a href="mailto:laoag.city@deped.gov.ph" title="Email">
+          <i class="fas fa-envelope"></i> Email
+        </a>
+        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank" title="Facebook">
+          <i class="fab fa-facebook-square"></i> Facebook
+        </a>
+        <a href="https://www.depedlaoagcity.com" target="_blank" title="Website">
+          <i class="fas fa-globe"></i> Website
+        </a>
       </div>
     </div>
   </footer>
@@ -336,6 +331,21 @@ document.addEventListener('DOMContentLoaded', () => {
       pendingCloseUrl = null;
     }
   });
+
+  let lastScrollTop = 0;
+const footer = document.querySelector('.admin-footer');
+
+window.addEventListener('scroll', () => {
+  const st = window.pageYOffset || document.documentElement.scrollTop;
+  if (st > lastScrollTop) {
+    footer.classList.add('hidden');   // scroll down → hide
+  } else {
+    footer.classList.remove('hidden'); // scroll up → show
+  }
+  lastScrollTop = st <= 0 ? 0 : st;
+});
+
+
 });
 </script>
 

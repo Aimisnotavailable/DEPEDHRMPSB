@@ -147,17 +147,22 @@
     {% endif %}
   </div>
 
-  </div><!-- /.form-container -->
-  <a href="{{ url_for('download_applicant_data_file', code=applicant.code) }}" class="btn-download"><i
-      class="fas fa-download"></i>Download File</a>
-  </div><!-- /.form-container -->
-  {% if applicant.interview.status == "open" %}
-    <a href="{{ url_for('update_applicant', code=applicant.code) }}" class="btn-download"><i
-        class="fas fa-edit"></i>Update</a>
-
-    <a href="{{ url_for('delete_applicant', code=applicant.code) }}" class="btn-download confirm-delete"><i
-        class="fas fa-trash"></i>Delete</a>
-
+  <div class="action-row">
+    <a href="{{ url_for('download_applicant_data_file', code=applicant.code) }}" class="btn-download">
+      <i class="fas fa-download"></i> Download File
+    </a>
+  
+    {% if applicant.interview.status == "open" %}
+      <a href="{{ url_for('update_applicant', code=applicant.code) }}" class="btn-download">
+        <i class="fas fa-edit"></i> Update
+      </a>
+  
+      <a href="{{ url_for('delete_applicant', code=applicant.code) }}" class="btn-download confirm-delete">
+        <i class="fas fa-trash"></i> Delete
+      </a>
+  
+  </div>
+  
 <!-- Applicant Delete Confirmation Modal -->
 <div id="delete-applicant-modal" class="modal" style="display:none; flex-direction:column;">
   <div class="modal-content">
@@ -177,20 +182,21 @@
 
     
   {% endif %}
-  <!-- SITE FOOTER -->
-  <footer class="admin-footer" role="contentinfo">
-    <div class="footer-content">
-      <div class="footer-logos">
-        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
-      </div>
-      <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph"><i class="fas fa-envelope"></i>laoag.city@deped.gov.ph</a>
-        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank"><i
-            class="fab fa-facebook-square"></i>facebook.com/depedtayolaoagcity</a>
-        <a href="https://www.depedlaoagcity.com" target="_blank"><i class="fas fa-globe"></i>depedlaoagcity.com</a>
-      </div>
+
+
+<footer class="admin-footer">
+  <div class="footer-content">
+    <div class="footer-logos">
+      <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo">
     </div>
-  </footer>
+    <div class="footer-links">
+      <a href="#"><i class="fas fa-envelope"></i> Email</a>
+      <a href="#"><i class="fab fa-facebook-square"></i> Facebook</a>
+      <a href="#"><i class="fas fa-globe"></i> Website</a>
+    </div>
+  </div>
+</footer>
+
 
   <script>
 document.addEventListener('DOMContentLoaded', () => {
