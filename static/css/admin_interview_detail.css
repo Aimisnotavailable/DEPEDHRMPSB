@@ -966,7 +966,7 @@ html {
 
 
     
-    @media (max-width: 480px) {
+ @media (max-width: 480px) {
       :root {
         --gap: 0.75rem;
         --footer-height: 30px;
