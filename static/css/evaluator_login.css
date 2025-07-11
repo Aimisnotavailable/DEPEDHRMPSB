@@ -385,34 +385,7 @@ body {
 
 
 /* —— RESPONSIVE —— */
-@media (max-width: 480px) {
-  .site-banner .banner-top {
-    padding: 1rem;
-    grid-template-columns: auto 1fr auto;
-  }
-  .site-banner .banner-logo {
-    height: 50px;
-  }
-  .site-banner .banner-bottom {
-    padding: 0.5rem 1rem;
-    gap: 1rem;
-  }
-  .login-box {
-    margin: 1rem;
-    padding: 2rem 1.5rem;
-  }
-  .login-box h2 {
-    font-size: 1.75rem;
-  }
-  .footer-inner {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-  }
-  .footer-logos img {
-    height: 28px;
-  }
-}
+
 /* —— RESPONSIVE DESIGN —— */
 @media (max-width: 1024px) {
   :root {
@@ -521,5 +494,158 @@ body {
 .admin-footer .footer-links a:hover {
   color: var(--yellow);
 }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --gap: 0.75rem;
+    --footer-height: 30px;
+    --dynamic-header-height: 30px;
+  }
+
+  body {
+    padding-top: calc(var(--dynamic-header-height) + 3rem);
+  }
+
+  .banner-top {
+    height: 80px;
+  }
+
+  .login-wrapper {
+    height: 100vh;              /* full viewport height */
+    overflow-y: auto;           /* allow vertical scroll */
+  }
+
+  .login-box {
+    max-height: 80vh;           /* limits height to 80% of viewport */
+    overflow-y: auto;           /* enables vertical scroll if needed */
+    padding: 1.5rem;
+    margin: 1rem auto;
+    box-sizing: border-box;
+  }
+
+  .login-wrapper {
+    display: flex;
+    justify-content: center;      /* centers horizontally */
+    align-items: center;          /* centers vertically */
+    height: 100vh;                /* full height of viewport */
+    padding: 1rem;                /* prevents edge contact */
+    box-sizing: border-box;
+  }
+  /* Optional: smooth scrolling */
+  .login-box::-webkit-scrollbar {
+    width: 6px;
+  }
+  .login-box::-webkit-scrollbar-thumb {
+    background-color: #800000;
+    border-radius: 3px;
+  }
+
+  /* Main Title */
+  .site-banner .banner-text h1 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 0.2rem;
+}
+
+  /* Subtitle */
+  .banner-subtitle {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  /* Sub-banner Details */
+  .sub-banner-dept {
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+    margin-top: 1;
+  }
+
+  .sub-banner-region {
+    font-size: 0.75rem;
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+  }
+
+  .banner-left-text {
+    text-align: center;
+  }
+
+  .banner-logo {
+    height: 30px;
+    margin-bottom: 0.3rem;
+  }
+
+
+  body::after {
+    content: "";
+    display: block;
+    height: 40px;
+    background-color: #f5f5f5;
+}
+
+.admin-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #800000;
+  color: #fff;
+  padding: 1rem;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  /* NO transform here */
+  height: 45px;
+  transition: transform 0.3s ease;
+}
+
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer-logo {
+    height: 24px;
+    max-width: 100px;
+    object-fit: contain;
+  }
+
+  .admin-footer .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-direction: row;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .banner-logout {
+    position: absolute;
+    right: 2rem;
+    background: var(--yellow);
+    color: var(--maroon);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
 }
 

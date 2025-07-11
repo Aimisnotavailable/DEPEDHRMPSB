@@ -361,12 +361,13 @@ a.btn.confirm-close:hover {
       display: inline-block;
       margin-bottom: var(--gap);
       margin-top: var(--gap);
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem 1rem;
       color: var(--maroon);
       text-decoration: none;
       font-weight: 500;
       transition: background 0.2s ease;
       border-radius: 10px;
+      background-color: var(--yellow);
     }
 
 a.btn:hover,
@@ -847,6 +848,10 @@ section {
     border-bottom: 2px solid var(--border);
     overflow-x: auto;
     z-index: 1000;
+    z-index: 999;
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
   }
 
   .tab-nav a {
@@ -966,7 +971,7 @@ html {
 
 
     
- @media (max-width: 480px) {
+ @media (max-width: 600px) {
       :root {
         --gap: 0.75rem;
         --footer-height: 30px;
@@ -1017,16 +1022,28 @@ html {
         padding-top: calc(var(--dynamic-header-height) + 3rem);
       }
     
-      .banner-top {
-        height: 100px;
+      .banner-text {
+        position: static;
+        transform: none;
+        width: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        padding: 0.5rem 2rem;
+        text-align: center;
+        gap: 0.1rem;
+      }
+
+      .banner-top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1rem;
         background: var(--maroon);
-        color: #fff;
+        color: var(--white);
         position: relative;
-        gap: 1rem;
+        gap: 0rem;
+        height: 80px;
       }
       
     
@@ -1037,6 +1054,7 @@ html {
         line-height: 1.2;
         text-align: center;
         margin-bottom: 0.2rem;
+        color: #f5f5f5
     }
     
       /* Subtitle */
@@ -1100,20 +1118,13 @@ html {
   border-bottom: 3px solid var(--maroon);
 }
 
-      .tab-nav {
-        position: sticky;
-        top: 80px; /* 👈 Match this to your header height */
-        z-index: 999;
-        background-color: #fff; /* Prevent content from showing through */
-        height: auto;
-        padding: 0rem;
-        gap: 0rem;
-        backdrop-filter: blur(10px);
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        margin-bottom: 2vh;
-      }
+.tab-nav {
+  position: sticky;
+  top: 80px;
+  z-index: 999;
+  background-color: var(--white);
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.1);
+}
     
       .btn-back,
       .btn-download {

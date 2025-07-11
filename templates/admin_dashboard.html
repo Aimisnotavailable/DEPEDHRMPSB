@@ -18,27 +18,31 @@
 
 <body>
 
-  <!-- SITE BANNER -->
-  <header class="site-banner hide-on-scroll">
-    <link rel="stylesheet" href="styles.css">
-    <div class="banner-top">
-      <!-- Logo and text -->
-      <div class="banner-left-group">
-        <img src="{{ url_for('static', filename='images/deped_seal.png') }}" alt="DepEd Logo" class="banner-logo" />
-        <div class="banner-left-text">
-          <p class="sub-banner-dept">Schools Division of Laoag City</p>
-          <p class="sub-banner-region">Region I – Ilocos Region</p>
-        </div>
-      </div>
-
-      <!-- Centered title -->
-      <div class="banner-text">
-        <h1>DEPARTMENT OF EDUCATION</h1>
-        <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
-
+ <!-- SITE BANNER -->
+<header class="site-banner" role="banner">
+  <div class="banner-top">
+    <!-- Left group: logo and text -->
+    <div class="banner-left-group">
+      <img
+        src="{{ url_for('static', filename='images/deped_seal.png') }}"
+        alt="DepEd Logo"
+        class="banner-logo"
+      />
+      <div class="banner-left-text">
+        <p class="sub-banner-dept">Schools Division of Laoag City</p>
+        <p class="sub-banner-region">Region I – Ilocos Region</p>
       </div>
     </div>
-  </header>
+
+    <!-- Centered title -->
+    <div class="banner-text">
+      <h1>DEPARTMENT OF EDUCATION</h1>
+      <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+    </div>
+
+
+  </div>
+</header>
 
 
   <!-- Logout Confirmation Modal -->
@@ -59,7 +63,6 @@
 
   <!-- MAIN CONTAINER BOX -->
   <main class="form-container" role="main">
-
     <div class="tab-nav">
       <a href="#create_interview">Create Interview</a>
       <a href="#open_interview">On-going Interview</a>
@@ -261,26 +264,25 @@
 
   </main>
 
-  <!-- SITE FOOTER -->
-  <footer class="admin-footer">
-    <div class="footer-content">
-      <div class="footer-logos">
-        <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
-      </div>
-      <div class="footer-links">
-        <a href="mailto:laoag.city@deped.gov.ph" title="Email">
-          <i class="fas fa-envelope"></i> Email
-        </a>
-        <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank" title="Facebook">
-          <i class="fab fa-facebook-square"></i> Facebook
-        </a>
-        <a href="https://www.depedlaoagcity.com" target="_blank" title="Website">
-          <i class="fas fa-globe"></i> Website
-        </a>
-      </div>
+<!-- SITE FOOTER -->
+<footer class="admin-footer">
+  <div class="footer-content">
+    <div class="footer-logos">
+      <img src="{{ url_for('static', filename='images/deped_logo.png') }}" alt="DepEd Logo" />
     </div>
-  </footer>
-
+    <div class="footer-links">
+      <a href="mailto:laoag.city@deped.gov.ph" title="Email">
+        <i class="fas fa-envelope"></i> Email
+      </a>
+      <a href="https://www.facebook.com/depedtayolaoagcity" target="_blank" title="Facebook">
+        <i class="fab fa-facebook-square"></i> Facebook
+      </a>
+      <a href="https://www.depedlaoagcity.com" target="_blank" title="Website">
+        <i class="fas fa-globe"></i> Website
+      </a>
+    </div>
+  </div>
+</footer>
   <script>
     // Static weight map
     const WEIGHT_STRUCTURE = {

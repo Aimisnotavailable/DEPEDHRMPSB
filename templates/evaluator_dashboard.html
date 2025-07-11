@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Evaluator Dashboard</title>
   <link
     rel="stylesheet"
@@ -11,94 +12,98 @@
 </head>
 <body>
 
- <!-- SITE BANNER -->
-<header class="site-banner" role="banner">
-  <div class="banner-top">
-    <!-- Left group: logo and text -->
-    <div class="banner-left-group">
-      <img  
-        src="{{ url_for('static', filename='images/deped_seal.png') }}"
-        alt="DepEd Logo"-*
-        class="banner-logo"
-      />
-      <div class="banner-left-text">
+  <!-- SITE BANNER -->
+  <header class="site-banner" role="banner">
+    <div class="banner-top">
+      <!-- Left group: logo and text -->
+      <div class="banner-left-group">
+        <img
+          src="{{ url_for('static', filename='images/deped_seal.png') }}"
+          alt="DepEd Logo"
+          class="banner-logo"
+        />
+        <div class="banner-left-text">
           <p class="sub-banner-dept">Schools Division of Laoag City</p>
-        <p class="sub-banner-region">Region I – Ilocos Region</p>
-      </div>
-        <a href="{{ url_for('evaluator_login') }}" class="banner-logout confirm-logout">Logout</a>
-    </div>
-
-
-
-    <!-- Centered title -->
-    <div class="banner-text">
-      <h1>DEPARTMENT OF EDUCATION</h1>
-      <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
-    </div>
-  </div>
-</header>
-
-<!-- Logout Confirmation Modal -->
-<div id="logout-modal" class="modal" style="display:none; flex-direction:column;">
-  <div class="modal-content">
-    <p>Are you sure you want to log out?</p>
-    <div class="modal-actions">
-      <button id="confirm-logout" class="btn-submit btn-submit--delete">
-        Yes, log out
-      </button>
-      <button id="cancel-logout" class="btn-submit btn-submit--view">
-        Cancel
-      </button>
-    </div>
-  </div>
-</div>
-
-
-
-{% with flashes = get_flashed_messages(
-      with_categories=true,
-      category_filter=["success", "error"]
-   ) %}
-  {% if flashes %}
-    <div class="flash-msg-container">
-      {% for category, text in flashes %}
-        <div class="flash-{{ category }}">
-          {{ text }}
+          <p class="sub-banner-region">Region I – Ilocos Region</p>
         </div>
-      {% endfor %}
+      </div>
+  
+      <!-- Centered title -->
+      <div class="banner-text">
+        <h1>DEPARTMENT OF EDUCATION</h1>
+        <p class="banner-subtitle">Human Resource Merit Promotion and Selection Board</p>
+      </div>
+  
+  
     </div>
-  {% endif %}
-{% endwith %}
+  </header>
 
-  <h2>Interview: {{ interview.id }} ({{ interview.type.capitalize() }})</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Applicant Code</th>
-        <th>Name</th>
-        <th>Your Evaluation Score</th>
-        <th>View / Update Evaluation</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for a in applicants %}
-      <tr>
-        <td>{{ a.code }}</td>
-        <td>{{ a.name }}</td>
-        <td>
-          {% if my_scores[a.code] is not none %}
-            {{ my_scores[a.code] }}
-          {% else %}
-            Not Evaluated
-          {% endif %}
-        </td>
-        <td><a href="{{ url_for('evaluator_applicant_detail', code=a.code) }}" class="btn">View</a></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Flash Messages -->
+    {% with flashes = get_flashed_messages(
+          with_categories=true,
+          category_filter=["success", "error"]
+       ) %}
+      {% if flashes %}
+        <div class="flash-msg-container">
+          {% for category, text in flashes %}
+            <div class="flash-{{ category }}">
+              {{ text }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
 
+    <h2>Interview: {{ interview.id }} ({{ interview.type.capitalize() }})</h2>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Applicant Code</th>
+            <th>Name</th>
+            <th>Your Evaluation Score</th>
+            <th>View / Update Evaluation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in applicants %}
+          <tr>
+            <td>{{ a.code }}</td>
+            <td>{{ a.name }}</td>
+            <td>
+              {% if my_scores[a.code] is not none %}
+                {{ my_scores[a.code] }}
+              {% else %}
+                Not Evaluated
+              {% endif %}
+            </td>
+            <td><a href="{{ url_for('evaluator_applicant_detail', code=a.code) }}" class="btn">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
 
+  <!-- Logout Confirmation Modal -->
+  <div id="logout-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <p>Are you sure you want to log out?</p>
+      <div class="modal-actions">
+        <button id="confirm-logout" class="btn-submit btn-submit--delete">
+          Yes, log out
+        </button>
+        <button id="cancel-logout" class="btn-submit btn-submit--view">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SITE FOOTER -->
   <footer class="admin-footer">
     <div class="footer-content">
       <div class="footer-logos">
@@ -119,44 +124,52 @@
   </footer>
 
   <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const modal        = document.getElementById('logout-modal');
-  const btnYes       = document.getElementById('confirm-logout');
-  const btnNo        = document.getElementById('cancel-logout');
-  let pendingLogout  = null;
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('logout-modal');
+      const btnYes = document.getElementById('confirm-logout');
+      const btnNo = document.getElementById('cancel-logout');
+      let pendingLogout = null;
 
-  // open modal
-  document.querySelectorAll('a.confirm-logout').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      pendingLogout = link.href;
-      document.body.classList.add('modal-open');
-      modal.style.display = 'flex';
+      // Open modal
+      document.querySelectorAll('a.confirm-logout').forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          pendingLogout = link.href;
+          document.body.classList.add('modal-open');
+          modal.style.display = 'flex';
+        });
+      });
+
+      // Confirm logout
+      btnYes.addEventListener('click', () => {
+        document.body.classList.remove('modal-open');
+        if (pendingLogout) {
+          window.location.href = pendingLogout;
+        }
+      });
+
+      // Cancel logout
+      btnNo.addEventListener('click', () => {
+        document.body.classList.remove('modal-open');
+        modal.style.display = 'none';
+        pendingLogout = null;
+      });
+
+      // Close modal on backdrop click
+      modal.addEventListener('click', e => {
+        if (e.target === modal) {
+          btnNo.click();
+        }
+      });
+
+      // Close modal on Escape key
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+          btnNo.click();
+        }
+      });
     });
-  });
-
-  // confirm logout
-  btnYes.addEventListener('click', () => {
-    document.body.classList.remove('modal-open');
-    window.location.href = pendingLogout;
-  });
-
-  // cancel
-  btnNo.addEventListener('click', () => {
-    document.body.classList.remove('modal-open');
-    modal.style.display = 'none';
-    pendingLogout = null;
-  });
-
-  // backdrop click or Esc
-  modal.addEventListener('click', e => {
-    if (e.target === modal) btnNo.click();
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && modal.style.display === 'flex') btnNo.click();
-  });
-});
-</script>
+  </script>
 
 </body>
 </html>
