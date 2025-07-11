@@ -378,47 +378,11 @@ body {
 }
 
 
-/* —— RESPONSIVE BREAKPOINTS —— */
-
-/* phones */
-@media (max-width: 480px) {
-  .admin-header { padding: 1.5rem .5rem; }
-  .admin-header header { font-size: 1.25rem; }
-  .login-box {
-    width: 90%;
-    padding: 2rem 1rem;
-  }
-  .login-box h2 { font-size: 2rem; }
-  .footer-content {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  .footer-logos { gap: 1.5rem; }
-  .footer-logos .logo-item img { max-height: 32px; }
-  .footer-logos .logo-item span { font-size: 0.8rem; }
-  .footer-links { text-align: center; }
-}
 
 /* tablets & small desktops */
-@media (min-width: 481px) and (max-width: 768px) {
-  .admin-header header { font-size: 1.35rem; }
-  .login-box { width: 80%; max-width: 400px; padding: 3rem 1.5rem; }
-  .login-box h2 { font-size: 2.25rem; }
-  .footer-content { justify-content: space-around; }
-  .footer-logos { gap: 3rem; }
-  .footer-links { gap: 1rem; }
-}
 
-/* medium desktops */
-@media (min-width: 769px) and (max-width: 1439px) {
-  .admin-header { padding: 2.5rem 2rem; }
-  .admin-header header { font-size: 1.75rem; }
-  .login-box { max-width: 460px; padding: 4rem 2.5rem; }
-  .login-box h2 { font-size: 2.5rem; }
-  .footer-content { gap: 3rem; }
-  .footer-logos { gap: 4rem; }
-}
+
+
 
 /* large/wide screens */
 @media (min-width: 1440px) {
@@ -428,6 +392,7 @@ body {
   .login-box {
     max-width: 500px;
     padding: 4rem 3rem;
+
   }
   .login-box h2 { font-size: 3rem; }
   .footer-content {
@@ -548,3 +513,272 @@ body {
 }
 }
 
+/* medium desktops */
+@media (min-width: 769px) and (max-width: 1439px) {
+  .admin-header { padding: 2.5rem 2rem; }
+  .admin-header header { font-size: 1.75rem; }
+  .login-box { max-width: 460px; padding: 4rem 2.5rem; }
+  .login-box h2 { font-size: 2.5rem; }
+  .footer-content { gap: 3rem; }
+  .footer-logos { gap: 4rem; }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .admin-header header { font-size: 1.35rem; }
+  .login-box { width: 80%; max-width: 400px; padding: 3rem 1.5rem; }
+  .login-box h2 { font-size: 2.25rem; }
+  .footer-content { justify-content: space-around; }
+  .footer-logos { gap: 3rem; }
+  .footer-links { gap: 1rem; }
+}
+
+/* —— RESPONSIVE BREAKPOINTS —— */
+
+/* phones */
+@media (max-width: 480px) {
+  :root {
+    --gap: 0.75rem;
+    --footer-height: 30px;
+    --dynamic-header-height: 30px;
+  }
+
+  body {
+    padding-top: calc(var(--dynamic-header-height) + 3rem);
+  }
+
+  .banner-top {
+    height: 80px;
+  }
+
+  /* Main Title */
+  .site-banner .banner-text h1 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 0.2rem;
+}
+
+  /* Subtitle */
+  .banner-subtitle {
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  /* Sub-banner Details */
+  .sub-banner-dept {
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .sub-banner-region {
+    font-size: 0.75rem;
+    font-weight: 400;
+    font-style: italic;
+    text-align: center;
+  }
+
+  .banner-left-text {
+    text-align: center;
+  }
+
+  .banner-logo {
+    height: 30px;
+    margin-bottom: 0.3rem;
+  }
+
+  .tab-nav {
+    position: sticky;
+    top: 80px; /* 👈 Match this to your header height */
+    z-index: 999;
+    background-color: #fff; /* Prevent content from showing through */
+    height: auto;
+    padding: 0rem;
+    gap: 0rem;
+    backdrop-filter: blur(10px);
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 2vh;
+  }
+
+  .btn-back,
+  .btn-download {
+    width: 100%;
+    margin: 0.25rem 0;
+  }
+
+  .btn-group {
+    gap: 0.2rem;
+  }
+
+  .btn-submit {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.75rem;
+    min-width: 45px;
+  }
+
+  body::after {
+    content: "";
+    display: block;
+    height: 40px;
+    background-color: #f5f5f5;
+}
+
+.admin-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #800000;
+  color: #fff;
+  padding: 1rem;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  /* NO transform here */
+  height: 45px;
+  transition: transform 0.3s ease;
+}
+
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .footer-logo {
+    height: 24px;
+    max-width: 100px;
+    object-fit: contain;
+  }
+
+  .admin-footer .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-direction: row;
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .banner-logout {
+    position: absolute;
+    right: 2rem;
+    background: var(--yellow);
+    color: var(--maroon);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+}
+
+.hide-on-scroll {
+  transition: transform 0.3s ease;
+}
+
+.hide-on-scroll.hidden {
+  transform: translateY(-100%);
+}
+
+.admin-footer.hidden {
+  transform: translateY(100%);
+}
+
+.site-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+}
+
+.site-banner.hidden {
+  transform: translateY(-100%);
+}
+
+.results-scroll {
+max-height: 50vh;
+overflow-y: auto;
+margin-top: 0.5rem;
+margin-bottom: 1rem;
+padding-right: 0.5rem; /* prevent scrollbar overlap */
+}
+
+.detail-table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.detail-table th,
+.detail-table td {
+padding: 0.5rem 0.75rem;
+font-size: 0.85rem;
+border-bottom: 1px solid #eee;
+text-align: left;
+}
+
+.detail-table thead th {
+position: sticky;
+top: 0;
+background: #fafafa;
+z-index: 2;
+}
+
+.car-buttons {
+display: flex;
+gap: 0.5rem;
+flex-wrap: wrap;
+}
+
+/*scrollable*/
+
+.results-scroll {
+max-height: 50vh;
+overflow-y: auto;
+margin-top: 0.5rem;
+margin-bottom: 1rem;
+padding-right: 0.5rem; /* prevent scrollbar overlap */
+}
+
+.detail-table {
+width: 100%;
+border-collapse: collapse;
+}
+
+.detail-table th,
+.detail-table td {
+padding: 0.5rem 0.75rem;
+font-size: 0.85rem;
+border-bottom: 1px solid #eee;
+text-align: left;
+}
+
+.detail-table thead th {
+position: sticky;
+top: 0;
+background: #fafafa;
+z-index: 2;
+}
+
+.car-buttons {
+display: flex;
+gap: 0.5rem;
+flex-wrap: wrap;
+}
