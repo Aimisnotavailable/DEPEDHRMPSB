@@ -293,55 +293,55 @@ tbody tr:nth-child(even) {
   }
 }
 
-/* —— FOOTER —— */
+/* —— SITE FOOTER —— */
 .admin-footer {
+  background: var(--maroon);
+  color: #fff;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background: var(--maroon);
-  color: white;
-  height: var(--footer-height);
+  padding: 0.25rem 1rem;           /* reduced vertical + horizontal padding */
+  height: auto;                    /* let content dictate height */
   z-index: 1000;
 }
 
-.footer-content {
-  max-width: var(--content-max-width);
+.admin-footer .footer-content {
+  max-width: var(--container-max-width); /* match your main content width */
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
-  height: 100%;
+  gap: 1rem;                        /* smaller gap between logos & links */
 }
 
-.footer-logos {
+.admin-footer .footer-logos {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.footer-logos img {
-  height: 30px;
+.admin-footer .footer-logos img {
+  height: 30px;                     /* smaller logo */
   width: auto;
 }
 
-.footer-links {
+.admin-footer .footer-links {
   display: flex;
-  gap: 1rem;
+  gap: 1rem;                        /* tighter spacing */
 }
 
-.footer-links a {
+.admin-footer .footer-links a {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  color: white;
+  font-size: 0.85rem;               /* smaller link text */
+  color: #fff;
   text-decoration: none;
-  font-size: 0.8rem;
   transition: color 0.2s;
 }
 
-.footer-links a:hover {
+.admin-footer .footer-links a:hover {
   color: var(--yellow);
 }
 
@@ -532,3 +532,5 @@ tbody tr:nth-child(even) {
   padding-bottom: var(--footer-height);
 }
 }
+
+

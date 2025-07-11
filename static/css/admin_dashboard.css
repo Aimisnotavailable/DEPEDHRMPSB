@@ -35,7 +35,6 @@
 }
 
 body {
-  padding-top:    var(--header-height);
   padding-bottom: var(--footer-height);
   font-family: var(--font);
   background: var(--bg-light);
@@ -46,14 +45,19 @@ body {
 /* —— ADMIN HEADER —— */
 /* —— SITE BANNER —— */
 .banner-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  background: var(--maroon);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 2rem;
-  background: var(--maroon);
-  color: #fff;
-  position: relative;
   gap: 1rem;
+  color: var(--bg-light);
 }
 
 .banner-left-group {
@@ -282,6 +286,7 @@ body {
     width: 100%;
   }
 }
+
 
 .banner-top {
   position: fixed;
@@ -919,10 +924,6 @@ body.modal-open .tab-nav {
     --container-max-width: 98%;
     --dynamic-header-height: 120px; 
   }
-  
-  body {
-    padding-top: calc(var(--dynamic-header-height) + 3rem);
-  }
 
   .table-responsive {
     overflow-x: auto;
@@ -1163,10 +1164,6 @@ body.modal-open .tab-nav {
     --container-max-width: 98%;
     --dynamic-header-height: 120px; /* Adjust based on actual collapsed header height */
   }
-  
-  body {
-    padding-top: calc(var(--dynamic-header-height) + 3rem);
-  }
 
   .table-responsive {
     overflow-x: auto;
@@ -1391,10 +1388,6 @@ body.modal-open .tab-nav {
     --dynamic-header-height: 100%; /* Slightly taller on smaller screens */
   }
 
-  body {
-    padding-top: calc(var(--dynamic-header-height) + 3rem);
-  }
-
     .modal-content {
     max-width: 350px;
     padding: 25px;
@@ -1429,6 +1422,7 @@ body.modal-open .tab-nav {
     gap: 1rem;
 }
 
+
   .form-container {
     padding: 1rem 0.5rem;
   }
@@ -1449,11 +1443,41 @@ body.modal-open .tab-nav {
     padding: 0.5rem 1rem;
   }
 
-  .tab-nav {
-    top: var(--dynamic-header-height);
-    padding: 0.25rem;
-    gap: 0.25rem;
+  .site-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #fff; /* or your preferred color */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    
   }
+  
+  .banner-top {
+
+  }
+
+  .tab-nav{
+    position: sticky;
+    top: 130px;
+    width: 100%;
+    height: auto;
+    max-width: 98%;
+    backdrop-filter: blur(10px);
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
+    overflow-x: auto;
+    z-index: 999;
+    margin: 0px 0px 2vh;
+    background: rgba(255, 255, 255, 0.95);
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 10px;
+    }
 
   .tab-nav a {
     padding: 0.4rem 0.6rem;

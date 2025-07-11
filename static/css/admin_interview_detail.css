@@ -848,6 +848,10 @@ section {
     border-bottom: 2px solid var(--border);
     overflow-x: auto;
     z-index: 1000;
+    z-index: 999;
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
   }
 
   .tab-nav a {
