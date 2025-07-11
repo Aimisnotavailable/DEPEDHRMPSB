@@ -1159,7 +1159,7 @@ body.modal-open .tab-nav {
 }
 
 /* —— RESPONSIVE DESIGN —— */
-@media (max-width: 1024px) {
+@media (max-width: 1440px) {
   :root {
     --container-max-width: 98%;
     --dynamic-header-height: 120px; /* Adjust based on actual collapsed header height */
@@ -1454,9 +1454,7 @@ body.modal-open .tab-nav {
     
   }
   
-  .banner-top {
 
-  }
 
   .tab-nav{
     position: sticky;
