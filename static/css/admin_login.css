@@ -380,10 +380,6 @@ body {
 
 
 /* tablets & small desktops */
-
-
-
-
 /* large/wide screens */
 @media (min-width: 1440px) {
   .admin-header { padding: 3rem 2.5rem; }
@@ -535,7 +531,7 @@ body {
 /* —— RESPONSIVE BREAKPOINTS —— */
 
 /* phones */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   :root {
     --gap: 0.75rem;
     --footer-height: 30px;
@@ -548,6 +544,36 @@ body {
 
   .banner-top {
     height: 80px;
+  }
+
+  .login-wrapper {
+    height: 100vh;              /* full viewport height */
+    overflow-y: auto;           /* allow vertical scroll */
+  }
+
+  .login-box {
+    max-height: 80vh;           /* limits height to 80% of viewport */
+    overflow-y: auto;           /* enables vertical scroll if needed */
+    padding: 1.5rem;
+    margin: 1rem auto;
+    box-sizing: border-box;
+  }
+
+  .login-wrapper {
+    display: flex;
+    justify-content: center;      /* centers horizontally */
+    align-items: center;          /* centers vertically */
+    height: 100vh;                /* full height of viewport */
+    padding: 1rem;                /* prevents edge contact */
+    box-sizing: border-box;
+  }
+  /* Optional: smooth scrolling */
+  .login-box::-webkit-scrollbar {
+    width: 6px;
+  }
+  .login-box::-webkit-scrollbar-thumb {
+    background-color: #800000;
+    border-radius: 3px;
   }
 
   /* Main Title */
@@ -569,10 +595,11 @@ body {
 
   /* Sub-banner Details */
   .sub-banner-dept {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 500;
     line-height: 1.2;
     text-align: center;
+    margin-top: 1;
   }
 
   .sub-banner-region {
@@ -591,36 +618,6 @@ body {
     margin-bottom: 0.3rem;
   }
 
-  .tab-nav {
-    position: sticky;
-    top: 80px; /* 👈 Match this to your header height */
-    z-index: 999;
-    background-color: #fff; /* Prevent content from showing through */
-    height: auto;
-    padding: 0rem;
-    gap: 0rem;
-    backdrop-filter: blur(10px);
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    margin-bottom: 2vh;
-  }
-
-  .btn-back,
-  .btn-download {
-    width: 100%;
-    margin: 0.25rem 0;
-  }
-
-  .btn-group {
-    gap: 0.2rem;
-  }
-
-  .btn-submit {
-    padding: 0.35rem 0.5rem;
-    font-size: 0.75rem;
-    min-width: 45px;
-  }
 
   body::after {
     content: "";
@@ -685,100 +682,4 @@ body {
     font-weight: 500;
     transition: background 0.2s;
   }
-}
-
-.hide-on-scroll {
-  transition: transform 0.3s ease;
-}
-
-.hide-on-scroll.hidden {
-  transform: translateY(-100%);
-}
-
-.admin-footer.hidden {
-  transform: translateY(100%);
-}
-
-.site-banner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: #fff;
-  z-index: 1000;
-  transition: transform 0.3s ease;
-}
-
-.site-banner.hidden {
-  transform: translateY(-100%);
-}
-
-.results-scroll {
-max-height: 50vh;
-overflow-y: auto;
-margin-top: 0.5rem;
-margin-bottom: 1rem;
-padding-right: 0.5rem; /* prevent scrollbar overlap */
-}
-
-.detail-table {
-width: 100%;
-border-collapse: collapse;
-}
-
-.detail-table th,
-.detail-table td {
-padding: 0.5rem 0.75rem;
-font-size: 0.85rem;
-border-bottom: 1px solid #eee;
-text-align: left;
-}
-
-.detail-table thead th {
-position: sticky;
-top: 0;
-background: #fafafa;
-z-index: 2;
-}
-
-.car-buttons {
-display: flex;
-gap: 0.5rem;
-flex-wrap: wrap;
-}
-
-/*scrollable*/
-
-.results-scroll {
-max-height: 50vh;
-overflow-y: auto;
-margin-top: 0.5rem;
-margin-bottom: 1rem;
-padding-right: 0.5rem; /* prevent scrollbar overlap */
-}
-
-.detail-table {
-width: 100%;
-border-collapse: collapse;
-}
-
-.detail-table th,
-.detail-table td {
-padding: 0.5rem 0.75rem;
-font-size: 0.85rem;
-border-bottom: 1px solid #eee;
-text-align: left;
-}
-
-.detail-table thead th {
-position: sticky;
-top: 0;
-background: #fafafa;
-z-index: 2;
-}
-
-.car-buttons {
-display: flex;
-gap: 0.5rem;
-flex-wrap: wrap;
 }

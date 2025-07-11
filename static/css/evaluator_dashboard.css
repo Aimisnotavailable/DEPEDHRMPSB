@@ -3,17 +3,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
 
 :root {
-  --maroon:   #800000;
-  --yellow:   #FFD700;
+  --maroon: #800000;
+  --yellow: #FFD700;
   --bg-light: #FAFAFA;
-  --text:     #333;
-  --border:   #CCC;
+  --text: #333;
+  --border: #CCC;
   --white: #fff;
-  --font:     'Montserrat', Arial, sans-serif;
-  --radius:   8px;
-  --gap:      1rem;
-  --header-height: 76px;
-  --footer-height: 60px
+  --font: 'Montserrat', Arial, sans-serif;
+  --radius: 8px;
+  --gap: 1rem;
+  --header-height: 80px;
+  --footer-height: 50px;
+  --content-max-width: 600px; /* Your 600px constraint */
 }
 
 /* —— RESET & BASE —— */
@@ -24,192 +25,165 @@
   margin: 0;
   padding: 0;
 }
+
 body {
-  padding-top:    100px;
-  padding-bottom: var(--footer-height);
   font-family: var(--font);
   background: var(--bg-light);
   color: var(--text);
   line-height: 1.5;
+  padding-top: var(--header-height);
+  padding-bottom: var(--footer-height);
+  min-height: 100vh;
 }
 
+/* —— HEADER —— */
+.site-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--maroon);
+  color: white;
+  z-index: 1000;
+  height: var(--header-height);
+}
 
 .banner-top {
-  position: fixed;
-  top:      0;
-  left:     0;
-  width:    100%;
-  height:   var(--header-height);
-  z-index:  1000;
-  background: var(--maroon);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 2rem;
-  gap: 1rem;
-  color: var(--bg-light);
+  padding: 0.5rem 1rem;
+  height: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
 }
 
 .banner-left-group {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 .banner-logo {
-  height: 60px;
+  height: 40px;
+  width: auto;
 }
 
 .banner-left-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: 0.9rem;
-  line-height: 1.2;
+  font-size: 0.7rem;
+  line-height: 1.1;
 }
 
 .banner-text {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
+  padding: 0 1rem;
 }
 
 .banner-text h1 {
-  font-size: 1.75rem;
-  margin: 0;
+  font-size: 1rem;
+  margin: 0 0 0.2rem 0;
+  font-weight: 600;
 }
 
 .banner-subtitle {
-  font-size: 1.05rem;
+  font-size: 0.75rem;
   font-style: italic;
-  color: #fff;
-  margin-top: 0.25rem;
+  margin: 0;
 }
 
-.banner-logout {
-  position: absolute;
-  right: 2rem;
-  background: var(--yellow);
+.sub-banner-dept,
+.sub-banner-region {
+  font-size: 0.65rem;
+  margin: 0;
+}
+
+.sub-banner-dept {
+  font-weight: 500;
+}
+
+.sub-banner-region {
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* —— MAIN CONTENT —— */
+.main-content {
+  max-width: var(--content-max-width);
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
   color: var(--maroon);
-  padding: 0.5rem 1rem;
+}
+
+/* —— FLASH MESSAGES —— */
+.flash-msg-container {
+  margin-bottom: 1rem;
+}
+
+.flash-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 0.75rem;
   border-radius: var(--radius);
-  text-decoration: none;
-  font-weight: 500;
-  transition: background 0.2s;
-}
-.banner-text {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  z-index: 1;
+  margin-bottom: 0.5rem;
 }
 
-
-/* Keep all other existing banner styles the same */
-.site-banner .banner-text h1 {
-  margin: 0;
-  font-size: 1.75rem;
-}q
-.site-banner .banner-subtitle,
-.site-banner .sub-banner-dept,
-.site-banner .sub-banner-region {
-  margin: 0;
-  color: #fff;
-}
-
-.site-banner .banner-text {
-  flex: 1;                    /* take up all space between logo & logout */
-  display: flex;
-  flex-direction: column;     /* stack H1, H2, Ps vertically */
-  align-items: center;        /* center them horizontally */
-  gap: 0.25rem;               /* small spacing between lines */
-}
-
-/* 2. Tweak margins so they don’t collide */
-.site-banner .banner-text h1 {
-  margin: 0;
-  font-size: 1.75rem;
-}
-.site-banner .banner-subtitle,
-.site-banner .sub-banner-dept,
-.site-banner .sub-banner-region {
-  margin: 0;
-  color: #fff;
-}
-
-.sub-banner {
-  padding: 0.75rem 10rem;
-  width: 100%;
-}
-.hr-section {
-  width: 100%;                   
-  background: rgba(128,0,0,0.9);
-  padding: 0.75rem 1rem;
-}
-
-.hr-section h2 {
-  margin: 0;                    
-  color: #fff;                   
-  text-align: center;
-  font-size: 1.25rem;           
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  line-height: 1.3;
-}
-
-.site-banner .sub-banner-dept {
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.site-banner .sub-banner-region {
-  font-size: 0.875rem;
-  font-weight: 400;
-  font-style: italic;
-}
-
-h2{
-  text-align: center;
-}
-
-/* —— FROSTED-GLASS CONTENT WRAPPER —— */
-body > table,
-body > .btn {
-  max-width: 900px;
-  margin: 0 auto var(--gap);
-  padding: var(--gap);
-  background: rgba(255,255,255,0.65);
-  backdrop-filter: blur(8px);
+.flash-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 0.75rem;
   border-radius: var(--radius);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  margin-bottom: 0.5rem;
 }
 
-/* —— TABLE STYLES —— */
+/* —— RESPONSIVE TABLE —— */
+.table-container {
+  background: rgba(255,255,255,0.9);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
-  overflow-x: auto;
+  min-width: 500px; /* Minimum width for table functionality */
 }
+
 thead {
   background: var(--maroon);
-  color: var(--white);
+  color: white;
 }
+
 th, td {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
+  padding: 0.75rem 0.5rem;
   text-align: left;
-  vertical-align: middle;
+  border-bottom: 1px solid var(--border);
 }
+
 th {
   font-weight: 600;
+  font-size: 0.85rem;
 }
+
+td {
+  font-size: 0.8rem;
+}
+
+tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
 tbody tr:nth-child(even) {
   background: #f9f9f9;
 }
@@ -217,109 +191,35 @@ tbody tr:nth-child(even) {
 /* —— BUTTONS —— */
 .btn {
   display: inline-block;
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1rem;
   background: var(--yellow);
   color: var(--maroon);
   text-decoration: none;
   border-radius: var(--radius);
   font-weight: 500;
-  transition: background 0.2s;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
+
 .btn:hover,
 .btn:focus {
   background: #e5c100;
+  transform: translateY(-1px);
 }
+
 .btn:focus {
   outline: 3px solid var(--maroon);
   outline-offset: 2px;
 }
 
-/* —— SITE FOOTER —— */
-.admin-footer {
-  background: var(--maroon);
-  color: #fff;
-  max-width: 100%;
-  padding: 0.5rem 2rem;
-    position: fixed;
-  bottom:   0;
-  left:     0;
-  width:    100%;
-  height:   var(--footer-height);
-  z-index:  1000;
-}
-.admin-footer .footer-content {
-  max-width: 1800px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.admin-footer .footer-logos {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.admin-footer .footer-logos img {
-  height: 50px;  
-  width: auto;
-} 
-
-.admin-footer .footer-links {
-  display: flex;
-  gap: 1.5rem;
-}
-.admin-footer .footer-links a {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  color: #fff;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.admin-footer .footer-links a:hover {
-  color: var(--yellow);
-}
-
-
-    /* —— FLASH MESSAGING —— */
-/* Container for all flash messages */
-.flash-msg-container {
-  max-width: var(--container-max-width, 100%);
-  margin: 1rem auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-/* Base style for every flash */
-.flash-msg-container > div {
-  padding: 0.75rem 1rem;
-  border-radius: var(--radius, 8px);
-  font-size: 0.95rem;
-  line-height: 1.4;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-/* Success flash */
-.flash-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-/* Error flash */
-.flash-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-/* full‐screen backdrop with fade‐in */
+/* —— MODAL —— */
 .modal {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
@@ -329,32 +229,59 @@ tbody tr:nth-child(even) {
   animation: fadeInBackdrop 0.3s ease-out forwards;
 }
 
-/* white box with pop‐in animation */
 .modal-content {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 8px;
+  background: white;
+  padding: 2rem;
+  border-radius: var(--radius);
   max-width: 90%;
-  width: 360px;
+  width: 350px;
   text-align: center;
   transform: scale(0.95);
   opacity: 0;
   animation: popIn 0.3s ease-out 0.1s forwards;
 }
 
-/* space out the buttons */
 .modal-actions {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   display: flex;
   justify-content: center;
   gap: 1rem;
 }
 
-/* Keyframes */
+.btn-submit {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.btn-submit--delete {
+  background: var(--maroon);
+  color: white;
+}
+
+.btn-submit--delete:hover {
+  background: #660000;
+}
+
+.btn-submit--view {
+  background: var(--yellow);
+  color: var(--maroon);
+}
+
+.btn-submit--view:hover {
+  background: #e5c100;
+}
+
+/* Modal animations */
 @keyframes fadeInBackdrop {
   from { background: rgba(0,0,0,0); }
-  to   { background: rgba(0,0,0,0.5); }
+  to { background: rgba(0,0,0,0.5); }
 }
+
 @keyframes popIn {
   from {
     transform: scale(0.95) translateY(-20px);
@@ -366,183 +293,242 @@ tbody tr:nth-child(even) {
   }
 }
 
-/* Yes = maroon */
-#logout-modal .modal-actions #confirm-logout {
-  background: var(--maroon);
-  color: #fff;
-  border: 1px solid var(--maroon);
-}
-#logout-modal .modal-actions #confirm-logout:hover {
-  background: #660000;
-  border-color: #660000;
-}
-
-/* Cancel = yellow */
-#logout-modal .modal-actions #cancel-logout {
-  background: var(--yellow);
-  color: var(--maroon);
-  border: 1px solid var(--yellow);
-}
-#logout-modal .modal-actions #cancel-logout:hover {
-  background: #e5c100;
-  border-color: #e5c100;
-}
-
-/* Blur the nav when modal is open */
-body.modal-open .tab-nav {
-  filter: blur(4px);
-  pointer-events: none;
-}
-/* Enlarge the modal box */
-#logout-modal .modal-content {
-  max-width: 400px;        /* wider container */
-  width: 90%;
-  padding: 2rem;           /* more breathing room */
-  border-radius: 10px;     /* slightly rounder */
-}
-
-/* Slightly bigger, more tappable buttons */
-#logout-modal .modal-actions .btn-submit {
-  height: 40px;            /* taller buttons */
-  line-height: 40px;       /* center text vertically */
-  font-size: 14px;         /* larger text */
-  min-width: 80px;         /* wider buttons */
-  padding: 0 1rem;         /* horizontal padding */
-  border-radius: 6px;      /* softer corners */
-}
-
-/* Bigger prompt text */
-#logout-modal .modal-content p {
-  font-size: 18px;
-  margin-bottom: 1.5rem;
-}
-
-
-
-
-/* —— RESPONSIVE —— */
-@media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    text-align: center;
-  }
-  table,
-  body > .btn {
-    padding: 0.5rem;
-  }
-  th, td {
-    padding: 0.5rem;
-  }
-}
-
-
-/* —— RESPONSIVE DESIGN —— */
-@media (max-width: 1024px) {
-  :root {
-    --container-max-width: 98%;
-    --dynamic-header-height: 120px; /* Adjust based on actual collapsed header height */
-  }
-  
-  body {
-    padding-top: calc(var(--dynamic-header-height) + 3rem);
-  }
-
-  .banner-top {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: var(--dynamic-header-height);
-    padding: 0.5rem 1rem;
-    gap: 0.5rem;
-  }
-
-  .banner-left-group {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .banner-logo {
-    height: 40px;
-  }
-
-  .banner-left-text {
-    font-size: 0.85rem;
-    text-align: center;
-  }
-
-  .banner-text {
-    position: static;
-    transform: none;
-    width: 100%;
-  }
-
-  .banner-text h1 {
-    font-size: 1.1rem;
-    margin: 0;
-  }
-
-  .banner-subtitle {
-    font-size: 0.9rem;
-  }
-
-    .banner-logout {
-    position: fixed;
-    order: 3;
-    margin-top: 4.5rem; 
-  }
-
-
-/* —— SITE FOOTER —— */
+/* —— FOOTER —— */
 .admin-footer {
-  background: var(--maroon);
-  color: #fff;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 0.25rem 1rem;           /* reduced vertical + horizontal padding */
-  height: auto;                    /* let content dictate height */
+  background: var(--maroon);
+  color: white;
+  height: var(--footer-height);
   z-index: 1000;
 }
 
-.admin-footer .footer-content {
-  max-width: var(--container-max-width); /* match your main content width */
+.footer-content {
+  max-width: var(--content-max-width);
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;                        /* smaller gap between logos & links */
+  padding: 0 1rem;
+  height: 100%;
 }
 
-.admin-footer .footer-logos {
+.footer-logos {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.admin-footer .footer-logos img {
-  height: 30px;                     /* smaller logo */
+.footer-logos img {
+  height: 30px;
   width: auto;
 }
 
-.admin-footer .footer-links {
+.footer-links {
   display: flex;
-  gap: 1rem;                        /* tighter spacing */
+  gap: 1rem;
 }
 
-.admin-footer .footer-links a {
+.footer-links a {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  font-size: 0.85rem;               /* smaller link text */
+  color: white;
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--yellow);
+}
+
+/* —— RESPONSIVE DESIGN —— */
+@media (max-width: 600px) {
+  :root {
+    --content-max-width: 100%;
+    --header-height: 90px;
+    --footer-height: 60px;
+  }
+
+  body {
+    padding-top: var(--header-height);
+    padding-bottom: var(--footer-height);
+  }
+
+  .table-container {
+    max-height: 400px;             /* limits height for scrolling */
+    overflow-y: auto;              /* enables vertical scroll */
+    border: 1px solid #ccc;        /* optional: adds visual boundary */
+    margin-top: 1rem;
+  }
+
+  .table-container table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .table-container th {
+    position: sticky;
+    top: 0;
+    background: var(--maroon);
+    z-index: 1;
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .table-container td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  
+
+  .banner-top {
+    flex-direction: column;
+    padding: 0.5rem;
+    text-align: center;
+    height: var(--header-height);
+    justify-content: center;
+  }
+
+  .banner-left-group {
+    margin-bottom: 0.25rem;
+  }
+
+  .banner-logo {
+    height: 30px;
+  }
+
+  .banner-text {
+    padding: 0;
+  }
+
+  .banner-text h1 {
+    font-size: 0.9rem;
+  }
+
+  .banner-subtitle {
+    font-size: 0.7rem;
+  }
+
+  .sub-banner-dept,
+  .sub-banner-region {
+    font-size: 0.6rem;
+  }
+
+  .main-content {
+    padding: 0 0.5rem;
+    margin: 1rem auto;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  .table-container {
+    padding: 0.5rem;
+  }
+
+  table {
+    min-width: 450px;
+  }
+
+  th, td {
+    padding: 0.5rem 0.25rem;
+  }
+
+  th {
+    font-size: 0.75rem;
+  }
+
+  td {
+    font-size: 0.75rem;
+  }
+
+  .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+/* FOOTER STYLES - Matching the design */
+.admin-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #800000;
+  color: #fff;
+  padding: 1rem;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  /* NO transform here */
+  height: 45px;
+  transition: transform 0.3s ease;
+}
+
+.footer-content {
+  max-width: var(--container-max-width); /* match your main content width */
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;   
+}
+
+/* FOOTER LOGOS */
+.footer-logo {
+  height: 24px;
+  max-width: 100px;
+  object-fit: contain;
+}
+
+.admin-footer .footer-links {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-direction: row;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* FOOTER LINKS */
+.footer-links {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.footer-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  /* smaller link text */
   color: #fff;
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.admin-footer .footer-links a:hover {
+.footer-links a:hover {
   color: var(--yellow);
-}
+  background: rgba(255,255,255,0.1);
 }
 
+.footer-links a i {
+  font-size: 0.8rem;
+}
+
+/* CONTENT ADJUSTMENTS */
+.login-wrapper {
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: var(--footer-height);
+}
+}

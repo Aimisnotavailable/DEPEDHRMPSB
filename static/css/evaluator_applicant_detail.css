@@ -486,3 +486,174 @@ form button[type="submit"]:hover {
 }
 
 
+/* Add this to your CSS - Focus on fixing the body padding */
+
+@media (max-width: 600px) {
+  /* THE MAIN FIX - Increase body padding significantly */
+  body {
+    padding-top: 250px !important; /* Much larger padding */
+    padding-bottom: 100px !important;
+    font-family: var(--font) !important;
+    background: var(--bg-light) !important;
+    color: var(--text) !important;
+    line-height: 1.5 !important;
+    margin: 0 !important;
+  }
+
+  /* Make sure header has enough height */
+  .banner-top {
+    height: auto !important;
+    min-height: 200px !important; /* Ensure header is tall enough */
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    gap: 0.5rem !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+    background: var(--maroon) !important;
+  }
+
+  /* Stack header elements vertically */
+  .banner-left-group {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 0.25rem !important;
+    width: 100% !important;
+  }
+
+  .banner-logo {
+    height: 40px !important;
+  }
+
+  .banner-left-text {
+    font-size: 0.8rem !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+    color: #fff !important;
+  }
+
+  .banner-text {
+    position: static !important;
+    transform: none !important;
+    width: 100% !important;
+    margin-top: 0.5rem !important;
+    text-align: center !important;
+  }
+
+  .banner-text h1 {
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+    color: var(--white) !important;
+  }
+
+  .banner-subtitle {
+    font-size: 0.85rem !important;
+    margin-top: 0.25rem !important;
+    color: #fff !important;
+  }
+
+  .sub-banner-dept {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    margin: 0 !important;
+  }
+
+  .sub-banner-region {
+    font-size: 0.7rem !important;
+    font-weight: 400 !important;
+    font-style: italic !important;
+    color: #fff !important;
+    margin: 0 !important;
+  }
+
+  /* Content should now be properly spaced */
+  .content-container {
+    width: 95% !important;
+    margin: 1rem auto !important;
+    padding: 1rem !important;
+    background: #fff !important;
+    border-radius: var(--radius) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  /* Rest of your form styles */
+  .form-container {
+    margin-bottom: 1rem !important;
+  }
+
+  .btn {
+    display: inline-block !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.85rem !important;
+    background: var(--yellow) !important;
+    color: var(--maroon) !important;
+    text-decoration: none !important;
+    border-radius: var(--radius) !important;
+    font-weight: 500 !important;
+  }
+
+  h1 {
+    font-size: 1.2rem !important;
+    color: var(--maroon) !important;
+    text-align: center !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  h2 {
+    font-size: 1rem !important;
+    text-align: center !important;
+    margin-bottom: 1rem !important;
+    color: var(--text) !important;
+  }
+
+  /* Footer with proper spacing */
+  .admin-footer {
+    padding: 0.75rem 1rem !important;
+    height: auto !important;
+    min-height: 80px !important;
+    background: var(--maroon) !important;
+    color: #fff !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 1000 !important;
+  }
+
+  .admin-footer .footer-content {
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .admin-footer .footer-logos img {
+    height: 30px !important;
+    width: auto !important;
+  }
+
+  .admin-footer .footer-links {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem !important;
+    justify-content: center !important;
+  }
+
+  .admin-footer .footer-links a {
+    font-size: 0.75rem !important;
+    color: #fff !important;
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+  }
+}
