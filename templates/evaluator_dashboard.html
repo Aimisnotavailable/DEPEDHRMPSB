@@ -55,12 +55,13 @@
         </div>
       {% endif %}
     {% endwith %}
-
     <h2>Interview: {{ interview.id }} ({{ interview.type.capitalize() }})</h2>
-    
     <div class="table-container">
       <table>
         <thead>
+          <h2>
+            <a href="{{ url_for('evaluator_login') }}" class="btn confirm-logout">Logout</a>
+          </h2>
           <tr>
             <th>Applicant Code</th>
             <th>Name</th>
