@@ -801,7 +801,6 @@ margin: 1rem auto;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid #eee;
   text-align: left;
-  white-space: nowrap;
 }
 
 .scrollable-section thead th,
@@ -891,10 +890,6 @@ margin: 1rem auto;
   text-decoration: underline;
 }
 
-/* 5. Results-only scroll wrap (if you still need it) */
-.results-scroll {
-  /* inherits from .scrollable-section above */
-}
 
 /* ──────────────────────────────────────────────
    MOBILE OVERRIDES (≤ 480px)

@@ -748,7 +748,7 @@ button:hover {
 
 
 /* —— RESPONSIVE —— */
-@media (max-width: 1024px) {
+@media (max-width: 1440px) {
   :root {
     --sidebar-width: 200px;
   }
@@ -778,7 +778,7 @@ section {
 }
 
 /* —— RESPONSIVE DESIGN —— */
-@media (max-width: 1024px) {
+@media (max-width: 1440px) {
   :root {
     --container-max-width: 98%;
     --dynamic-header-height: 120px;
