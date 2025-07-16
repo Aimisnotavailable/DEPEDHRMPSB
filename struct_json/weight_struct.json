@@ -1,27 +1,27 @@
 {
-    "teacher 1" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10
+    "teacher 1": {
+        "education": 10,
+        "experience": 10,
+        "training": 10
     },
-    "related teaching" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10
+    "related teaching": {
+        "education": 10,
+        "experience": 10,
+        "training": 10
     },
-    "higher teaching" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10
-    },  
-    "non teaching" : {
-        "education" : 5,
-        "experience" : 5,
-        "training" : 20
+    "higher teaching": {
+        "education": 10,
+        "experience": 10,
+        "training": 10
     },
-    "school administration" : {
-        "education" : 10,
-        "experience" : 10,
-        "training" : 10
+    "non teaching": {
+        "education": 5,
+        "experience": 5,
+        "training": 20
+    },
+    "school administration": {
+        "education": 10,
+        "experience": 10,
+        "training": 10
     }
 }

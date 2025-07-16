@@ -32,38 +32,71 @@ try:
     EVAL_STRUCTURE = json.load(fp)
 except Exception as e:
     EVAL_STRUCTURE = {
-        "teacher 1" : {
-            "lpt_rating" : {"WEIGHT" : 10, "MAX_SCORE" : 100, "LABEL" : "LPT/PBET/LEPT Rating"},
-            "cot" : {"WEIGHT" : 35, "MAX_SCORE" : 30, "LABEL" : "COT"},
-            "trf_rating" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "TRF"}
-        },
-        "related teaching" : {
-            "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
-            "outstanding_accomplishment" : {"WEIGHT" : 5, "MAX_SCORE" : 5, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
-            "application_of_education" : {"WEIGHT" : 15, "MAX_SCORE" : 15, "LABEL" : "APPLICATION OF EDUCATION"},
-            "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
-        },
-        "higher teaching" : {
-            "performance" : {"WEIGHT" : 30, "MAX_SCORE" : 30, "LABEL" : "PERFORMANCE"},
-            "ppst_cois" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PPST COIS"},
-            "ppst_ncois" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "PPST NCOIS"}
-        },
-        "non teaching" : {
-            "performance" : {"WEIGHT" : 20, "MAX_SCORE" : 20, "LABEL" : "PERFORMANCE"},
-            "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
-            "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
-            "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
-        },
-        "school administration" : {
-            "performance" : {"WEIGHT" : 25, "MAX_SCORE" : 25, "LABEL" : "PERFORMANCE"},
-            "outstanding_accomplishment" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "OUTSTANDING ACCOMPLISHMENT"},
-            "application_of_education" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF EDUCATION"},
-            "application_of_learning_and_development" : {"WEIGHT" : 10, "MAX_SCORE" : 10, "LABEL" : "APPLICATION OF LEARNING AND DEVELOPMENT"}
-        }
-
-    }
+    "teacher 1" : {"Behavior Interview" : {"CATEGORY" : {
+                        "aptitude" : 1,
+                        "characteristics" : 1,
+                        "fitness" : 1,
+                        "leadership" : 1,
+                        "communication" : 1
+                    }, "TOTAL" : 5, "WEIGHT" : 5}
+                    },
+    "related teaching" : {
+                    "Written Examination" : {"CATEGORY" : {
+                        "focus and detail" : 2,
+                        "organization" : 2,
+                        "content" : 2,
+                        "word choice" : 2,
+                        "sentence, structure, grammar mechanics, and spelling" : 2,
+                        "work sample test" : 5
+                    }, "TOTAL" : 15, "WEIGHT" : 15},
+                    "Behavior Interview" : {"CATEGORY" : {
+                        "aptitude" : 1,
+                        "characteristics" : 1,
+                        "fitness" : 1,
+                        "leadership" : 1,
+                        "communication" : 1
+                    }, "TOTAL" : 5, "WEIGHT" : 5}
+                    },
+    "higher teaching" : {       
+                    "BEI" : {"CATEGORY" : {
+                        "Alignment with the NCOIs" : 3,
+                        "Clarity and Coherence" : 3,
+                        "Active listening" : 3,
+                        "Confidence" : 3
+                    }, "TOTAL" : 12, "WEIGHT" : 5}
+                },
+    "non teaching" : {
+                    "Exam" :{"CATEGORY" : {
+                        "written exam" : 5,
+                        "practice set" : 10
+                    }, "TOTAL" : 15, "WEIGHT" : 15},
+                    "Behavior Interview" : {"CATEGORY" : {
+                        "aptitude" : 1,
+                        "characteristics" : 1,
+                        "fitness" : 1,
+                        "leadership" : 1,
+                        "communication" : 1
+                    }, "TOTAL" : 5, "WEIGHT" : 5}
+                    },
+    "school administration" : {
+                    "Written Examination" : {"CATEGORY" : {
+                        "focus and detail" : 1,
+                        "organization" : 1,
+                        "content" : 1,
+                        "word choice" : 1,
+                        "sentence, structure, grammar mechanics, and spelling" : 1
+                    }, "TOTAL" : 5, "WEIGHT" : 5},
+                    "Behavior Interview" : {"CATEGORY" : {
+                        "aptitude" : 2,
+                        "characteristics" : 2,
+                        "fitness" : 2,
+                        "leadership" : 2,
+                        "communication" : 2
+                    }, "TOTAL" : 10, "WEIGHT" : 10}
+                    }
+    }                 
     with open(f'{JSON_PATH}/eval_struct.json', 'w+') as fp:
-        json.dump(EVAL_STRUCTURE, fp) 
+        json.dump(EVAL_STRUCTURE, fp, indent=4)
 
 try:
     fp = open(f'{JSON_PATH}/weight_struct.json', 'r+')
@@ -97,7 +130,7 @@ except Exception as e:
                         }
                     }
     with open(f'{JSON_PATH}/weight_struct.json', 'w+') as fp:
-        json.dump(WEIGHT_STRUCTURE, fp)
+        json.dump(WEIGHT_STRUCTURE, fp, indent=4)
 
 try:
     fp = open(f'{JSON_PATH}/applicant_struct1.json', 'r+')
@@ -135,7 +168,7 @@ except Exception as e:
 
                         }
     with open(f'{JSON_PATH}/applicant_struct.json', 'w+') as fp:
-        json.dump(APPLICANT_STRUCTURE, fp)
+        json.dump(APPLICANT_STRUCTURE, fp, indent=4)
             
 
 # ------------------------------------------------------------------------------
@@ -448,6 +481,8 @@ def update_interview(iid):
             "training": int(request.form.get("weight_trn", 10)),}
         )
 
+        interview.eval_struct = json.dumps(EVAL_STRUCTURE.get(interview.type, {}))
+        interview.app_struct = json.dumps(APPLICANT_STRUCTURE.get(interview.type, {}))
         interview.weight_struct = weight_struct
         
         db.session.commit()

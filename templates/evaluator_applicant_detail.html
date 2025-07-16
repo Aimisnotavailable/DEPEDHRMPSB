@@ -57,7 +57,6 @@
 </div>
       <h1>Applicant {{ applicant.code }} Evaluation</h1>
       <h2>{{ applicant.name }}</h2>
-
         <form method="post" id="evalForm" action="{{ url_for('evaluator_applicant_detail', code=applicant.code) }}">
           {% if evaluation and evaluation.extra_data %}
           {% set existing_data = existing_data %}
@@ -66,7 +65,6 @@
           {% endif %}
 
           <div id="wizard">
-            
             <!-- each fieldset becomes one “step” -->
             {% set ns = namespace(max_score=0) %}
             {% for section, fields in eval_struct.items() %}
