@@ -59,7 +59,9 @@
       {% if interview.status == "open" %}
       <a href="#add-applicant">Add Applicant</a>
       <a href="#add-token">Generate Tokens</a>
-      <a href="{{ url_for('close_interview', iid=interview.id) }}" >Close Interview</a>
+      <a href="{{ url_for('close_interview', iid=interview.id) }}" class="btn confirm-close">
+        Close Interview
+      </a>
       {% endif %}
 
     </div>
