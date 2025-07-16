@@ -481,8 +481,6 @@ def update_interview(iid):
             "training": int(request.form.get("weight_trn", 10)),}
         )
 
-        interview.eval_struct = json.dumps(EVAL_STRUCTURE.get(interview.type, {}))
-        interview.app_struct = json.dumps(APPLICANT_STRUCTURE.get(interview.type, {}))
         interview.weight_struct = weight_struct
         
         db.session.commit()
